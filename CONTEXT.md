@@ -1,11 +1,11 @@
 # AI Investment Platform - Context Journal
 
 ## Current State
-- **Active project:** Setup phase (pre-Project 1)
-- **Active phase:** Environment setup
-- **Last session:** 2026-04-26 - Strategy, scoping, and setup planning with Claude
-- **Next session goal:** Lesson 1 of Project 1 - "What is a factor and why does anyone care?"
-- **Target start of Lesson 1:** Friday May 1 or Monday May 4, 2026
+- **Active project:** Setup phase COMPLETE
+- **Active phase:** Ready to begin Project 1 - Factor Research Copilot
+- **Last session:** 2026-05-25 - Full environment setup completed (WSL, Python, Claude Code, VS Code, GitHub)
+- **Next session goal:** P1-L1 - First concept lesson on what factors are and why they matter
+- **Target start of Lesson 1:** Next available session
 
 ## Career Pivot Decisions (cross-project)
 - 2026-04-26 - Pivoting from quant research path to hands-on AI Product Manager 
@@ -41,22 +41,49 @@
 - Month 7: Other cloud course, revisit API course evals sections
 - Months 8-9: Stop course-taking, focus on interviewing
 
-## Environment Setup Checklist (in progress)
-- [ ] Python 3.11 installed
-- [ ] VS Code + extensions (Python, Pylance, Jupyter, GitLens, Ruff)
-- [ ] Git configured + GitHub account with SSH keys
-- [ ] Repo `ai-investment-platform/` created with full directory structure
-- [ ] Virtual environment + requirements.txt installed
-- [ ] Anthropic API key created, $20 loaded, .env configured, test script passes
-- [ ] Claude Code installed and authenticated
-- [ ] yfinance verification (download AAPL data successfully)
-- [ ] Claude Project "AI PM - Career Pivot" created with custom instructions
-- [ ] CONTEXT.md and resume uploaded to project knowledge
+## Environment Setup Checklist (COMPLETE 2026-05-25)
+- [x] WSL2 + Ubuntu 26.04 LTS installed
+- [x] Python 3.11.9 installed via pyenv
+- [x] VS Code + extensions (Python, Pylance, Jupyter, GitLens, Ruff, Error Lens, etc.)
+- [x] Git configured + GitHub account with SSH keys (sidsalil@gmail.com)
+- [x] Node.js + npm via nvm
+- [x] Repo `ai_investment_platform/` created with full directory structure
+- [x] Virtual environment + requirements.txt installed and verified
+- [x] Anthropic API key created, .env configured, test script passes
+- [x] Claude Code installed and authenticated (Claude Pro)
+- [x] yfinance verified imports correctly (full download test deferred to P1)
+- [x] Claude Project "AI PM - Career Pivot" created with custom instructions
+- [x] CONTEXT.md and resume uploaded to project knowledge
+- [x] First commit + .gitkeep commit pushed to GitHub
 
-## Stack Versions (as of setup)
-- Python: 3.11.9 (from python.org)
+## Dev Environment (as of 2026-05-25)
+- OS: Windows 11 with WSL2 (Ubuntu 26.04 LTS "Resolute")
+- Hostname: SidSalilLaptop
+- Linux user: sidsa
+- Python: 3.11.9 via pyenv (~/.pyenv/)
+- Node: v24.16.0 LTS via nvm
+- Editor: VS Code on Windows, connected to WSL via Remote-WSL extension
+- Project location: ~/projects/ai_investment_platform (Linux filesystem)
+- GitHub: github.com/sidsalil/ai_investment_platform (private)
+- All dev work happens in WSL, not native Windows
+- Claude Code: installed via npm in WSL, authenticated (Claude Pro plan)
+- Default model: claude-sonnet-4-5 (anthropic SDK 0.97.0)
+
+## Stack Versions (as of 2026-05-25 setup)
+- Python: 3.11.9 via pyenv
 - anthropic: 0.97.0
 - yfinance: 1.3.0
+- pandas: 2.2.3
+- numpy: 2.1.3
+- scipy: 1.14.1
+- jupyter: 1.1.1
+- fastapi: 0.115.5
+- streamlit: 1.40.2
+- ruff: 0.8.2
+- pytest: 8.3.4
+- node: v24.16.0
+- npm: 11.13.0
+- claude-code: 2.1.150
 
 ---
 
