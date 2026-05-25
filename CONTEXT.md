@@ -85,6 +85,15 @@
 - npm: 11.13.0
 - claude-code: 2.1.150
 
+## Historical Milestones (compressed)
+
+- 2026-04-26: Pivot decision made. Quant path rejected, AI PM path chosen.
+- 2026-05-25: Full dev environment setup complete (WSL, Python, Claude Code, GitHub).
+- [date]: Started Project 1 - Factor Research Copilot.
+- [date]: Shipped Project 1.
+- [date]: Started Project 2.
+- [date]: Began external applications.
+
 ---
 
 ## Project 1: Factor Research Copilot
