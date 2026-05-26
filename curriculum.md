@@ -38,22 +38,23 @@ Skills you accumulate across all 4 projects. Track maturity as you progress.
 
 **Estimated effort:** 60-80 hours focused work (6-10 weeks at 10 hrs/week)
 
-**Status:** Not started
+**Status:** In progress — Phase 1 (Concept Lessons), 2 of 10 lessons complete
 
 ## Phase 1: Concept Lessons (~15-25 hours)
 
 The foundation. You learn the quant finance vocabulary and reasoning you'll use across all 4 projects. Don't rush this phase - everything else compounds off it.
 
-### [ ] P1-L1: What is a factor and why does anyone care?
+### [x] P1-L1: What is a factor and why does anyone care? — **completed 2026-05-25**
 - **Concepts:** What a factor is, why factor investing exists, the major historical factors (value, momentum, size), CAPM → Fama-French history
 - **Explain back:** "In your own words: what is a factor, and why would a portfolio manager care about one?"
 - **Deliverable:** Notes in CONTEXT.md under "Concepts Learned"
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-L2: The universe - what stocks am I testing on?
+### [x] P1-L2: The universe - what stocks am I testing on? — **completed 2026-05-25**
 - **Concepts:** Why we restrict the universe, survivorship bias intro, the S&P 500 as a starting universe, point-in-time universe problem
 - **Explain back:** "Why is using today's S&P 500 to backtest from 2010 problematic? What would happen if I used 'all stocks that ever traded'?"
 - **Deliverable:** Notes; decision on what universe Project 1 will use
+- **Decision logged:** NASDAQ-100 for development → S&P 500 for final eval/demo. Survivorship bias acknowledged in P1-Polish-4.
 - **Estimated time:** 1 hour
 
 ### [ ] P1-L3: Returns - the foundation everything builds on
@@ -140,6 +141,7 @@ This is where you actually write code. Each build sprint produces a working comp
 ### [ ] P1-Build-1: Data ingestion module
 - **What you build:** A wrapper around yfinance that downloads, caches, and serves clean OHLCV data for a list of tickers
 - **Key concerns:** Caching (don't re-download what you have), handling failures, date alignment
+- **Carried-forward requirement (from P1-L2):** Parameterize the universe so NASDAQ-100 ↔ S&P 500 switch is a config change, not a refactor. Source constituents from a stable public source (Wikipedia standard); freeze snapshot date for reproducibility.
 - **Located in:** `shared/data/`
 - **Tests:** Pytest tests that verify caching works and bad inputs fail cleanly
 - **Estimated time:** 3-5 hours
@@ -218,6 +220,7 @@ Building is one thing. Packaging is what makes a portfolio.
 ### [ ] P1-Polish-4: Methodology risk memo
 - **What you write:** Honest accounting of what your project does NOT do (point-in-time data, survivorship bias, no slippage modeling)
 - **Why this matters:** Shows hiring managers you understand the limits of your own work
+- **Carried-forward requirement (from P1-L2):** Include explicit "Universe choice and survivorship-bias acknowledgment" section. Document expected magnitude (~0.5–1.5%/year inflation on US equity universes; larger for hedge funds and small-caps). Describe production fix path (CRSP / FactSet / S&P Dow Jones Indices point-in-time membership data).
 - **Estimated time:** 1 hour
 
 **PROJECT 1 COMPLETION CRITERIA:**
@@ -481,7 +484,7 @@ Once all 4 projects are shipped, before applying:
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
+| P1: Factor Research | ☐ 2/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | P2: Backtesting | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | P3: Portfolio Construction | ☐ 0/11 | ☐ 0/3 | ☐ 0/11 | ☐ 0/4 | ☐ |
 | P4: ML Signal Lab | ☐ 0/12 | ☐ 0/3 | ☐ 0/11 | ☐ 0/4 | ☐ |
@@ -497,7 +500,7 @@ Update this monthly:
 
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
-| 2026-05 | - | - | - |
+| 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
 | 2026-06 | - | - | - |
 
 ---

@@ -2,10 +2,10 @@
 
 ## Current State
 - **Active project:** Project 1 - Factor Research Copilot
-- **Active phase:** Phase 1 - Concept Lessons (1 of 10 complete)
-- **Last session:** 2026-05-25 - P1-L1 complete (What is a factor and why does anyone care)
-- **Next session goal:** P1-L2 - The universe (what stocks am I testing on)
-- **Target start of Lesson 2:** Next available session
+- **Active phase:** Phase 1 - Concept Lessons (2 of 10 complete)
+- **Last session:** 2026-05-25 - P1-L2 complete (universe definition, survivorship bias, point-in-time problem)
+- **Next session goal:** P1-L3 - Returns (simple vs log, adjusted vs raw, total return vs price return)
+- **Target start of Lesson 3:** Next available session
 
 ## Career Pivot Decisions (cross-project)
 - 2026-04-26 - Pivoting from quant research path to hands-on AI Product Manager 
@@ -90,6 +90,7 @@
 - 2026-04-26: Pivot decision made. Quant path rejected, AI PM path chosen.
 - 2026-05-25: Full dev environment setup complete (WSL, Python, Claude Code, GitHub).
 - 2026-05-25: Started Project 1. Completed P1-L1 (What is a factor and why does anyone care).
+- 2026-05-25: Completed P1-L2 (universe, survivorship bias, point-in-time problem). Universe decision locked: NASDAQ-100 → S&P 500.
 - [date]: Shipped Project 1.
 - [date]: Started Project 2.
 - [date]: Began external applications.
@@ -99,7 +100,7 @@
 ## Project 1: Factor Research Copilot
 
 ### Status
-- Phase: Phase 1 (Concept Lessons) — 1 of 10 lessons complete
+- Phase: Phase 1 (Concept Lessons) — 2 of 10 lessons complete
 - Started: 2026-05-25
 - Target ship date: TBD (estimate 6-10 weeks once started)
 
@@ -118,20 +119,37 @@
 - **Phalippou critique of PE:** private equity returns largely decompose to equity beta + size + value + leverage + illiquidity premium. Once those are adjusted for, PE "alpha" is much smaller than the industry claims. Industry-contested but academically rigorous view.
 - Cross-asset factor research stream: "Value and Momentum Everywhere" (Asness, Moskowitz, Pedersen, 2013) is the canonical paper showing value and momentum work across equities, bonds, currencies, and commodities.
 
+**P1-L2: The universe — what stocks am I testing on** (2026-05-25)
+- A **universe** is the set of securities eligible for research or a strategy — the quantitative equivalent of an investment mandate. Must be defined explicitly before any signal becomes meaningful.
+- Four reasons to restrict a universe: tradability (microcaps' alpha isn't capturable), data quality (small/foreign stocks have messier corporate-action histories), hypothesis specificity ("12-month-minus-1-month momentum on US large-caps" is testable; "momentum works" is not), computational cost (faster iteration loops during research).
+- **Survivorship bias (intro level; deeper in P1-L8):** backtesting on today's Standard & Poor's 500 (S&P 500) constituents excludes every company that failed, was acquired, or fell out of the index — Lehman Brothers, Washington Mutual, Bear Stearns, Enron, WorldCom, Time Warner, Compaq, EMC, J.C. Penney, GE during its long demotion. Effect: inflates measured returns by roughly 0.5–1.5% per year for US equity mutual fund universes; substantially larger for hedge fund universes and small-cap universes.
+- **Point-in-time universe problem:** index composition changes over time. The S&P 500 of 2005 had different constituents than today's (Tesla wasn't public, Meta didn't exist, Nvidia was much smaller). Rigorous backtests require "what was the S&P 500 on this exact rebalance date" for every rebalance. Available from Center for Research in Security Prices (CRSP), Bloomberg, S&P Dow Jones Indices, FactSet. **Not available from yfinance.** Academic CRSP access runs thousands per year; commercial higher.
+- Mental model for survivorship bias: it's like backtesting a strategy called "buy stocks I bought in 2010 that did well." Of course it works — you're peeking at the answer key.
+- **Senior-PM move on this entire issue:** acknowledge survivorship bias openly in the methodology risk memo, document expected magnitude, describe the production fix path. Owning the limitation beats pretending free tools solved point-in-time. Honesty about limits is model-risk awareness, directly relevant to AI PM positioning.
+- The broader pattern that will repeat across Project 1: every methodology choice carries a bias. Universe choice → survivorship bias. Return calculation → look-ahead in price adjustment. Portfolio construction → selection bias. The work is not to eliminate bias (impossible with free tools); it's to know which biases you're carrying and quantify their direction.
+
 ### Concepts I'm Still Shaky On
-- (none flagged yet from P1-L1)
+- (from P1-L2) Exact mechanics of constructing a survivorship-bias-free universe in practice — combining current tickers with delisted ones via a paid source. Revisit in P1-L8.
+- (from P1-L2) Statistical machinery for quantifying survivorship bias's effect on a specific backtest (not just the qualitative direction). Revisit in P1-L8.
+- (from P1-L2) Interaction of point-in-time universe with point-in-time fundamentals — restated earnings, late filings, accounting revisions. Revisit when fundamentals enter the picture in P1-Build-3 (value factor).
 
 ### Code Written
 - (none yet)
 
 ### Decisions Made (P1-specific)
-- (none yet — first decision comes in P1-L2: which universe to use for the project)
+- 2026-05-25 — **Universe for Project 1: NASDAQ-100 during build sprints (fast iteration loops while learning the pipeline); switch to S&P 500 for the final eval and demo (the standard learner deliverable, deeper liquidity universe).** Survivorship bias acknowledged explicitly in P1-Polish-4 (methodology risk memo). The data ingestion module (P1-Build-1) must parameterize the universe so the NASDAQ-100 ↔ S&P 500 switch is a config change, not a refactor.
 
 ### Open Questions
-- (none open from P1-L1)
+- (none open)
 
 ### Mistakes & Lessons
 - (empty — will accumulate)
+
+### Carried-Forward Action Items
+Things surfaced in completed lessons that need to be remembered when we reach the relevant phase. Format: `(source lesson) → target phase: action`.
+
+- **(P1-L2) → P1-Build-1 (data ingestion module):** Parameterize the universe so NASDAQ-100 ↔ S&P 500 switch is a config change. Universe constituents sourced from a stable public source (Wikipedia is the standard); freeze the snapshot date for reproducibility.
+- **(P1-L2) → P1-Polish-4 (methodology risk memo):** Include explicit "Universe choice and survivorship-bias acknowledgment" section. Document expected magnitude (~0.5–1.5%/year inflation on US equity universes; larger for hedge funds and small-caps). Describe the production fix path (CRSP / FactSet / S&P Dow Jones Indices point-in-time membership data) and why it was out of scope for the learning project.
 
 ---
 
