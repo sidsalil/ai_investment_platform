@@ -114,6 +114,81 @@ Used **proactively** to construct portfolios that capture factor premiums. Smart
 
 ---
 
+## Beyond equities: cross-asset factor investing
+
+The factor framework is not restricted to public equities. It has been extended across virtually every asset class, with varying maturity and rigor.
+
+### Fixed income (bonds)
+
+Well-developed. Common bond factors:
+
+- **Term / duration** — sensitivity to interest rates
+- **Credit** — compensation for default risk (spread)
+- **Carry** — high-yield bonds tend to outperform low-yield, default-adjusted
+- **Value** — yield vs. fundamentals, or relative to peers
+- **Momentum** — yes, it works in bonds too
+- **Quality** and **low volatility**
+
+Major players: AQR, Pacific Investment Management Company (PIMCO), BlackRock, Robeco. Smart-beta bond ETFs exist.
+
+### Foreign Exchange (FX)
+
+One of the cleanest non-equity factor areas.
+
+- **Carry trade** — long high-yielding currencies, short low-yielding; the foundational FX strategy
+- **Momentum** — short-term continuation in exchange rates
+- **Value** — purchasing power parity (PPP) mean reversion
+- **Defensive / risk-off** — safe-haven currencies (Japanese Yen (JPY), Swiss Franc (CHF), US Dollar (USD)) outperform in stress
+
+### Commodities
+
+- **Momentum**, **value**, and **carry** (carry here is based on futures curve shape: backwardation vs. contango)
+
+Winton, AQR, and other systematic macro funds have built businesses on commodity factor strategies.
+
+### Options / volatility
+
+Different framework but factor-like:
+
+- **Volatility Risk Premium (VRP)** — selling options earns a premium because implied volatility tends to exceed realized volatility
+- **Variance risk premium**, **skew premium**, **term-structure premium**
+
+Often grouped under "alternative risk premia."
+
+### Credit derivatives
+
+Same factors as cash credit (credit risk, term, liquidity). Credit Default Swap Index (CDX) trading uses similar frameworks. Less mature than cash-bond factor investing.
+
+### Private Equity (PE)
+
+The most controversial application. The academic critique — notably Ludovic Phalippou at Oxford — decomposes PE returns into:
+
+- **Public equity beta** (PE is largely a leveraged equity bet)
+- **Size factor** (PE tends to buy smaller companies)
+- **Value factor** (PE often buys at lower multiples than public peers)
+- **Leverage**
+- **Illiquidity premium** (compensation for locked capital)
+
+Phalippou's argument: once you adjust for these factors plus PE's smoothed reporting (which artificially deflates measured volatility and inflates Sharpe ratios), PE alpha is much smaller than the industry claims. Contested, but it's the rigorous academic view.
+
+### Private credit
+
+Similar story to PE: credit factor + illiquidity premium + leverage. Less factor-research literature, but the framework applies.
+
+### Cross-asset factor investing
+
+A whole research stream. The canonical paper is "Value and Momentum Everywhere" (Asness, Moskowitz, Pedersen, 2013), which showed value and momentum signals work across equities, bonds, currencies, and commodities. Some funds — AQR is the textbook example — run multi-asset factor strategies that combine these.
+
+### Caveats
+
+1. **Equity is the most mature.** Decades of research, clean data, many securities. Other asset classes have less statistical power (~30 major currency pairs vs. thousands of stocks).
+2. **Data quality varies dramatically.** Public equities have clean, daily, point-in-time data. Private markets have stale, smoothed, self-reported data that makes everything look better than it is.
+3. **Implementation costs vary.** A 0.5% annual factor alpha works in liquid equities; in illiquid credit it gets eaten by transaction costs.
+4. **Some "private-market factors" are really just leverage + illiquidity + accounting artifacts** (Phalippou's whole point about PE).
+5. **For Project 1:** equity-only by design — cleanest data via yfinance, most documented research to compare against, right place to learn the mechanics. The intuition transfers everywhere; implementation details differ by asset class.
+
+---
+
 ## Connection to Project 1
 
 The Factor Research Copilot will:
