@@ -1,11 +1,11 @@
 # AI Investment Platform - Context Journal
 
 ## Current State
-- **Active project:** Setup phase COMPLETE
-- **Active phase:** Ready to begin Project 1 - Factor Research Copilot
-- **Last session:** 2026-05-25 - Full environment setup completed (WSL, Python, Claude Code, VS Code, GitHub)
-- **Next session goal:** P1-L1 - First concept lesson on what factors are and why they matter
-- **Target start of Lesson 1:** Next available session
+- **Active project:** Project 1 - Factor Research Copilot
+- **Active phase:** Phase 1 - Concept Lessons (1 of 10 complete)
+- **Last session:** 2026-05-25 - P1-L1 complete (What is a factor and why does anyone care)
+- **Next session goal:** P1-L2 - The universe (what stocks am I testing on)
+- **Target start of Lesson 2:** Next available session
 
 ## Career Pivot Decisions (cross-project)
 - 2026-04-26 - Pivoting from quant research path to hands-on AI Product Manager 
@@ -89,7 +89,7 @@
 
 - 2026-04-26: Pivot decision made. Quant path rejected, AI PM path chosen.
 - 2026-05-25: Full dev environment setup complete (WSL, Python, Claude Code, GitHub).
-- [date]: Started Project 1 - Factor Research Copilot.
+- 2026-05-25: Started Project 1. Completed P1-L1 (What is a factor and why does anyone care).
 - [date]: Shipped Project 1.
 - [date]: Started Project 2.
 - [date]: Began external applications.
@@ -99,27 +99,39 @@
 ## Project 1: Factor Research Copilot
 
 ### Status
-- Phase: Not yet started (setup in progress)
-- Started: TBD
+- Phase: Phase 1 (Concept Lessons) — 1 of 10 lessons complete
+- Started: 2026-05-25
 - Target ship date: TBD (estimate 6-10 weeks once started)
 
 ### Concepts Learned
-- (empty - first lesson scheduled)
+
+**P1-L1: What is a factor and why does anyone care** (2026-05-25)
+- A **factor** is a common return driver shared across many stocks (market, value, size, momentum, quality, etc.). Stock returns can be loosely decomposed as: return = sum(exposure × factor return) + idiosyncratic.
+- **Exposure** (also called loading or beta) measures how plugged-in a particular stock is to a given factor. **Idiosyncratic return** (the residual) is the stock-specific leftover.
+- Historical arc: Capital Asset Pricing Model (CAPM) in the 1960s — market-only factor model. Fama-French 3-factor (1992) added Small Minus Big (SMB, size) and High Minus Low (HML, value). Carhart 4-factor (1997) added Up Minus Down (UMD, momentum). Modern "factor zoo" contains 400+ proposed factors, most of which don't replicate under proper retesting.
+- Factors that have held up reasonably well: market, size, value, momentum, quality, low-volatility, investment, profitability.
+- Two distinct uses of factors to keep mentally separate:
+  - **Factor as risk model** — decompose returns after the fact (Barra/Morgan Stanley Capital International (MSCI) world; risk and performance attribution teams)
+  - **Factor as alpha source** — proactively construct portfolios that harvest factor premiums (smart-beta Exchange-Traded Funds (ETFs), AQR Capital Management (AQR), Dimensional Fund Advisors (DFA))
+- **Project 1 sits on the alpha-source side.**
+- **Cross-asset applicability:** the factor framework extends to fixed income (term, credit, carry, value, momentum), Foreign Exchange (FX) (carry, momentum, value, defensive), commodities (carry, momentum, value), options/volatility (Volatility Risk Premium (VRP), variance/skew premia), credit derivatives, Private Equity (PE), and private credit. Equity is the most mature; data quality and statistical power decline in other asset classes.
+- **Phalippou critique of PE:** private equity returns largely decompose to equity beta + size + value + leverage + illiquidity premium. Once those are adjusted for, PE "alpha" is much smaller than the industry claims. Industry-contested but academically rigorous view.
+- Cross-asset factor research stream: "Value and Momentum Everywhere" (Asness, Moskowitz, Pedersen, 2013) is the canonical paper showing value and momentum work across equities, bonds, currencies, and commodities.
 
 ### Concepts I'm Still Shaky On
-- (will populate as I go)
+- (none flagged yet from P1-L1)
 
 ### Code Written
 - (none yet)
 
 ### Decisions Made (P1-specific)
-- (none yet)
+- (none yet — first decision comes in P1-L2: which universe to use for the project)
 
 ### Open Questions
-- (none yet - first concept lesson scheduled for after env setup)
+- (none open from P1-L1)
 
 ### Mistakes & Lessons
-- (empty - will accumulate)
+- (empty — will accumulate)
 
 ---
 
