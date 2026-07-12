@@ -1,7 +1,7 @@
 # AI Investment Platform - Curriculum
 
 > Living curriculum for the 4-project journey to hands-on AI Product Manager roles.
-> Last updated: 2026-07-12
+> Last updated: 2026-07-12 (P1-L5 complete)
 
 ---
 
@@ -38,7 +38,7 @@ Skills you accumulate across all 4 projects. Track maturity as you progress.
 
 **Estimated effort:** 60-80 hours focused work (6-10 weeks at 10 hrs/week)
 
-**Status:** In progress — Phase 1 (Concept Lessons), 4 of 10 lessons complete
+**Status:** In progress — Phase 1 (Concept Lessons), 5 of 10 lessons complete
 
 ## Phase 1: Concept Lessons (~15-25 hours)
 
@@ -71,10 +71,11 @@ The foundation. You learn the quant finance vocabulary and reasoning you'll use 
 - **Decision logged:** Signal construction pipeline order is raw factor → winsorize (1st/99th percentile default, configurable) → sector-neutral z-score. Sector-neutral z-scoring is the default signal for portfolio construction; universe-wide z-scoring retained as an optional diagnostic to detect sector-bet contamination.
 - **Estimated time:** 2 hours
 
-### [ ] P1-L5: Portfolio construction from signals
+### [x] P1-L5: Portfolio construction from signals — **completed 2026-07-12**
 - **Concepts:** Decile/quintile portfolios, long-only vs long-short, equal weighting vs signal weighting
 - **Explain back:** "If I have a momentum signal, how do I turn it into a portfolio? What does long-short isolate?"
-- **Deliverable:** Notes; a hand-computed decile example for 20 stocks
+- **Deliverable:** Notes (P1_L5_Portfolio_Construction.md); hand-computed quintile example for 20 stocks with equal-weight and signal-weight long-short portfolios
+- **Decision logged:** Quintile bucketing (5 buckets) as default, deciles configurable for the S&P 500 final run. Long-short equal-weighted is the research/IC default from P1-L6 onward; long-only equal-weighted top-quintile retained as a practitioner-facing alternative for the memo. Signal-weighting retained as a configurable diagnostic.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-L6: Information Coefficient and statistical evaluation
@@ -162,7 +163,8 @@ This is where you actually write code. Each build sprint produces a working comp
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-4: Portfolio construction
-- **What you build:** Take a factor signal at a date, build long-only decile portfolios and long-short top-vs-bottom decile portfolio
+- **What you build:** Take a factor signal at a date, build long-only quintile portfolios and long-short top-vs-bottom quintile portfolio
+- **Carried-forward requirement (from P1-L5):** Default to quintile bucketing (5 buckets), configurable to deciles. Implement both long-short equal-weighted (research/IC default) and long-only equal-weighted top-quintile (practitioner-facing alternative) construction paths, plus a signal-weighted option. Need a deterministic tie-breaking rule for stocks straddling bucket boundaries (e.g., secondary sort by ticker or market cap).
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-5: Backtest mechanics
@@ -489,7 +491,7 @@ Once all 4 projects are shipped, before applying:
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research | ☐ 4/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
+| P1: Factor Research | ☐ 5/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | P2: Backtesting | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | P3: Portfolio Construction | ☐ 0/11 | ☐ 0/3 | ☐ 0/11 | ☐ 0/4 | ☐ |
 | P4: ML Signal Lab | ☐ 0/12 | ☐ 0/3 | ☐ 0/11 | ☐ 0/4 | ☐ |
@@ -507,7 +509,7 @@ Update this monthly:
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
 | 2026-06 | - | - | - |
-| 2026-07 | 2 (P1-L3, P1-L4) | 0 | 0 |
+| 2026-07 | 3 (P1-L3, P1-L4, P1-L5) | 0 | 0 |
 
 ---
 

@@ -2,10 +2,10 @@
 
 ## Current State
 - **Active project:** Project 1 - Factor Research Copilot
-- **Active phase:** Phase 1 - Concept Lessons (4 of 10 complete)
-- **Last session:** 2026-07-12 - P1-L4 complete (raw vs normalized factors, z-scoring, winsorization, sector neutralization intuition)
-- **Next session goal:** P1-L5 - Portfolio construction from signals (decile/quintile portfolios, long-only vs long-short, equal weighting vs signal weighting)
-- **Target start of Lesson 5:** Next available session
+- **Active phase:** Phase 1 - Concept Lessons (5 of 10 complete)
+- **Last session:** 2026-07-12 - P1-L5 complete (decile/quintile portfolios, long-only vs long-short, equal weighting vs signal weighting)
+- **Next session goal:** P1-L6 - Information Coefficient and statistical evaluation (IC, rank IC, Information Ratio, hit rate, t-statistics for IC)
+- **Target start of Lesson 6:** Next available session
 
 ## Career Pivot Decisions (cross-project)
 - 2026-04-26 - Pivoting from quant research path to hands-on AI Product Manager 
@@ -93,6 +93,7 @@
 - 2026-05-25: Completed P1-L2 (universe, survivorship bias, point-in-time problem). Universe decision locked: NASDAQ-100 → S&P 500.
 - 2026-07-12: Completed P1-L3 (simple vs log returns, adjusted vs raw prices, total return vs price return).
 - 2026-07-12: Completed P1-L4 (raw vs normalized factors, z-scoring, winsorization, sector neutralization).
+- 2026-07-12: Completed P1-L5 (decile/quintile bucketing, long-only vs long-short, equal vs signal weighting).
 - [date]: Shipped Project 1.
 - [date]: Started Project 2.
 - [date]: Began external applications.
@@ -102,7 +103,7 @@
 ## Project 1: Factor Research Copilot
 
 ### Status
-- Phase: Phase 1 (Concept Lessons) — 4 of 10 lessons complete
+- Phase: Phase 1 (Concept Lessons) — 5 of 10 lessons complete
 - Started: 2026-05-25
 - Target ship date: TBD (estimate 6-10 weeks once started)
 
@@ -152,10 +153,23 @@
 - **Sector neutralization** is computing the z-score within each sector group separately, rather than across the whole universe — because a naive universe-wide z-score can be dominated by which sector performed better overall rather than genuine within-sector differentiation. Worked example: in the 8-stock universe, every Tech stock had a positive universe-wide z-score and every Utilities stock had a negative one (except one borderline case) — meaning a long/short portfolio built on the naive signal would really just be a long-Tech/short-Utilities sector bet, not a momentum strategy. After sector-neutral z-scoring, NEE (a utility, universe-wide z-score of -0.175, near the bottom of the whole universe) became the **highest-ranked stock of all 8** (sector z-score 1.528, higher than every Tech name) — its strong momentum *relative to other utilities* had been completely hidden by the universe-wide comparison.
 - **Full signal construction pipeline for Project 1 (in order):** (1) compute raw factor using adjusted-close log returns per P1-L3 convention, (2) winsorize cross-sectionally at a percentile threshold, (3) z-score within sector groups (sector-neutral) as the default signal, with universe-wide z-scoring retained as an optional diagnostic to quantify how much of a naive signal is actually a sector bet.
 
+**P1-L5: Portfolio construction from signals** (2026-07-12)
+- Bucketing takes a ranked signal (sector-neutral z-score) and slices it into equal-sized groups. A **decile** portfolio uses 10 buckets (10% of the universe each); a **quintile** portfolio uses 5 buckets (20% each). The bucket with the highest z-scores is the **top bucket**; lowest z-scores is the **bottom bucket**. Bucketing reduces noise (smooths over meaningless razor-thin rank differences) and gives statistically usable group sizes for later average-return calculations (P1-L6).
+- Bucket-count tradeoff: more buckets = finer-grained bets but noisier per-bucket averages (fewer stocks per bucket). Worked comparison: NASDAQ-100 (100 stocks) gives only 10 stocks/decile-bucket (thin) vs 20 stocks/quintile-bucket (more stable); S&P 500 (500 stocks) gives 50/decile vs 100/quintile (both fine).
+- Worked 20-stock bucketing example: 20 tickers with sector-neutral z-scores ranging from 2.10 (AAA, highest) to -2.10 (TTT, lowest), sorted descending and sliced into 5 quintiles of 4 stocks each (Q5 = top: AAA/BBB/CCC/DDD; Q1 = bottom: QQQ/RRR/SSS/TTT). Mechanically: sort by z-score descending, slice into N equal groups.
+- **Long-only** means buying the top bucket only, with no position in the bottom bucket — the typical posture of a real long-only mutual fund or liquid-alts-adjacent mandate (most can't short). **Long-short** means buying the top bucket AND short-selling the bottom bucket (short-selling = borrowing and selling a stock you don't own, betting its price falls).
+- **Why long-short is the research default even though most real products are long-only:** any stock's return ≈ market return + factor-specific return + idiosyncratic return (per the P1-L1 factor model). A long-only top-bucket portfolio's return is contaminated by the market's overall direction over the period — a market rally makes the portfolio look good even if the signal itself did nothing. Long-short cancels the market term out algebraically (long-short return ≈ top-bucket factor effect − bottom-bucket factor effect) because both buckets carry roughly similar market exposure, isolating the "pure" factor effect — the actual thing being tested. This is the standard convention in academic factor research (e.g., Fama-French portfolio construction).
+- **Net exposure** = longs minus shorts as % of capital; zero net exposure = **dollar-neutral** (long-short with equal dollars on each side). **Gross exposure** = longs plus shorts as % of capital (ignoring sign); e.g., 100% long + 100% short = 200% gross, meaning leverage is being used.
+- **Important nuance — dollar-neutral ≠ beta-neutral/market-neutral.** A long-short portfolio balanced in dollars can still carry leftover market exposure if the long and short buckets have systematically different average market betas (common with momentum, where high-momentum stocks often run higher-beta). True market-neutrality requires explicitly matching betas, not just dollar amounts. Full treatment deferred to P1-L8.
+- **Equal weighting** gives every stock in a bucket the same weight (1 ÷ number of stocks in the bucket) — doesn't require trusting the precise magnitude of the z-score, only its rank/bucket membership. **Signal weighting** sets each stock's weight proportional to its z-score, normalized to sum to 100% (long side) or -100% (short side): `weight_i = z_i / (sum of z's on that side)`. Signal weighting concentrates capital into the most extreme-z names, increasing single-stock concentration risk; equal weighting is the more conservative, diversified default.
+- Worked numerical comparison on the 8 stocks in the top/bottom quintiles: equal-weighted gives every stock ±25%. Signal-weighted (long side z's sum to 6.90) gives AAA (z=2.10) 30.4%, BBB (z=1.85) 26.8%, CCC (z=1.60) 23.2%, DDD (z=1.35) 19.6% — same logic mirrored on the short side. Net/gross exposure (0%/200%) is identical between schemes; weighting only changes concentration *within* the exposure, not the total exposure amount.
+- **Full portfolio construction decision tree locked for Project 1:** (1) bucket count = quintiles (5 buckets) as default, deciles configurable for the final S&P 500 run; (2) long-short equal-weighted as the research/IC default (P1-L6 onward), long-only equal-weighted top-quintile retained as a practitioner-facing alternative view in the memo; (3) equal-weighting as the default scheme, signal-weighting retained as a configurable diagnostic.
+
 ### Concepts I'm Still Shaky On
 - (from P1-L2) Exact mechanics of constructing a survivorship-bias-free universe in practice — combining current tickers with delisted ones via a paid source. Revisit in P1-L8.
 - (from P1-L2) Statistical machinery for quantifying survivorship bias's effect on a specific backtest (not just the qualitative direction). Revisit in P1-L8.
 - (from P1-L2) Interaction of point-in-time universe with point-in-time fundamentals — restated earnings, late filings, accounting revisions. Revisit when fundamentals enter the picture in P1-Build-3 (value factor).
+- (from P1-L5) Exact mechanics of beta-matching to achieve true market-neutrality (as opposed to simple dollar-neutrality). Revisit in P1-L8 (biases).
 
 ### Code Written
 - (none yet)
@@ -164,6 +178,7 @@
 - 2026-05-25 — **Universe for Project 1: NASDAQ-100 during build sprints (fast iteration loops while learning the pipeline); switch to S&P 500 for the final eval and demo (the standard learner deliverable, deeper liquidity universe).** Survivorship bias acknowledged explicitly in P1-Polish-4 (methodology risk memo). The data ingestion module (P1-Build-1) must parameterize the universe so the NASDAQ-100 ↔ S&P 500 switch is a config change, not a refactor.
 - 2026-07-12 — **Return convention for Project 1: log returns for all internal factor/backtest math (time-additive, needed for chaining and statistical tests); simple returns for cross-asset portfolio combination and final memo/reporting language.** Adjusted close (not raw close) is the required default price series for all return calculations, since it yields total return automatically. Raw close reserved for P1-Build-5 transaction cost calculations only.
 - 2026-07-12 — **Signal construction pipeline order for Project 1: raw factor → winsorize (cross-sectional, 1st/99th percentile default, configurable) → sector-neutral z-score.** Sector-neutral z-scoring is the default signal used in portfolio construction (P1-L5 onward); universe-wide z-scoring is retained only as an optional diagnostic to detect and quantify sector-bet contamination in a signal, surfaced in the methodology validator (P1-Build-8).
+- 2026-07-12 — **Portfolio construction decision tree for Project 1: (1) quintile bucketing (5 buckets) as default, deciles configurable for the final S&P 500 run; (2) long-short, equal-weighted as the research/IC default from P1-L6 onward, with long-only equal-weighted top-quintile retained as a practitioner-facing alternative view for the memo; (3) equal-weighting as the default weighting scheme, signal-weighting retained as a configurable diagnostic.** Rationale: equal-weighted long-short is the least assumption-laden way to isolate the pure factor effect and matches standard academic convention (Fama-French style construction), making results comparable to published research.
 
 ### Open Questions
 - (none open)
@@ -182,6 +197,10 @@ Things surfaced in completed lessons that need to be remembered when we reach th
 - **(P1-L4) → P1-Build-2/3 (factor calculation modules):** Implement winsorization at 1st/99th percentile (configurable) applied before z-scoring, not after. Implement sector-neutral z-scoring as the default signal construction path, with universe-wide z-scoring available as a flag for diagnostic comparison.
 - **(P1-L4) → P1-Build-2/3 (factor calculation modules):** Need a sector classification data source for NASDAQ-100/S&P 500 constituents (e.g., Global Industry Classification Standard (GICS) sector via yfinance's `.info` field, or a static mapping file). Must confirm at build time whether yfinance reliably provides sector data for the full universe, or whether a supplementary static mapping is needed.
 - **(P1-L4) → P1-Build-8 (methodology validator):** Validator should flag signals where the universe-wide z-score and sector-neutral z-score diverge sharply for many stocks in the same direction — a diagnostic for "this signal may really be a sector bet," directly building on the P1-L4 worked example.
+- **(P1-L5) → P1-Build-4 (portfolio construction module):** Implement quintile bucketing as default (configurable to deciles), a deterministic tie-breaking rule for stocks straddling bucket boundaries (e.g., secondary sort by ticker or market cap), and both long-short and long-only equal-weighted construction paths. Signal-weighting should be available as a configurable alternative to equal-weighting.
+- **(P1-L5) → P1-L8 (biases):** Full treatment of dollar-neutral vs beta-neutral/market-neutral long-short construction — a dollar-balanced long-short portfolio can still carry leftover market exposure if long and short buckets have systematically different average betas (common with momentum).
+- **(P1-L5) → P1-L7 (factor decay/turnover):** Rebalancing frequency (how often bucketing/weighting is redone) was flagged as a related but separate question, deferred to P1-L7 since it depends on signal decay speed.
+- **(P1-L5) → P1-Polish-4 (methodology risk memo):** Consider noting the long-only vs long-short distinction and why long-short is used for research validity while long-only is the more realistic practitioner-facing view, given most real mandates can't short.
 
 ---
 
