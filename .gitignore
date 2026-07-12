@@ -37,3 +37,6 @@ logs/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Windows/WSL artifacts
+*:Zone.Identifier
