@@ -38,7 +38,7 @@ Skills you accumulate across all 4 projects. Track maturity as you progress.
 
 **Estimated effort:** 60-80 hours focused work (6-10 weeks at 10 hrs/week)
 
-**Status:** In progress — Phase 1 (Concept Lessons), 3 of 10 lessons complete
+**Status:** In progress — Phase 1 (Concept Lessons), 4 of 10 lessons complete
 
 ## Phase 1: Concept Lessons (~15-25 hours)
 
@@ -64,10 +64,11 @@ The foundation. You learn the quant finance vocabulary and reasoning you'll use 
 - **Decision logged:** Log returns for internal factor/backtest math; simple returns for cross-asset combination and reporting language. Adjusted close is the required default price series for all return calculations.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-L4: Signal construction - turning data into predictions
-- **Concepts:** Raw factors vs normalized factors, z-scoring, winsorization, sector neutralization (intuition only)
+### [x] P1-L4: Signal construction - turning data into predictions — **completed 2026-07-12**
+- **Concepts:** Raw factors vs normalized factors, z-scoring, winsorization, sector neutralization (intuition)
 - **Explain back:** "Why can't I just rank stocks by raw P/E ratios? What does z-scoring give me?"
-- **Deliverable:** Notes; notebook with z-scoring example
+- **Deliverable:** Notes (P1_L4_Signal_Construction.md); worked 8-stock numerical example covering z-scoring, winsorization, and sector-neutral z-scoring
+- **Decision logged:** Signal construction pipeline order is raw factor → winsorize (1st/99th percentile default, configurable) → sector-neutral z-score. Sector-neutral z-scoring is the default signal for portfolio construction; universe-wide z-scoring retained as an optional diagnostic to detect sector-bet contamination.
 - **Estimated time:** 2 hours
 
 ### [ ] P1-L5: Portfolio construction from signals
@@ -150,12 +151,14 @@ This is where you actually write code. Each build sprint produces a working comp
 ### [ ] P1-Build-2: Factor calculation - Momentum
 - **What you build:** A function that computes 12-month-minus-1-month momentum (a classic factor) for a universe of stocks at a date
 - **Key concerns:** Point-in-time correctness, NaN handling, vectorization
+- **Carried-forward requirement (from P1-L4):** Implement winsorization (1st/99th percentile default, configurable) applied before z-scoring, and sector-neutral z-scoring as the default signal construction path, with universe-wide z-scoring available as a diagnostic flag.
 - **Located in:** `modules/01_factor_research/`
 - **Tests:** Hand-verify against a known small example
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-3: Factor calculation - Other factors
 - **What you build:** Volatility factor (rolling std of returns), liquidity factor (dollar volume), simple value factor if data available
+- **Carried-forward requirement (from P1-L4):** Same winsorization + sector-neutral z-scoring pipeline as P1-Build-2, applied consistently across all factors. Requires a sector classification data source for the universe (e.g., GICS sector via yfinance `.info`, or a static mapping) — confirm yfinance's sector data reliability at build time.
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-4: Portfolio construction
@@ -179,6 +182,7 @@ This is where you actually write code. Each build sprint produces a working comp
 ### [ ] P1-Build-8: Methodology validator
 - **What you build:** A pre-execution validator that flags suspicious factor specs (look-ahead suspects, unrealistic assumptions, statistical concerns)
 - **This is your AI PM differentiator** - shows you understand model risk
+- **Carried-forward requirement (from P1-L4):** Validator should flag signals where the universe-wide z-score and sector-neutral z-score diverge sharply for many stocks in the same direction — a diagnostic for a signal that's really a disguised sector bet.
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-9: Research memo generator
@@ -485,7 +489,7 @@ Once all 4 projects are shipped, before applying:
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research | ☐ 3/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
+| P1: Factor Research | ☐ 4/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | P2: Backtesting | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | P3: Portfolio Construction | ☐ 0/11 | ☐ 0/3 | ☐ 0/11 | ☐ 0/4 | ☐ |
 | P4: ML Signal Lab | ☐ 0/12 | ☐ 0/3 | ☐ 0/11 | ☐ 0/4 | ☐ |
@@ -503,7 +507,7 @@ Update this monthly:
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
 | 2026-06 | - | - | - |
-| 2026-07 | 1 (P1-L3) | 0 | 0 |
+| 2026-07 | 2 (P1-L3, P1-L4) | 0 | 0 |
 
 ---
 
