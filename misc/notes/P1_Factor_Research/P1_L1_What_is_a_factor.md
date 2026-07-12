@@ -221,6 +221,43 @@ Lessons P1-L2 through P1-L10 build out the missing pieces: defining the universe
 
 ---
 
+---
+
+## Addendum: terminology clarification — factor vs. signal vs. strategy, and momentum vs. trend
+
+*(Added 2026-07-12, arising from a follow-up question after P1-L5. This tightens the vocabulary introduced above rather than changing any of it.)*
+
+### The three-layer hierarchy
+
+When talking about any factor precisely, it helps to separate three distinct layers that get casually blurred together in conversation:
+
+| Layer | What it means | Example |
+|---|---|---|
+| **Factor** | The underlying, documented return driver — a statistical phenomenon that's been observed and studied academically | Momentum, value, quality, size, low-volatility |
+| **Signal** | The specific measurable, computable quantity used as a proxy for the factor | 12-month-minus-1-month return, z-scored (see P1-L4) |
+| **Strategy** | The full implementation built to harvest a factor — universe, signal, and portfolio construction rules combined | "Cross-sectional equity momentum strategy" (what Project 1 builds) |
+
+### Momentum vs. trend — the specific confusion this resolves
+
+**Momentum** operates at *both* the factor layer and the strategy layer simultaneously, which is the source of most terminology confusion. "The momentum factor" refers to the documented cross-sectional phenomenon (recent relative winners keep outperforming for 3–12 months, then reverse). "A momentum strategy" refers to a specific implementation built to harvest it — exactly what Project 1 is doing.
+
+**Trend (trend-following)** is used almost entirely at the strategy level in industry, not the factor level. The underlying academic factor beneath it is sometimes called **time-series momentum** (Moskowitz, Ooi, Pedersen, 2012) — related to but distinct from cross-sectional momentum — but practitioners rarely say "the trend factor"; they say "trend" and mean the CTA-style (Commodity Trading Advisor) strategy itself.
+
+### The core mechanical distinction
+
+- **Momentum is cross-sectional** — it ranks many instruments against each other at one point in time and bets on the relative spread (top vs. bottom of the ranking).
+- **Trend-following is time-series** — it judges one instrument only against its own price history (is it above or below its own moving average), with no comparison to other instruments at all.
+
+**Practical test:** if the answer to "compared to what?" is "other instruments in the universe," it's cross-sectional momentum. If the answer is "nothing — just its own past," it's trend-following.
+
+**Worked illustration:** given 5 stocks' trailing 12-month returns (say, one up 60%, two moderately up, two down), a cross-sectional momentum approach asks "who's strongest *relative to this group*?" and goes long the top performers vs. short the bottom performers — regardless of whether the whole group is up or down overall. A trend-following approach judges each stock independently against its own trend — if all 5 happen to be individually trending up, a trend-follower can be long all 5 simultaneously, something a cross-sectional strategy can never do by construction (ranking always produces a top and a bottom).
+
+### Practical implication for Project 1
+
+The momentum factor being built in Project 1 is specifically the **cross-sectional flavor** — ranked against the universe, matching the P1-L4 sector-neutral z-scoring pipeline and the P1-L5 quintile bucketing — not time-series/trend-following. This is worth stating precisely in interviews: conflating the two is a common tell of surface-level understanding, and being able to draw this distinction crisply is a differentiator.
+
+---
+
 ## Open questions / things to revisit
 
 *(Empty — add as they come up in later lessons.)*
