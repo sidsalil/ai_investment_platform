@@ -2,7 +2,7 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-12 (P1-L5 complete; merged into restructured plan)
+> Last updated: 2026-07-13 (P1-L6 complete)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -27,7 +27,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 5 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L6 to bring them closer together.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 6 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L7 to bring them closer together.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -56,7 +56,7 @@
 
 **Estimated effort:** ~100-140 hours
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track 5/10 complete
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track 6/10 complete
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours)
 
@@ -88,9 +88,10 @@
 - **Decision logged:** Quintile bucketing (5 buckets) as default, deciles configurable for the S&P 500 final run. Long-short equal-weighted is the research/IC default from P1-L6 onward; long-only equal-weighted top-quintile retained as a practitioner-facing alternative for the memo. Signal-weighting retained as a configurable diagnostic.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-L6: Information Coefficient and statistical evaluation
+### [x] P1-L6: Information Coefficient and statistical evaluation — **completed 2026-07-13**
 - **Concepts:** IC, rank IC, Information Ratio, hit rate, t-statistics for IC, what "predictive" actually means statistically
-- **Deliverable:** Notes; notebook computing IC on a toy example
+- **Deliverable:** Notes (P1_L6_Information_Coefficient.md); worked 10-stock example covering Pearson IC, rank IC (Spearman), hit rate, single-period and time-series t-statistics, and a 6-month IR calculation
+- **Decision logged:** Rank IC (Spearman) is the primary headline metric for Project 1 reporting (robust to fat-tailed return outliers); Pearson IC retained as diagnostic. IR and time-series t-statistic (t = IR × √T) must be computed across the full backtest window rather than reported for a single period, to avoid cherry-picking.
 - **Estimated time:** 2 hours
 
 ### [ ] P1-L7: Factor decay and turnover
@@ -523,7 +524,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research (Finance) | ☐ 5/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
+| P1: Factor Research (Finance) | ☐ 6/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☐ 0/14 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/1 | — | — | — | — |
@@ -547,7 +548,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 3 (P1-L3, P1-L4, P1-L5) | 0 | 0 |
+| 2026-07 | 4 (P1-L3, P1-L4, P1-L5, P1-L6) | 0 | 0 |
 
 ---
 

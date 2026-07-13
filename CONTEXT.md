@@ -12,11 +12,11 @@
 
 ## Current State
 - **Active project:** Project 1 - Factor Research Copilot
-- **Active phase:** Phase 1 - Concept Lessons (Finance track: 5 of 10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started)
-- **Last session:** 2026-07-12 - P1-L5 complete (decile/quintile portfolios, long-only vs long-short, equal weighting vs signal weighting)
-- **Next session goal:** P1-L6 - Information Coefficient and statistical evaluation (IC, rank IC, Information Ratio, hit rate, t-statistics for IC)
-- **Target start of Lesson 6:** Next available session
-- **Note on this merge (2026-07-12):** Lessons L3, L4, L5 were completed using the old single-track curriculum structure before the restructure was applied. All content from those lessons is preserved below under "Concepts Learned — Finance Track." The AI/Agentic, Backtesting Rigor, and Evals tracks introduced in the restructure have not been started and remain open — recommend interleaving P1-LA1 (AI/Agentic track) alongside P1-L6 going forward so the two tracks don't drift further apart.
+- **Active phase:** Phase 1 - Concept Lessons (Finance track: 6 of 10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started)
+- **Last session:** 2026-07-13 - P1-L6 complete (Information Coefficient, rank IC, hit rate, single-period and time-series t-statistics, Information Ratio)
+- **Next session goal:** P1-L7 - Factor decay and turnover (how long signals predict, decay curves, turnover, turnover-cost relationship)
+- **Target start of Lesson 7:** Next available session
+- **Note on this merge (2026-07-12):** Lessons L3, L4, L5 were completed using the old single-track curriculum structure before the restructure was applied. All content from those lessons is preserved below under "Concepts Learned — Finance Track." The AI/Agentic, Backtesting Rigor, and Evals tracks introduced in the restructure have not been started and remain open — recommend interleaving P1-LA1 (AI/Agentic track) alongside P1-L7 going forward so the two tracks don't drift further apart.
 
 ## Career Pivot Decisions (cross-project)
 - 2026-04-26 - Pivoting from quant research path to hands-on AI Product Manager
@@ -47,6 +47,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 | Week of | Phase/Lesson worked | Hours logged | Notes |
 |---------|---------------------|---------------|-------|
 | 2026-07-12 | P1-L3, P1-L4, P1-L5 | | Completed same-day per session log; exact hours not recorded — log going forward |
+| 2026-07-13 | P1-L6 | | Exact hours not recorded — log going forward |
 
 ## Anthropic Courses Plan (mapped to monthly timeline)
 - Month 1: Claude 101, AI Fluency: Framework & Foundations, Claude Code 101
@@ -110,6 +111,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - 2026-07-12: Completed P1-L3 (simple vs log returns, adjusted vs raw prices, total return vs price return).
 - 2026-07-12: Completed P1-L4 (raw vs normalized factors, z-scoring, winsorization, sector neutralization).
 - 2026-07-12: Completed P1-L5 (decile/quintile bucketing, long-only vs long-short, equal vs signal weighting).
+- 2026-07-13: Completed P1-L6 (Information Coefficient, rank IC, hit rate, single-period and time-series t-statistics, Information Ratio).
 - 2026-07-11/12: Scope restructured from 4 projects to 2, with AI/agentic, backtesting-rigor, and evals tracks added to Project 1. Target roles expanded to include FDE alongside AI PM and Financial Services PM. L3-L5 progress merged into new structure without loss.
 - [date]: Complete remaining P1 Finance-track lessons (L6-L10).
 - [date]: Complete P1 AI/Agentic, Backtesting Rigor, Evals tracks.
@@ -123,7 +125,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 ## Project 1: Factor Research Copilot
 
 ### Status
-- Phase: Phase 1 (Concept Lessons) — Finance track 5/10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started
+- Phase: Phase 1 (Concept Lessons) — Finance track 6/10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started
 - Started: 2026-05-25
 - Target ship date: TBD — recalibrate after PTO week using Hours-Logged Tracker
 
@@ -185,7 +187,18 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - Worked numerical comparison on the 8 stocks in the top/bottom quintiles: equal-weighted gives every stock ±25%. Signal-weighted (long side z's sum to 6.90) gives AAA (z=2.10) 30.4%, BBB (z=1.85) 26.8%, CCC (z=1.60) 23.2%, DDD (z=1.35) 19.6% — same logic mirrored on the short side. Net/gross exposure (0%/200%) is identical between schemes; weighting only changes concentration *within* the exposure, not the total exposure amount.
 - **Full portfolio construction decision tree locked for Project 1:** (1) bucket count = quintiles (5 buckets) as default, deciles configurable for the final S&P 500 run; (2) long-short equal-weighted as the research/IC default (P1-L6 onward), long-only equal-weighted top-quintile retained as a practitioner-facing alternative view in the memo; (3) equal-weighting as the default scheme, signal-weighting retained as a configurable diagnostic.
 
-**P1-L6 through P1-L10:** Not yet started. See curriculum.md for lesson-by-lesson scope (Information Coefficient and statistical evaluation, factor decay/turnover, biases deep-dive, transaction costs, risk metrics).
+**P1-L6: Information Coefficient and statistical evaluation** (2026-07-13)
+- Setup: every stock has a **signal value** known "today" (sector-neutral z-score) and a **forward return** observed some period later. "Predictive" means stocks with higher signal today tend to earn higher forward returns more often than chance would produce — a relationship measured cross-sectionally at each rebalance date, not the same question as "did the portfolio make money this month."
+- **Information Coefficient (IC)** is the Pearson correlation coefficient between signal values and forward returns across the universe on a given date. Formula: IC = Σ(xᵢ−x̄)(yᵢ−ȳ) / [√Σ(xᵢ−x̄)² × √Σ(yᵢ−ȳ)²]. Worked 10-stock example (signal z-scores 2.1 to -2.0, forward returns 8% to -6%) produced IC ≈ 0.96 — an unrealistically high value by design (clean toy example, one near-miss stock). **Real-world daily/monthly ICs of 0.02-0.05 are considered good; above 0.10 is excellent and worth double-checking for bugs or look-ahead bias**, because real markets are dominated by noise unrelated to any one factor.
+- **Rank IC (Spearman rank correlation)** compares the *rank* of stocks by signal against the *rank* by forward return, ignoring exact magnitude — analogous to judging a horse race by finish order, not margin of victory. Formula: ρ = 1 − 6Σdᵢ²/[n(n²−1)], where dᵢ is the rank difference per stock. Same 10-stock example gave rank IC ≈ 0.96, close to Pearson IC only because this dataset has no outlier.
+- **Outlier sensitivity — why rank IC is the industry-preferred headline metric:** worked a 4-stock example where a perfect signal/return relationship (Pearson IC = Rank IC = 1.0) gets disrupted by one stock receiving an unrelated 50% return (e.g., a surprise takeover bid) despite having the lowest signal. Result: Pearson IC collapsed to -0.67 (dominated by the outlier's huge magnitude) while Rank IC only dropped to -0.20 (only cares that one stock's rank moved). Because financial returns are fat-tailed (occasional huge unrelated moves), **rank IC (Spearman) is the industry-standard headline metric**; Pearson IC is retained as a diagnostic.
+- **Hit rate** = (# of stocks where signal sign matched return sign) / N — the simplest metric, a coin-flip win/loss framing that ignores magnitude and rank order entirely. 90% (9/10) in the worked example. Always read relative to the 50% chance baseline, not against 0%; useful for communicating to non-quant stakeholders but should not replace IC-based metrics.
+- **t-statistic for a single-period IC** tests the null hypothesis that the true IC is zero (i.e., "is this correlation distinguishable from luck"). Formula: t = IC√(N−2) / √(1−IC²), with N−2 degrees of freedom; a rule-of-thumb significance threshold is roughly t > ±2.0 for reasonably large N. Worked two cases: the toy 10-stock example (IC=0.9645, N=10) gave t≈10.3 (hugely significant, but an artificially clean example); a realistic institutional-scale case (IC=0.05, a genuinely good real-world IC, N=500 for an S&P-500-sized universe) gave t≈1.12 — **not statistically significant**. Key lesson: a realistic IC measured on a single day is almost never distinguishable from noise regardless of universe size — real evidence of skill requires consistency across many periods, not one clean day.
+- **Information Ratio (IR)** measures the *consistency* of IC across many time periods, analogous to the Sharpe ratio but for signal quality rather than portfolio returns. Formula: IR = mean(IC across T periods) / std(IC across T periods). Worked example using 6 hypothetical monthly ICs (0.08, 0.05, -0.02, 0.10, 0.06, 0.03) gave mean IC = 0.05, sample std ≈ 0.0420, IR ≈ 1.19 — a very strong IR by the loose convention associated with Grinold & Kahn's *Active Portfolio Management* tradition (roughly 0.3-1.0 considered good-to-strong; treated as approximate industry convention, not a universal hard threshold).
+- **t-statistic for the time-series mean IC** (the practically important significance test) ties IR and significance together: t = IR × √T. Worked example: IR=1.19, T=6 months → t≈2.92, technically above the ~2.0 threshold, but T=6 is far too small a sample to trust in practice — real evaluation wants T=36+ months of history before placing confidence in an IR estimate.
+- **Full metrics decision for Project 1:** rank IC (Spearman) as the primary reported/headline metric (robust to fat-tailed outlier returns); Pearson IC retained as a supporting diagnostic; hit rate as a communication-friendly supplementary metric; IR and the time-series t-statistic computed across the *entire* backtest history (not a single period) to avoid cherry-picking a flattering window — this connects directly to the multiple-testing/p-hacking problem covered later in P1-LB3.
+
+**P1-L7 through P1-L10:** Not yet started. See curriculum.md for lesson-by-lesson scope (factor decay/turnover, biases deep-dive, transaction costs, risk metrics).
 
 ### Concepts Learned — AI/Agentic Track
 - Not yet started. See curriculum.md Phase 1 (AI/Agentic Track) for the full 14-lesson scope: agent fundamentals, tool use/function calling, MCP, structured outputs, ReAct-style loops, planning loops, subagent orchestration, context engineering, agent failure modes, observability/tracing, latency/cost tradeoffs, deployment basics, RAG fundamentals, prompt engineering fundamentals.
@@ -201,6 +214,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - (from P1-L2) Statistical machinery for quantifying survivorship bias's effect on a specific backtest (not just the qualitative direction). Revisit in P1-L8.
 - (from P1-L2) Interaction of point-in-time universe with point-in-time fundamentals — restated earnings, late filings, accounting revisions. Revisit when fundamentals enter the picture in P1-Build-3 (value factor).
 - (from P1-L5) Exact mechanics of beta-matching to achieve true market-neutrality (as opposed to simple dollar-neutrality). Revisit in P1-L8 (biases).
+- (from P1-L6) Formal significance testing for hit rate (e.g., a binomial test against the 50% chance baseline) was only touched informally — revisit if a rigorous treatment is needed later.
 
 ### Code Written
 - (none yet)
@@ -213,6 +227,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - 2026-07-11 — **MCP and Claude Agent SDK timing resolved: both are in scope for Project 1 (not deferred to Project 2 as originally noted). P1-Build-1's data/tool layer will be exposed via an MCP server rather than a bespoke wrapper.**
 - 2026-07-11 — **Architecture will demonstrate the full agentic pattern range within this one project: main orchestrator agent (planning loop) delegates to a validation subagent and a memo-writing subagent (multi-agent orchestration), with tools exposed via MCP (tool-use loop).**
 - 2026-07-11 — **Model evals will include a concrete model-comparison build (e.g., larger vs. smaller Claude model) evaluating cost/latency/quality tradeoffs across the extractor, validator, and memo-writer subagents.**
+- 2026-07-13 — **Metrics reporting convention for Project 1: rank IC (Spearman) is the primary headline metric (robust to fat-tailed return outliers); Pearson IC is retained as a diagnostic; hit rate is a communication-friendly supplementary metric. IR and the time-series t-statistic (t = IR × √T) must be computed across the full backtest window, not a single flattering period, to avoid cherry-picking — enforced in the methodology validator (P1-Build-8).**
 
 ### Open Questions
 - (none open)
@@ -237,6 +252,10 @@ Format: `(source lesson) → target phase: action`.
 - **(P1-L5) → P1-Polish-4 (methodology risk memo):** Consider noting the long-only vs long-short distinction and why long-short is used for research validity while long-only is the more realistic practitioner-facing view, given most real mandates can't short.
 - **(2026-07-11 planning) → P1-Build-5:** Add explicit in-sample vs. out-of-sample comparison to backtest mechanics, surfaced in the eval/demo output.
 - **(2026-07-11 planning) → P1-Polish:** Add case-study one-pager (problem → user → key tradeoffs → what's next) and a systems-design writeup (architecture + failure modes handled), separate from the README.
+- **(P1-L6) → P1-L7 (factor decay/turnover):** Forward-return window choice (1-day, 1-week, or 1-month ahead) not yet decided — depends on signal decay speed, to be resolved in P1-L7. Feeds directly into P1-Build-6.
+- **(P1-L6) → P1-Build-6 (metrics calculation module):** Implement Pearson IC, rank IC (Spearman), and hit rate at each rebalance date; implement IR and the time-series t-statistic aggregated across the full backtest window, not per-period.
+- **(P1-L6) → P1-Build-8 (methodology validator):** Flag reporting of a single best-period IC without an accompanying IR/time-series t-statistic as a p-hacking-adjacent red flag (ties to P1-LB3, multiple-testing problem).
+- **(P1-L6) → P1-L7 (factor decay/turnover) / P1-Build-6 (metrics calculation):** Overlapping forward-return windows (e.g., daily rebalancing with a multi-day forward window) make consecutive-period ICs statistically dependent rather than independent, inflating the effective T used in IR and its time-series t-statistic. Needs an explicit handling decision (e.g., non-overlapping sampling, or an autocorrelation-adjusted standard error) once the forward-return window is chosen in P1-L7.
 
 ---
 
