@@ -2,7 +2,7 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-13 (P1-L6 complete)
+> Last updated: 2026-07-13 (P1-L7 complete)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -27,7 +27,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 6 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L7 to bring them closer together.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 7 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L8 to bring them closer together.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -56,7 +56,7 @@
 
 **Estimated effort:** ~100-140 hours
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track 6/10 complete
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track 7/10 complete
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours)
 
@@ -94,9 +94,10 @@
 - **Decision logged:** Rank IC (Spearman) is the primary headline metric for Project 1 reporting (robust to fat-tailed return outliers); Pearson IC retained as diagnostic. IR and time-series t-statistic (t = IR × √T) must be computed across the full backtest window rather than reported for a single period, to avoid cherry-picking.
 - **Estimated time:** 2 hours
 
-### [ ] P1-L7: Factor decay and turnover
-- **Concepts:** How long signals predict (1-day, 1-week, 1-month forward returns), decay curves, turnover, the turnover-cost relationship
-- **Deliverable:** Notes
+### [x] P1-L7: Factor decay and turnover — **completed 2026-07-13**
+- **Concepts:** How long signals predict (1-day, 1-week, 1-month forward returns), decay curves, half-life, turnover, the turnover-cost relationship
+- **Deliverable:** Notes (P1_L7_Factor_Decay_and_Turnover.md); illustrative 7-horizon decay curve worked example with half-life calculation; worked 5-stock turnover example (25% one-way turnover); turnover-cost comparison across monthly/weekly/daily rebalancing frequencies
+- **Decision logged:** Rebalancing frequency locked to monthly (matches illustrative half-life ~21 trading days, matches academic convention). Forward-return window for all IC/IR metrics locked to 1-month (21 trading days), matching the rebalancing cadence. Overlapping forward-return window / autocorrelation concern (raised in P1-L6) resolved by construction — monthly rebalance matching monthly forward window means no autocorrelation-adjusted standard error is needed.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-L8: The biases that kill backtests
@@ -249,6 +250,7 @@
 ### [ ] P1-Build-4: Portfolio construction
 - **What you build:** Take a factor signal at a date, build long-only quintile portfolios and long-short top-vs-bottom quintile portfolio
 - **Carried-forward requirement (from P1-L5):** Default to quintile bucketing (5 buckets), configurable to deciles. Implement both long-short equal-weighted (research/IC default) and long-only equal-weighted top-quintile (practitioner-facing alternative), plus a signal-weighted option. Deterministic tie-breaking rule for stocks straddling bucket boundaries (e.g., secondary sort by ticker or market cap).
+- **Carried-forward requirement (from P1-L7):** Implement monthly rebalancing as the default cadence, as a configurable parameter (not hardcoded) so alternate frequencies can be tested as a diagnostic.
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-5: Backtest mechanics (+ in-sample/out-of-sample)
@@ -258,6 +260,8 @@
 
 ### [ ] P1-Build-6: Metrics calculation
 - **What you build:** Compute IC, decile spreads, Sharpe, drawdown, turnover from backtest results
+- **Carried-forward requirement (from P1-L6):** Implement Pearson IC, rank IC (Spearman), and hit rate at each rebalance date; implement IR and the time-series t-statistic aggregated across the full backtest window, not per-period. Primary forward-return window is 1-month (21 trading days), matching the monthly rebalance cadence.
+- **Carried-forward requirement (from P1-L7):** Implement IC calculation at multiple forward-return horizons (1-day, 1-week, 1-month, 2-month, 3-month, 6-month) to produce an empirical decay curve as a diagnostic artifact, plus a half-life calculation (horizon where IC first falls to ≤50% of its shortest-horizon value). Implement turnover calculation (Σ|weight_new − weight_old| / 2) at every rebalance date for both long and short legs; feed into a simple cost-drag estimate ahead of the full transaction-cost treatment in P1-Build-5/P1-L9.
 - **Estimated time:** 2-3 hours
 
 ### [ ] P1-Build-7: LLM integration - Natural language → factor spec (orchestrator)
@@ -524,7 +528,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research (Finance) | ☐ 6/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
+| P1: Factor Research (Finance) | ☐ 7/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☐ 0/14 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/1 | — | — | — | — |
@@ -548,7 +552,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 4 (P1-L3, P1-L4, P1-L5, P1-L6) | 0 | 0 |
+| 2026-07 | 5 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7) | 0 | 0 |
 
 ---
 

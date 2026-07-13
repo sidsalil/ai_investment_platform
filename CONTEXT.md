@@ -12,11 +12,11 @@
 
 ## Current State
 - **Active project:** Project 1 - Factor Research Copilot
-- **Active phase:** Phase 1 - Concept Lessons (Finance track: 6 of 10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started)
-- **Last session:** 2026-07-13 - P1-L6 complete (Information Coefficient, rank IC, hit rate, single-period and time-series t-statistics, Information Ratio)
-- **Next session goal:** P1-L7 - Factor decay and turnover (how long signals predict, decay curves, turnover, turnover-cost relationship)
-- **Target start of Lesson 7:** Next available session
-- **Note on this merge (2026-07-12):** Lessons L3, L4, L5 were completed using the old single-track curriculum structure before the restructure was applied. All content from those lessons is preserved below under "Concepts Learned — Finance Track." The AI/Agentic, Backtesting Rigor, and Evals tracks introduced in the restructure have not been started and remain open — recommend interleaving P1-LA1 (AI/Agentic track) alongside P1-L7 going forward so the two tracks don't drift further apart.
+- **Active phase:** Phase 1 - Concept Lessons (Finance track: 7 of 10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started)
+- **Last session:** 2026-07-13 - P1-L7 complete (factor decay, decay curves, half-life, turnover, turnover-cost relationship, rebalancing frequency decision)
+- **Next session goal:** P1-L8 - The biases that kill backtests (look-ahead bias deep dive, survivorship bias deep dive, selection bias, data snooping) — this lesson matters more than most. Recommend interleaving P1-LA1 (AI/Agentic track) alongside it so the two tracks don't drift further apart.
+- **Target start of Lesson 8:** Next available session
+- **Note on this merge (2026-07-12):** Lessons L3, L4, L5 were completed using the old single-track curriculum structure before the restructure was applied. All content from those lessons is preserved below under "Concepts Learned — Finance Track." The AI/Agentic, Backtesting Rigor, and Evals tracks introduced in the restructure have not been started and remain open — recommend interleaving P1-LA1 (AI/Agentic track) alongside upcoming Finance lessons going forward so the two tracks don't drift further apart.
 
 ## Career Pivot Decisions (cross-project)
 - 2026-04-26 - Pivoting from quant research path to hands-on AI Product Manager
@@ -48,6 +48,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 |---------|---------------------|---------------|-------|
 | 2026-07-12 | P1-L3, P1-L4, P1-L5 | | Completed same-day per session log; exact hours not recorded — log going forward |
 | 2026-07-13 | P1-L6 | | Exact hours not recorded — log going forward |
+| 2026-07-13 | P1-L7 | | Exact hours not recorded — log going forward |
 
 ## Anthropic Courses Plan (mapped to monthly timeline)
 - Month 1: Claude 101, AI Fluency: Framework & Foundations, Claude Code 101
@@ -112,6 +113,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - 2026-07-12: Completed P1-L4 (raw vs normalized factors, z-scoring, winsorization, sector neutralization).
 - 2026-07-12: Completed P1-L5 (decile/quintile bucketing, long-only vs long-short, equal vs signal weighting).
 - 2026-07-13: Completed P1-L6 (Information Coefficient, rank IC, hit rate, single-period and time-series t-statistics, Information Ratio).
+- 2026-07-13: Completed P1-L7 (factor decay, decay curves, half-life, turnover, turnover-cost relationship). Locked rebalancing frequency (monthly), IC forward-return window (1-month), and resolved the overlapping-window/autocorrelation question by construction.
 - 2026-07-11/12: Scope restructured from 4 projects to 2, with AI/agentic, backtesting-rigor, and evals tracks added to Project 1. Target roles expanded to include FDE alongside AI PM and Financial Services PM. L3-L5 progress merged into new structure without loss.
 - [date]: Complete remaining P1 Finance-track lessons (L6-L10).
 - [date]: Complete P1 AI/Agentic, Backtesting Rigor, Evals tracks.
@@ -125,7 +127,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 ## Project 1: Factor Research Copilot
 
 ### Status
-- Phase: Phase 1 (Concept Lessons) — Finance track 6/10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started
+- Phase: Phase 1 (Concept Lessons) — Finance track 7/10 complete; AI/Agentic, Backtesting Rigor, and Evals tracks not started
 - Started: 2026-05-25
 - Target ship date: TBD — recalibrate after PTO week using Hours-Logged Tracker
 
@@ -198,7 +200,19 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - **t-statistic for the time-series mean IC** (the practically important significance test) ties IR and significance together: t = IR × √T. Worked example: IR=1.19, T=6 months → t≈2.92, technically above the ~2.0 threshold, but T=6 is far too small a sample to trust in practice — real evaluation wants T=36+ months of history before placing confidence in an IR estimate.
 - **Full metrics decision for Project 1:** rank IC (Spearman) as the primary reported/headline metric (robust to fat-tailed outlier returns); Pearson IC retained as a supporting diagnostic; hit rate as a communication-friendly supplementary metric; IR and the time-series t-statistic computed across the *entire* backtest history (not a single period) to avoid cherry-picking a flattering window — this connects directly to the multiple-testing/p-hacking problem covered later in P1-LB3.
 
-**P1-L7 through P1-L10:** Not yet started. See curriculum.md for lesson-by-lesson scope (factor decay/turnover, biases deep-dive, transaction costs, risk metrics).
+**P1-L7: Factor decay and turnover** (2026-07-13)
+- **Factor decay** is the erosion of a signal's predictive power as the forward-return horizon lengthens — the information baked into a signal on a given date gets absorbed into prices (or the underlying situation changes) over time, the same way a competitive scouting report is most valuable the day you receive it and steadily less useful thereafter.
+- A **decay curve** is rank IC plotted against forward-return horizon: the same signal values paired against forward returns measured at multiple horizons (1-day, 1-week, 1-month, etc.), with a separate rank IC computed at each horizon. Worked illustrative example: rank IC of 0.070 at 1 day, declining monotonically to 0.035 at 1 month, and down to 0.001 (noise) by 6 months. **Not every factor decays monotonically** — value-style factors can show weak/negative near-term IC before strengthening at longer horizons (mean reversion plays out slowly); decay shape is always an empirical question for the specific signal, universe, and period, never assumed.
+- **Half-life** = the forward-return horizon at which IC has fallen to half its near-immediate (day-1) value — borrowed directly from radioactive-decay terminology, useful as a single stakeholder-friendly number summarizing an entire decay curve. Worked example: day-1 IC = 0.070, half of that = 0.035, which the illustrative decay table shows occurring at the 1-month (21 trading day) horizon — so half-life ≈ 21 trading days.
+- **Turnover** measures how much of a portfolio must be bought/sold at each rebalance to stay aligned with an updated signal. **One-way turnover formula:** Turnover = (Σ|weight_new − weight_old| across all names) / 2 — the division by 2 avoids double-counting each trade's "sold" and "bought" sides as two separate units of turnover. Worked example: a 4-stock top-quintile long-only portfolio (25% each) where one name (DDD) falls out and another (EEE) enters produced a sum of absolute weight changes of 50%, giving 25% one-way turnover for that rebalance. Long-short portfolios apply the identical calculation separately to both legs and combine.
+- **Turnover-cost relationship:** each unit of turnover carries a real transaction cost (bid-ask spread, market impact, commissions — full treatment in P1-L9), commonly expressed in **basis points (bps)**, where 100 bps = 1%. Worked example: 25% one-way turnover at an illustrative blended cost of 5 bps/unit-turnover = 1.25 bps drag per rebalance. Comparing rebalancing frequencies at that same per-rebalance turnover: monthly (12 rebalances/year) → 15 bps/year cost drag; weekly (52/year) → 65 bps/year; daily (~252/year) → 315 bps/year. Rebalancing more frequently doesn't just cost proportionally more — because both the *number* of rebalancing events and the turnover *per event* can rise together, annualized cost can scale far faster than the incremental predictive value captured, especially once most of a signal's value has already decayed away within the first few days (per the decay curve).
+- **Rebalancing frequency decision rule:** rebalance on a timescale close to the signal's half-life — not so infrequently that positions go stale relative to a decayed signal, not so frequently that turnover/cost escalation outpaces the incremental signal value captured. Monthly rebalancing sits close to the illustrative ~21-trading-day half-life worked out above, while keeping turnover/cost manageable relative to weekly or daily alternatives.
+- **Three carried-forward items resolved by this lesson:**
+  1. **Rebalancing frequency (deferred from P1-L5): locked to monthly** — matches the illustrative half-life, matches standard academic convention (Fama-French-style factor research), keeps results comparable to published benchmarks.
+  2. **Forward-return window for IC calculation (deferred from P1-L6): locked to 1-month (21 trading days)** as the primary evaluation window for rank IC, Pearson IC, hit rate, and Information Ratio. Shorter horizons (1-day, 1-week) are retained as diagnostic-only decay-curve measurements, not the headline metric.
+  3. **Overlapping forward-return windows / autocorrelation (deferred from P1-L6): resolved by construction, not by statistical adjustment.** Because rebalancing frequency (monthly) now matches the forward-return window (1-month), consecutive IC observations are non-overlapping and can be treated as approximately independent in the Information Ratio and time-series t-statistic calculations — no Newey-West-style autocorrelation-adjusted standard error is needed for Project 1 as scoped. (Noted for future reference: if a later project used daily rebalancing with a longer forward window, that mismatch would reintroduce the overlapping-window dependence problem and require an explicit autocorrelation adjustment.)
+
+**P1-L8 through P1-L10:** Not yet started. See curriculum.md for lesson-by-lesson scope (biases deep-dive, transaction costs, risk metrics).
 
 ### Concepts Learned — AI/Agentic Track
 - Not yet started. See curriculum.md Phase 1 (AI/Agentic Track) for the full 14-lesson scope: agent fundamentals, tool use/function calling, MCP, structured outputs, ReAct-style loops, planning loops, subagent orchestration, context engineering, agent failure modes, observability/tracing, latency/cost tradeoffs, deployment basics, RAG fundamentals, prompt engineering fundamentals.
@@ -228,6 +242,9 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - 2026-07-11 — **Architecture will demonstrate the full agentic pattern range within this one project: main orchestrator agent (planning loop) delegates to a validation subagent and a memo-writing subagent (multi-agent orchestration), with tools exposed via MCP (tool-use loop).**
 - 2026-07-11 — **Model evals will include a concrete model-comparison build (e.g., larger vs. smaller Claude model) evaluating cost/latency/quality tradeoffs across the extractor, validator, and memo-writer subagents.**
 - 2026-07-13 — **Metrics reporting convention for Project 1: rank IC (Spearman) is the primary headline metric (robust to fat-tailed return outliers); Pearson IC is retained as a diagnostic; hit rate is a communication-friendly supplementary metric. IR and the time-series t-statistic (t = IR × √T) must be computed across the full backtest window, not a single flattering period, to avoid cherry-picking — enforced in the methodology validator (P1-Build-8).**
+- 2026-07-13 — **Rebalancing frequency for Project 1: locked to monthly.** Rationale: sits close to the illustrative signal half-life (~21 trading days) worked out in P1-L7; matches standard academic/industry convention (Fama-French-style factor research), keeping results comparable to published benchmarks; keeps annualized turnover cost manageable relative to weekly/daily alternatives.
+- 2026-07-13 — **Forward-return window for IC calculation: locked to 1-month (21 trading days)** as the primary window for rank IC, Pearson IC, hit rate, and Information Ratio calculations (P1-Build-6). Shorter horizons (1-day, 1-week) retained as diagnostic-only decay-curve measurements, not the headline metric.
+- 2026-07-13 — **Overlapping forward-return window / autocorrelation question (raised in P1-L6) resolved by construction: since rebalancing frequency (monthly) now matches the forward-return window (1-month), consecutive IC observations are non-overlapping and approximately independent — no autocorrelation-adjusted standard error (e.g., Newey-West) is needed for Project 1's Information Ratio / time-series t-statistic calculations.**
 
 ### Open Questions
 - (none open)
@@ -255,7 +272,11 @@ Format: `(source lesson) → target phase: action`.
 - **(P1-L6) → P1-L7 (factor decay/turnover):** Forward-return window choice (1-day, 1-week, or 1-month ahead) not yet decided — depends on signal decay speed, to be resolved in P1-L7. Feeds directly into P1-Build-6.
 - **(P1-L6) → P1-Build-6 (metrics calculation module):** Implement Pearson IC, rank IC (Spearman), and hit rate at each rebalance date; implement IR and the time-series t-statistic aggregated across the full backtest window, not per-period.
 - **(P1-L6) → P1-Build-8 (methodology validator):** Flag reporting of a single best-period IC without an accompanying IR/time-series t-statistic as a p-hacking-adjacent red flag (ties to P1-LB3, multiple-testing problem).
-- **(P1-L6) → P1-L7 (factor decay/turnover) / P1-Build-6 (metrics calculation):** Overlapping forward-return windows (e.g., daily rebalancing with a multi-day forward window) make consecutive-period ICs statistically dependent rather than independent, inflating the effective T used in IR and its time-series t-statistic. Needs an explicit handling decision (e.g., non-overlapping sampling, or an autocorrelation-adjusted standard error) once the forward-return window is chosen in P1-L7.
+- ~~**(P1-L6) → P1-L7 (factor decay/turnover) / P1-Build-6 (metrics calculation):** Overlapping forward-return windows...~~ **RESOLVED in P1-L7:** rebalancing frequency (monthly) locked to match the forward-return window (1-month), making consecutive IC observations non-overlapping by construction — no autocorrelation adjustment needed.
+- **(P1-L7) → P1-Build-4 (portfolio construction) / P1-Build-5 (backtest mechanics):** Implement monthly rebalancing as the default cadence throughout the backtest engine. Make it a configurable parameter (not hardcoded) so alternate frequencies can be tested as a diagnostic, but monthly is the reported default.
+- **(P1-L7) → P1-Build-6 (metrics calculation module):** Implement IC calculation at multiple forward-return horizons (1-day, 1-week, 1-month, 2-month, 3-month, 6-month) to produce an empirical decay curve as a diagnostic artifact, in addition to the 1-month primary metric. Implement a half-life calculation (horizon where IC first falls to ≤50% of its shortest-horizon value).
+- **(P1-L7) → P1-Build-6 (metrics calculation module):** Implement turnover calculation (Σ|weight_new − weight_old| / 2) at every rebalance date, for both long and short legs where applicable. Feed turnover into a simple cost-drag estimate (turnover × assumed bps/unit) as a placeholder ahead of the full transaction-cost treatment in P1-L9/P1-Build-5.
+- **(P1-L7) → P1-Polish-4 (methodology risk memo):** Note the empirical (not assumed) nature of the decay curve and the rebalancing-frequency rationale (matching monthly cadence to the measured half-life) as a methodology transparency point.
 
 ---
 
