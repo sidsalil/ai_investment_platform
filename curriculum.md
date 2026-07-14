@@ -2,7 +2,7 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-L9 complete)
+> Last updated: 2026-07-14 (P1-L10 complete — Finance track 10/10, complete)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -27,7 +27,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 9 lessons ahead of the AI/Agentic track (one lesson from completing entirely), so strongly consider doing P1-LA1 alongside P1-L10 to begin closing the gap before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is fully complete (10/10) while the AI/Agentic track remains at 0/14, the Backtesting Rigor track at 0/3, and the Evals track at 0/1 — the interleaving window has closed. Strongly recommend starting P1-LA1 next session, and working through the remaining three tracks before Phase 2 (Architecture) starts, since there's no more finance-lesson pacing to interleave against.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -56,9 +56,9 @@
 
 **Estimated effort:** ~100-140 hours
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track 9/10 complete
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic, Backtesting Rigor, and Evals tracks remain before Phase 2
 
-## Phase 1: Concept Lessons — Finance Track (~15-25 hours)
+## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
 ### [x] P1-L1: What is a factor and why does anyone care? — **completed 2026-05-25**
 - **Concepts:** What a factor is, why factor investing exists, the major historical factors (value, momentum, size), CAPM → Fama-French history
@@ -112,9 +112,10 @@
 - **Decision logged:** Flat assumed 10 bps one-way transaction cost parameter (not computed from data — yfinance lacks bid/ask/execution data), configurable. Turnover-cost drag constant updated from P1-L7's 5 bps placeholder to 10 bps. Square-root impact model and AUM-scaled capacity/crowding effects understood conceptually but not implemented — logged as "what I'd build next" items.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-L10: Risk and performance metrics
-- **Concepts:** Sharpe ratio, Sortino, max drawdown, drawdown duration, Calmar, beta-to-market
-- **Deliverable:** Notes; a "metrics glossary" for your repo
+### [x] P1-L10: Risk and performance metrics — **completed 2026-07-14**
+- **Concepts:** Sharpe ratio (and annualization), Sortino ratio (downside deviation), max drawdown, drawdown duration, Calmar ratio, beta-to-market (via covariance/variance regression)
+- **Deliverable:** Notes (P1_L10_Risk_and_Performance_Metrics.md); worked 6-month Sharpe/Sortino example (annualized Sharpe ≈1.85, annualized Sortino ≈8.89); worked 8-month equity-curve max drawdown example (−16.67%) with drawdown duration (6 months peak-to-new-peak); worked Calmar example (≈0.90); worked 5-month beta-to-market regression example (β≈1.84); full metrics glossary table for the repo
+- **Decision logged:** No new locked design decisions (this lesson is metric definitions, not a pipeline design choice) — open item logged for P1-Build-6: choice of market benchmark series for beta-to-market calculation not yet resolved, revisit at build time.
 - **Estimated time:** 1-2 hours
 
 ## Phase 1: Concept Lessons — AI/Agentic Track (~20-25 hours)
@@ -540,7 +541,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research (Finance) | ☐ 9/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
+| P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☐ 0/14 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/1 | — | — | — | — |
@@ -564,7 +565,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 7 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9) | 0 | 0 |
+| 2026-07 | 8 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10) | 0 | 0 |
 
 ---
 
