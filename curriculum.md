@@ -2,13 +2,33 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-L10 complete — Finance track 10/10, complete)
+> Last updated: 2026-07-14 (P1-L10 complete — Finance track 10/10, complete;
+> AI/Agentic and Evals tracks expanded same day — see "AI/Agentic and Evals
+> track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
 > `curriculum_OLD_2026-07-12.md` (progress through P1-L5, old single-track
 > structure — this file merges that progress into the new structure).
 > Projects 3-4 kept below as reference only — not in active scope.
+>
+> **AI/Agentic and Evals track expansion (2026-07-14):** Before starting the
+> AI/Agentic track, reviewed the original 14-lesson plan against current
+> (2026) AI PM hiring signal — governance, accountability, and security are
+> now consistently flagged as the top differentiators for AI PM roles in an
+> agentic-AI market, not just tool-use/orchestration mechanics. Added three
+> lessons to close that gap: split the original "Agent failure modes" lesson
+> into a reliability half (LA9) and a new security/adversarial half (LA10);
+> added a new governance and human-in-the-loop design lesson (LA11), which
+> directly extends the model-risk-awareness pattern already established in
+> the Finance track (P1-L2, P1-L8, P1-L9); and added a new fine-tuning vs.
+> prompting vs. RAG decision-framework lesson (LA16). Also added a second
+> Evals-track lesson (LE2) on AI product metrics/KPIs, distinct from LE1's
+> model-evals-vs-system-evals framing — LE1 asks "does the pipeline work,"
+> LE2 asks "how does a PM know the product is succeeding." AI/Agentic track
+> grew from 14 to 17 lessons; Evals track grew from 1 to 2 lessons. No
+> lessons in either track were complete at the time of this expansion, so
+> lessons were renumbered in place rather than appended out of order.
 >
 > **Scope change rationale:** collapsed from 4 projects to 2 to trade
 > breadth-across-projects for depth-within-projects, and to make room for an
@@ -27,7 +47,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is fully complete (10/10) while the AI/Agentic track remains at 0/14, the Backtesting Rigor track at 0/3, and the Evals track at 0/1 — the interleaving window has closed. Strongly recommend starting P1-LA1 next session, and working through the remaining three tracks before Phase 2 (Architecture) starts, since there's no more finance-lesson pacing to interleave against.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is fully complete (10/10) while the AI/Agentic track remains at 0/17, the Backtesting Rigor track at 0/3, and the Evals track at 0/2 — the interleaving window has closed. Strongly recommend starting P1-LA1 next session, and working through the remaining three tracks before Phase 2 (Architecture) starts, since there's no more finance-lesson pacing to interleave against.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -54,7 +74,7 @@
 
 **Goal:** Build an AI agent system that converts natural-language investment hypotheses into Python-based factor research with statistical validation, methodology checks, and auto-generated research memos — architected to demonstrate the full agentic pattern range (tool use, planning, multi-agent orchestration) in one system, with rigorous backtesting and both model- and system-level evals.
 
-**Estimated effort:** ~100-140 hours
+**Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
 **Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic, Backtesting Rigor, and Evals tracks remain before Phase 2
 
@@ -118,7 +138,7 @@
 - **Decision logged:** No new locked design decisions (this lesson is metric definitions, not a pipeline design choice) — open item logged for P1-Build-6: choice of market benchmark series for beta-to-market calculation not yet resolved, revisit at build time.
 - **Estimated time:** 1-2 hours
 
-## Phase 1: Concept Lessons — AI/Agentic Track (~20-25 hours)
+## Phase 1: Concept Lessons — AI/Agentic Track (~26-32 hours)
 
 ### [ ] P1-LA1: What is an LLM agent
 - **Concepts:** Agent vs. chatbot vs. fixed workflow; the perceive-reason-act loop
@@ -152,27 +172,44 @@
 - **Concepts:** Context window management, system prompt design, what belongs in context vs. what gets fetched on demand
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA9: Agent failure modes
+### [ ] P1-LA9: Agent failure modes (reliability)
 - **Concepts:** Infinite loops, hallucinated tool calls, malformed outputs, retry/backoff strategy, timeout handling
+- **Scope note (added 2026-07-14):** This lesson is now scoped to *reliability* failure modes only — things that go wrong because the agent is unreliable, not because someone is attacking it. Adversarial/security failure modes split out to P1-LA10.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA10: Observability & tracing for agentic systems
+### [ ] P1-LA10: Agent security & adversarial failure modes — **new, added 2026-07-14**
+- **Concepts:** Prompt injection (direct and indirect, e.g. malicious instructions embedded in a fetched web page or document), "excessive agency" (an agent doing more than it should because nothing technically stopped it, per OWASP LLM Top 10 framing), tool-access scoping and least-privilege design ("prefer deterministic access controls over prompted instructions not to call a tool" — directly relevant to the MCP server's tool permissions in P1-Build-1), data exfiltration risk when an agent can both read sensitive data and make outbound calls
+- **Why this is its own lesson, not folded into LA9:** reliability failure modes are bugs; security failure modes assume an adversary. Different mental model, and increasingly a distinct interview topic as agentic systems get more autonomous.
+- **Estimated time:** 1-2 hours
+
+### [ ] P1-LA11: AI governance and human-in-the-loop design — **new, added 2026-07-14**
+- **Concepts:** Levels of agent autonomy (fixed workflow → single tool-use loop → planning loop → fully autonomous multi-agent system) and how required human oversight changes at each level; permission/access scoping as a governance mechanism, not just a security one; escalation and human-approval checkpoints (when should the system stop and ask a human before proceeding); accountability — who owns a decision an agent made; automation bias (the tendency to over-trust a system that's been reliable so far)
+- **Why this matters for your target roles specifically:** 2026 hiring signal consistently frames governance/accountability design — not tool-use mechanics — as the top AI PM differentiator in an agentic-AI market. This is also a direct extension of the model-risk-awareness pattern already established in the Finance track (P1-L2 survivorship bias disclosure, P1-L8 bias cheat sheet, P1-L9 implementation-shortfall framing) — same instinct, applied to agent behavior instead of backtest methodology.
+- **Direct project tie-in:** frame the P1-Build-8 methodology validator subagent explicitly as a governance/human-in-the-loop control (an automated check that flags issues for human review before a memo ships) — this lesson gives you the vocabulary to describe that build as "governance," not just "a subagent."
+- **Estimated time:** 1-2 hours
+
+### [ ] P1-LA12: Observability & tracing for agentic systems
 - **Concepts:** Logging tool calls and agent decisions, debugging *why* an agent did what it did
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA11: Latency & cost tradeoffs
+### [ ] P1-LA13: Latency & cost tradeoffs
 - **Concepts:** Token economics, model selection tradeoffs, when a smaller/cheaper model is the right call
 - **Estimated time:** 1 hour
 
-### [ ] P1-LA12: Deployment basics
+### [ ] P1-LA14: Deployment basics
 - **Concepts:** Containerization intuition, environment config, basic AWS Bedrock deployment
 - **Estimated time:** 2 hours
 
-### [ ] P1-LA13: RAG fundamentals
+### [ ] P1-LA15: RAG fundamentals
 - **Concepts:** Retrieval-augmented generation, when it's relevant to a research-copilot document-lookup use case
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA14: Prompt engineering fundamentals
+### [ ] P1-LA16: Fine-tuning vs. prompting vs. RAG — **new, added 2026-07-14**
+- **Concepts:** What fine-tuning actually is at an intuition level (adjusting model weights on a custom dataset vs. everything covered so far, which leaves the model's weights untouched); the decision framework for choosing between prompting, RAG, and fine-tuning for a given problem — cost, data requirements, latency, maintainability, and "is the problem really a knowledge-access problem (→ RAG) or a behavior/style/format problem (→ prompting or fine-tuning)"; why fine-tuning is rarely the first move in practice, and what would have to be true about Project 1 for it to become the right call
+- **Deliverable:** A one-page decision-framework note applying the three options to 2-3 concrete Project 1 scenarios (e.g., "the factor-spec extractor keeps missing a specific phrasing pattern" or "the memo generator's tone doesn't match a target house style")
+- **Estimated time:** 1-2 hours
+
+### [ ] P1-LA17: Prompt engineering fundamentals
 - **Concepts:** Few-shot examples, chain-of-thought prompting, structured prompting patterns
 - **Estimated time:** 1 hour
 
@@ -192,11 +229,17 @@
 - **Explain back:** "I tested momentum, volatility, and value — why can't I just report whichever had the best backtest?"
 - **Estimated time:** 1-2 hours
 
-## Phase 1: Concept Lessons — Evals & Model Evals Track (~1-2 hours)
+## Phase 1: Concept Lessons — Evals & Model Evals Track (~2-4 hours)
 
 ### [ ] P1-LE1: Model evals vs. system evals
 - **Concepts:** Model evals test the underlying LLM's raw capability (benchmark-style); system evals test your specific pipeline end-to-end. Why interviewers care about the distinction.
 - **Sub-concepts:** LLM-as-judge methodology (and its failure modes — verbosity bias, self-preference bias); golden dataset and rubric design; eval metrics for structured/agentic output (task success rate, schema-validity rate, groundedness/faithfulness)
+- **Estimated time:** 1-2 hours
+
+### [ ] P1-LE2: AI product metrics & KPIs — **new, added 2026-07-14**
+- **Concepts:** How a PM defines product-level success for an AI feature, distinct from LE1's pipeline-level evals — adoption and usage metrics, override/escalation rate (how often a human rejects or edits the agent's output — a real signal of trust and quality, not a vanity metric), trust calibration (does user trust in the system track its actual reliability, or drift ahead of/behind it), and ROI/cost-of-quality framing (cost per successful task, not just cost per API call)
+- **Why this is separate from LE1:** LE1 answers "does my pipeline work" (an engineering/system question); LE2 answers "how would I know, as a PM, whether this product is succeeding in the hands of a real portfolio manager or analyst" — a distinct interview question you should be able to answer without conflating it with eval scores.
+- **Deliverable:** A short metrics framework (one table) for Project 1, specifying what you'd track post-launch beyond IC/rank-IC/eval-pass-rate — e.g., how often a user overrides the validator's flag, how often the generated memo needs manual editing before use
 - **Estimated time:** 1-2 hours
 
 **Phase 1 completion criteria:**
@@ -542,23 +585,24 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 0/14 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 0/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
-| P1: Factor Research (Evals) | ☐ 0/1 | — | — | — | — |
+| P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
 | ~~P3: Portfolio Construction~~ | deprioritized | — | — | — | — |
 | ~~P4: ML Signal Lab~~ | deprioritized | — | — | — | — |
 
 ## Aggregate metrics (2-project scope)
 
-- Total P1 lessons planned: 10 (finance) + 14 (AI/agentic) + 3 (backtesting rigor) + 1 (evals) = 28
+- Total P1 lessons planned: 10 (finance) + 17 (AI/agentic) + 3 (backtesting rigor) + 2 (evals) = 32
 - Total P1 build sprints planned: 13
 - Total P1 polish items planned: 6
 - Total P2 lessons planned: 10
 - Total P2 build sprints planned: 10
 - Total P2 polish items planned: 5
-- **Total trackable items (active scope):** 72
-- **Total estimated hours (active scope):** ~150-210 hours (~100-140 for P1, ~50-70 for P2)
+- **Total trackable items (active scope):** 76
+- **Total estimated hours (active scope):** ~156-219 hours (~106-149 for P1, ~50-70 for P2)
+- *(Updated 2026-07-14: AI/Agentic track grew from 14→17 lessons and Evals track from 1→2 lessons — see "AI/Agentic and Evals track expansion" note at the top of this document. Adds roughly 6-9 hours to the P1 estimate.)*
 
 Update monthly:
 
