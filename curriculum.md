@@ -2,10 +2,10 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-LA3 complete — MCP / Model Context Protocol —
-> AI/Agentic track now 3/17; same day, Finance track hit 10/10 complete and
-> the AI/Agentic and Evals tracks were expanded — see "AI/Agentic and Evals
-> track expansion" note below)
+> Last updated: 2026-07-14 (P1-LA4 complete — Structured outputs & schema
+> validation — AI/Agentic track now 4/17; same day, Finance track hit 10/10
+> complete and the AI/Agentic and Evals tracks were expanded — see
+> "AI/Agentic and Evals track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -48,7 +48,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 3/17 (P1-LA1, P1-LA2, P1-LA3 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA4, structured outputs/schema validation, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 4/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA5, ReAct-style tool-use loops, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -77,7 +77,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 3/17 (P1-LA1, P1-LA2, P1-LA3 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 4/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -159,8 +159,10 @@
 - **No new locked design decisions this lesson** — protocol/architecture-mechanics lesson, directly informs the implementation approach for P1-Build-1 (MCP server) and P1-Build-7 (orchestrator as MCP client). Confirms (does not newly decide) the 2026-07-11 decision that MCP is in scope from Project 1.
 - **Estimated time:** 2 hours
 
-### [ ] P1-LA4: Structured outputs & schema validation
-- **Concepts:** Pydantic models, why structured outputs matter for reliability, schema validation as a guardrail
+### [x] P1-LA4: Structured outputs & schema validation — **completed 2026-07-14**
+- **Concepts:** Pydantic models, why structured outputs matter for reliability, schema validation as a guardrail; JSON Schema revisited as a producer/consumer contract; required/optional/Literal/nested/constrained Pydantic fields; two mechanisms for eliciting structured output from an LLM (prompt+parse vs. tool-call-based extraction); the validation-failure retry pattern (preview of P1-LA9)
+- **Deliverable:** Notes (P1_LA4_Structured_Outputs_Schema_Validation.md); worked `TradeTicket` Pydantic examples (valid, coercible, and failing inputs); full `FactorSpec` field design for Project 1 with a worked success case and a worked validation-failure case
+- **Decision logged:** `FactorSpec` will be implemented as a Pydantic model (fields: hypothesis_text, factor_type, universe, lookback_months, exclusion_months, rebalance_frequency, long_short) as the typed contract the orchestrator (P1-Build-7) produces for all downstream modules. Validation failures use a retry-with-feedback pattern (specific error fed back to the model as a new turn). Choice between prompt+parse and tool-call-based extraction mechanisms deferred to P1-Build-7 implementation time.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA5: ReAct-style tool-use loops
@@ -592,7 +594,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 3/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 4/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
@@ -616,7 +618,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 11 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3) | 0 | 0 |
+| 2026-07 | 12 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4) | 0 | 0 |
 
 ---
 
