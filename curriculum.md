@@ -2,10 +2,10 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-LA2 complete — tool use / function calling
-> fundamentals — AI/Agentic track now 2/17; same day, Finance track hit
-> 10/10 complete and the AI/Agentic and Evals tracks were expanded — see
-> "AI/Agentic and Evals track expansion" note below)
+> Last updated: 2026-07-14 (P1-LA3 complete — MCP / Model Context Protocol —
+> AI/Agentic track now 3/17; same day, Finance track hit 10/10 complete and
+> the AI/Agentic and Evals tracks were expanded — see "AI/Agentic and Evals
+> track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -48,7 +48,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 2/17 (P1-LA1, P1-LA2 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA3, MCP, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 3/17 (P1-LA1, P1-LA2, P1-LA3 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA4, structured outputs/schema validation, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -77,7 +77,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 2/17 (P1-LA1, P1-LA2 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 3/17 (P1-LA1, P1-LA2, P1-LA3 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -153,8 +153,10 @@
 - **No new locked design decisions this lesson** — mechanics/vocabulary lesson, directly informs P1-Build-1 (tool description quality) and P1-Build-7 (orchestrator's tool-use cycle)
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA3: MCP (Model Context Protocol)
-- **Concepts:** Client/server architecture, why MCP exists vs. bespoke API integration per tool, how it applies to the data ingestion layer
+### [x] P1-LA3: MCP (Model Context Protocol) — **completed 2026-07-14**
+- **Concepts:** The N×M integration problem MCP solves (analogized to FIX protocol and USB-C); client/server/host architecture; the three MCP primitives (Tools, Resources, Prompts); how MCP's tool discovery (`tools/list`) and execution (`tools/call`) map onto the P1-LA2 five-step tool-use cycle without changing the model's reasoning mechanics; stdio vs. HTTP-based transport; MCP vs. bespoke integration tradeoffs; a security preview of least-privilege server scoping (full depth deferred to P1-LA10)
+- **Deliverable:** Notes (P1_LA3_MCP_Model_Context_Protocol.md); full worked re-run of the P1-LA2 `get_price_history` five-step trace, now showing the added discovery step (`tools/list`) and server-side execution (`tools/call`) with exact JSON at each step; MCP-vs-bespoke-integration comparison table
+- **No new locked design decisions this lesson** — protocol/architecture-mechanics lesson, directly informs the implementation approach for P1-Build-1 (MCP server) and P1-Build-7 (orchestrator as MCP client). Confirms (does not newly decide) the 2026-07-11 decision that MCP is in scope from Project 1.
 - **Estimated time:** 2 hours
 
 ### [ ] P1-LA4: Structured outputs & schema validation
@@ -590,7 +592,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 2/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 3/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
@@ -614,7 +616,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 10 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2) | 0 | 0 |
+| 2026-07 | 11 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3) | 0 | 0 |
 
 ---
 
