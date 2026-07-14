@@ -2,7 +2,7 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-13 (P1-L8 complete)
+> Last updated: 2026-07-14 (P1-L9 complete)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -27,7 +27,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 8 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L9 to bring them closer together.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 9 lessons ahead of the AI/Agentic track (one lesson from completing entirely), so strongly consider doing P1-LA1 alongside P1-L10 to begin closing the gap before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -56,7 +56,7 @@
 
 **Estimated effort:** ~100-140 hours
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track 8/10 complete
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track 9/10 complete
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours)
 
@@ -106,9 +106,10 @@
 - **Decision logged:** Beta-neutral construction is explicitly out of scope for Project 1 (dollar-neutral equal-weighting from P1-L5 remains the default; residual market beta disclosed, not hedged). Survivorship bias and the yfinance delisting-return gap are documented, disclosed limitations, not solved. Project 1's factor/universe choices are framed as replication of established literature, not novel discovery, directly addressing publication bias and data snooping.
 - **Estimated time:** 2-3 hours — this lesson matters more than most
 
-### [ ] P1-L9: Transaction costs and real-world frictions
-- **Concepts:** Bid-ask spread, market impact, commissions, the gap between backtest and live performance
-- **Deliverable:** Notes; cost assumptions to use in Project 1
+### [x] P1-L9: Transaction costs and real-world frictions — **completed 2026-07-14**
+- **Concepts:** Bid-ask spread (half-spread cost model), market impact (temporary vs. permanent, square-root law), commissions, total transaction cost model, the backtest-vs-live gap (implementation shortfall: fill-price idealization, execution latency, capacity constraints, crowding)
+- **Deliverable:** Notes (P1_L9_Transaction_Costs_and_Real_World_Frictions.md); worked spread-cost example (10 bps spread → 5 bps one-way); worked square-root impact table (1%-25% participation → 2.0-10.0 bps); worked total-cost example (9.5 bps one-way for a $2M trade); worked capacity-decay table ($10M-$2B AUM → 6.1-14.4 bps one-way cost)
+- **Decision logged:** Flat assumed 10 bps one-way transaction cost parameter (not computed from data — yfinance lacks bid/ask/execution data), configurable. Turnover-cost drag constant updated from P1-L7's 5 bps placeholder to 10 bps. Square-root impact model and AUM-scaled capacity/crowding effects understood conceptually but not implemented — logged as "what I'd build next" items.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-L10: Risk and performance metrics
@@ -259,6 +260,7 @@
 ### [ ] P1-Build-5: Backtest mechanics (+ in-sample/out-of-sample)
 - **What you build:** Walk forward in time, rebalance portfolio monthly, accumulate returns, apply transaction costs, and explicitly surface in-sample vs. out-of-sample performance side by side
 - **Key concerns:** No look-ahead bias, realistic costs, proper walk-forward structure (per P1-LB1/LB2)
+- **Carried-forward requirement (from P1-L9):** Implement a flat, configurable transaction cost parameter (default 10 bps one-way) applied to traded value at every rebalance via cost drag = turnover × cost_bps_per_unit_turnover. Do not attempt to compute spread/impact from yfinance data (not available) — flat assumption is a deliberate, disclosed simplification.
 - **Estimated time:** 5-7 hours - **the hardest build sprint**
 
 ### [ ] P1-Build-6: Metrics calculation
@@ -332,11 +334,13 @@
 - **What you write:** Honest accounting of what your project does NOT do (point-in-time data, survivorship bias, no slippage modeling)
 - **Carried-forward requirement (from P1-L2, P1-L3, P1-L5):** Include explicit "Universe choice and survivorship-bias acknowledgment" section, expected magnitude, production fix path. Note yfinance's unreliable delisting-return capture. Note the long-only vs long-short distinction and why long-short is used for research validity.
 - **Carried-forward requirement (from P1-L8):** Add explicit sections for look-ahead bias (restatement/reporting lag, index membership, sector reclassification), selection bias (universe and time-period choices), data snooping framing, and the dollar-neutral vs. beta-neutral disclosure with the worked-example numbers from P1-L8 (the +0.20 net beta example). Use the P1-L8 "methodology gotchas" cheat sheet table as direct source material for this memo.
+- **Carried-forward requirement (from P1-L9):** Add a "Transaction cost model" section (flat-bps assumption, component breakdown, why it's a data-driven simplification not an oversight) and a separate "Backtest-vs-live gap (implementation shortfall)" section (fill-price idealization, execution latency, capacity constraints, crowding) — kept distinct from the P1-L8 research-methodology bias sections.
 - **Estimated time:** 1 hour
 
 ### [ ] P1-Polish-5: Case-study one-pager
 - **What you write:** One page: problem → user → key tradeoff decisions (universe choice, subagent orchestration vs. single loop, model selection for cost/latency) → what you'd build next
 - **Carried-forward requirement (from P1-L8):** Beta-neutral construction (not implemented in P1) is a legitimate "what I'd build next" talking point.
+- **Carried-forward requirement (from P1-L9):** Square-root market impact modeling (with real execution/TAQ data) and AUM-scaled capacity-curve modeling are both legitimate "what I'd build next" talking points.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-Polish-6: Systems-design writeup
@@ -536,7 +540,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research (Finance) | ☐ 8/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
+| P1: Factor Research (Finance) | ☐ 9/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☐ 0/14 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/1 | — | — | — | — |
@@ -560,7 +564,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 6 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8) | 0 | 0 |
+| 2026-07 | 7 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9) | 0 | 0 |
 
 ---
 

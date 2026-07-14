@@ -1,4 +1,4 @@
-[REPLACE THIS LINE WITH CORRECT LESSON TITLE] P1-L4: Signal construction - turning data into predictions
+P1-L9: Transaction costs and real-world frictions
 See CONTEXT.md and curriculum.md in project knowledge for context. Ready to start above lesson.
 Standing rules for every lesson, in case they have not propagated from memory yet:
 
