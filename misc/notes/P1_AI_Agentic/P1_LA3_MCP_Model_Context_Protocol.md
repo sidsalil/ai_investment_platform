@@ -140,7 +140,7 @@ The clean way to see this: `tool_use` and `stop_reason` are **Model ↔ Client**
 5. Client → Model: `tool_result` message
 6. Model → Client: final answer, **`stop_reason: "end_turn"`**
 
-![MCP tool-use flow diagram showing the Model, Client, and MCP Server lanes, with Discovery (tools/list) and Tool-Use Loop (tool_use, tools/call, tool_result) phases labeled](P1_LA3_mcp_tool_use_flow.png)
+![MCP tool-use flow diagram showing the Model, Client, and MCP Server lanes, with Discovery (tools/list) and Tool-Use Loop (tool_use, tools/call, tool_result) phases labeled](P1_LA3_mcp_tool_use_flow_agent_boundary.png)
 
 *Figure: the full MCP flow for `get_price_history`, split into Phase A (Discovery — happens once per session) and Phase B (the Tool-Use Loop — happens per user question). Note that `tool_use`/`stop_reason` only ever appear on the Model↔Client lifeline, while `tools/list`/`tools/call` only ever appear on the Client↔Server lifeline.*
 
