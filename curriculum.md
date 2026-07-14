@@ -2,10 +2,10 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-LA1 complete — first lesson of the AI/Agentic
-> track, now 1/17; same day, Finance track hit 10/10 complete and the
-> AI/Agentic and Evals tracks were expanded — see "AI/Agentic and Evals
-> track expansion" note below)
+> Last updated: 2026-07-14 (P1-LA2 complete — tool use / function calling
+> fundamentals — AI/Agentic track now 2/17; same day, Finance track hit
+> 10/10 complete and the AI/Agentic and Evals tracks were expanded — see
+> "AI/Agentic and Evals track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -48,7 +48,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 1/17 (P1-LA1 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA2 next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 2/17 (P1-LA1, P1-LA2 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA3, MCP, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -77,7 +77,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 1/17 (P1-LA1 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 2/17 (P1-LA1, P1-LA2 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -147,8 +147,10 @@
 - **No design decisions locked this lesson** — this is a conceptual-foundations lesson (definitions and mental models), not a pipeline design choice. First lesson of the AI/Agentic track.
 - **Estimated time:** 1 hour
 
-### [ ] P1-LA2: Tool use / function calling fundamentals
-- **Concepts:** How a model decides to call a tool, tool schemas, the request/response cycle
+### [x] P1-LA2: Tool use / function calling fundamentals — **completed 2026-07-14**
+- **Concepts:** How a model decides to call a tool (probabilistic pattern-matching, not deterministic dispatch), tool schemas (name, description, input_schema in JSON Schema format), the five-step request/response cycle (send message+tools → model returns tool_use or text → application executes → application sends tool_result → model gives final answer or loops again), `stop_reason` (`tool_use` vs `end_turn`), parallel vs. sequential tool calls, first look at tool-related failure modes (wrong parameters, unnecessary call, missed necessary call, hallucinated call)
+- **Deliverable:** Notes (P1_LA2_Tool_Use_Function_Calling_Fundamentals.md); full worked five-step trace of a `get_price_history` tool call for a concrete AAPL price question, including exact JSON at every step
+- **No new locked design decisions this lesson** — mechanics/vocabulary lesson, directly informs P1-Build-1 (tool description quality) and P1-Build-7 (orchestrator's tool-use cycle)
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA3: MCP (Model Context Protocol)
@@ -588,7 +590,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 1/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 2/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
@@ -612,7 +614,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 9 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1) | 0 | 0 |
+| 2026-07 | 10 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2) | 0 | 0 |
 
 ---
 
