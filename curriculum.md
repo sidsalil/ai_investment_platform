@@ -2,10 +2,10 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-LA4 complete — Structured outputs & schema
-> validation — AI/Agentic track now 4/17; same day, Finance track hit 10/10
-> complete and the AI/Agentic and Evals tracks were expanded — see
-> "AI/Agentic and Evals track expansion" note below)
+> Last updated: 2026-07-14 (P1-LA5 complete — ReAct-style tool-use loops —
+> AI/Agentic track now 5/17; same day, Finance track hit 10/10 complete and
+> the AI/Agentic and Evals tracks were expanded — see "AI/Agentic and Evals
+> track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -48,7 +48,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 4/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA5, ReAct-style tool-use loops, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 5/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA6, Planning loops, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -77,7 +77,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 4/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 5/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -165,8 +165,10 @@
 - **Decision logged:** `FactorSpec` will be implemented as a Pydantic model (fields: hypothesis_text, factor_type, universe, lookback_months, exclusion_months, rebalance_frequency, long_short) as the typed contract the orchestrator (P1-Build-7) produces for all downstream modules. Validation failures use a retry-with-feedback pattern (specific error fed back to the model as a new turn). Choice between prompt+parse and tool-call-based extraction mechanisms deferred to P1-Build-7 implementation time.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA5: ReAct-style tool-use loops
-- **Concepts:** Reason-then-act pattern, when a single tool-use loop is sufficient
+### [x] P1-LA5: ReAct-style tool-use loops — **completed 2026-07-14**
+- **Concepts:** The Thought/Action/Observation pattern (ReAct = "Reason + Act"); its 2022 origin as a text-scratchpad prompting technique for models without native tool-calling, vs. its modern meaning (visible reasoning before each tool call) now that tool_use/tool_result are structural; three-way comparison against reasoning-only (Chain-of-Thought) and acting-only patterns; criteria for when a single reactive loop is sufficient vs. needing a planning loop (P1-LA6); loop termination via `stop_reason: "end_turn"`; native-tool-use-vs-explicit-ReAct-prompting mechanics (system prompt vs. the API's `thinking`/adaptive-thinking parameter)
+- **Deliverable:** Notes (P1_LA5_ReAct_Style_Tool_Use_Loops.md); worked momentum-test Thought/Action/Observation trace; worked typo-correction error-recovery trace; follow-up precise mapping of Thought↔Reason / Observation↔Perceive-Observe onto P1-LA1's agent loop, producing the "Thought masquerading as Observation" hallucination red-flag pattern
+- **No new locked design decisions this lesson** — mechanics/vocabulary lesson. Open item: mechanism for visible orchestrator reasoning in P1-Build-7 (system-prompt instruction vs. `thinking` parameter) deferred to build time.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA6: Planning loops
@@ -594,7 +596,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 4/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 5/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
@@ -618,7 +620,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 12 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4) | 0 | 0 |
+| 2026-07 | 13 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5) | 0 | 0 |
 
 ---
 
