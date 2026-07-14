@@ -12,10 +12,10 @@
 
 ## Current State
 - **Active project:** Project 1 - Factor Research Copilot
-- **Active phase:** Phase 1 - Concept Lessons (Finance track: 10 of 10 complete — Finance track DONE; AI/Agentic, Backtesting Rigor, and Evals tracks not started)
-- **Last session:** 2026-07-14 - P1-L10 complete (Sharpe ratio, Sortino ratio, max drawdown, drawdown duration, Calmar ratio, beta-to-market) — Finance track now fully complete
-- **Next session goal:** P1-LA1 - What is an LLM agent (first lesson of the AI/Agentic track). The Finance track is now fully done and the interleaving window with it has closed; the AI/Agentic, Backtesting Rigor, and Evals tracks (0/17, 0/3, 0/2 respectively — AI/Agentic and Evals expanded 2026-07-14, see Decisions Made) are the entire remaining Phase 1 workload before Phase 2 (Architecture) can start.
-- **Target start of AI/Agentic track:** Next available session
+- **Active phase:** Phase 1 - Concept Lessons (Finance track: 10 of 10 complete — DONE; AI/Agentic track: 1 of 17 complete; Backtesting Rigor and Evals tracks not started)
+- **Last session:** 2026-07-14 - P1-LA1 complete (agent vs. chatbot vs. fixed workflow; the perceive-reason-act loop; autonomy as a spectrum) — first lesson of the AI/Agentic track
+- **Next session goal:** P1-LA2 - Tool use / function calling fundamentals. Finance track is fully done; AI/Agentic track is now underway (1/17). Backtesting Rigor (0/3) and Evals (0/2) tracks remain untouched — recommend working straight through AI/Agentic before starting those, since AI/Agentic is the largest remaining track and several of its lessons (MCP, structured outputs) unlock build-sprint work directly.
+- **AI/Agentic track progress:** 1/17 (P1-LA1 done)
 - **Note on this merge (2026-07-12):** Lessons L3, L4, L5 were completed using the old single-track curriculum structure before the restructure was applied. All content from those lessons is preserved below under "Concepts Learned — Finance Track." The AI/Agentic, Backtesting Rigor, and Evals tracks introduced in the restructure have not been started and remain open — recommend interleaving P1-LA1 (AI/Agentic track) alongside upcoming Finance lessons going forward so the two tracks don't drift further apart.
 
 ## Career Pivot Decisions (cross-project)
@@ -53,6 +53,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 | 2026-07-13 | P1-L8 | | Exact hours not recorded — log going forward |
 | 2026-07-14 | P1-L9 | | Exact hours not recorded — log going forward |
 | 2026-07-14 | P1-L10 | | Exact hours not recorded — log going forward; Finance track now complete |
+| 2026-07-14 | P1-LA1 | | Exact hours not recorded — log going forward; first AI/Agentic-track lesson |
 
 ## Anthropic Courses Plan (mapped to monthly timeline)
 - Month 1: Claude 101, AI Fluency: Framework & Foundations, Claude Code 101
@@ -121,7 +122,8 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - 2026-07-13: Completed P1-L8 (look-ahead bias deep dive, survivorship bias quantification and construction mechanics, selection bias, data snooping, dollar-neutral vs. beta-neutral construction). Resolved three items deferred from earlier lessons (P1-L2 survivorship mechanics, P1-L3 yfinance delisting limitation, P1-L5 beta-neutral distinction).
 - 2026-07-11/12: Scope restructured from 4 projects to 2, with AI/agentic, backtesting-rigor, and evals tracks added to Project 1. Target roles expanded to include FDE alongside AI PM and Financial Services PM. L3-L5 progress merged into new structure without loss.
 - 2026-07-14: Completed P1-L10 (Sharpe ratio, Sortino ratio, max drawdown, drawdown duration, Calmar ratio, beta-to-market via covariance/variance regression). **Finance track is now fully complete (10/10).**
-- [date]: Complete P1 AI/Agentic, Backtesting Rigor, Evals tracks.
+- 2026-07-14: Completed P1-LA1 (agent vs. chatbot vs. fixed workflow; the perceive-reason-act loop; autonomy as a spectrum from fixed workflow to multi-agent orchestration). **First lesson of the AI/Agentic track (1/17).**
+- [date]: Complete remaining P1 AI/Agentic (2-17), Backtesting Rigor, Evals tracks.
 - [date]: Shipped Project 1.
 - [date]: Started Project 2.
 - [date]: Shipped Project 2.
@@ -132,7 +134,7 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 ## Project 1: Factor Research Copilot
 
 ### Status
-- Phase: Phase 1 (Concept Lessons) — Finance track COMPLETE (10/10); AI/Agentic, Backtesting Rigor, and Evals tracks not started
+- Phase: Phase 1 (Concept Lessons) — Finance track COMPLETE (10/10); AI/Agentic track 1/17 (P1-LA1 done); Backtesting Rigor and Evals tracks not started
 - Started: 2026-05-25
 - Target ship date: TBD — recalibrate after PTO week using Hours-Logged Tracker
 
@@ -252,7 +254,18 @@ Purpose: recalibrate the ~150-210 hour / 30-40 week estimate against real pace.
 - **Open item for P1-Build-6:** choice of market benchmark return series for beta-to-market calculation (e.g., S&P 500 index via yfinance ^GSPC, vs. an equal-weighted return of the NASDAQ-100/S&P 500 universe itself) not resolved in this lesson — revisit at build time.
 
 ### Concepts Learned — AI/Agentic Track
-- Not yet started. **Now the top-priority track** — the Finance track completed as of P1-L10 (2026-07-14), so the interleaving rationale (do an AI/agentic lesson alongside each finance lesson) no longer applies; there's no more finance-lesson pacing left to interleave against. Next session should start P1-LA1. See curriculum.md Phase 1 (AI/Agentic Track) for the full 17-lesson scope (expanded 2026-07-14): agent fundamentals, tool use/function calling, MCP, structured outputs, ReAct-style loops, planning loops, subagent orchestration, context engineering, agent failure modes — reliability (LA9), agent security & adversarial failure modes (LA10, new), AI governance and human-in-the-loop design (LA11, new), observability/tracing, latency/cost tradeoffs, deployment basics, RAG fundamentals, fine-tuning vs. prompting vs. RAG (LA16, new), prompt engineering fundamentals.
+
+**P1-LA1: What is an LLM agent** (2026-07-14) — first lesson of the AI/Agentic track (1/17)
+- An **LLM agent** is a system where the LLM itself decides what action to take next — including which tools to call and in what order — based on what it observes as it goes, rather than a human pre-writing the sequence of steps. This is the single distinguishing feature separating an agent from a fixed workflow or a chatbot.
+- **Three-way comparison locked as the mental model:** a **fixed workflow** has a human deciding the sequence of steps in advance (zero LLM decision-making about *what* to do); a **chatbot** has an LLM deciding only *what to say* (single-turn text, no tool use, no ability to act on the outside world); an **agent** has an LLM deciding *what to do*, repeatedly, adapting based on results.
+- **The perceive-reason-act loop** (also called the **agent loop**) is the mechanical cycle underlying all agentic behavior: perceive (take in current context — goal, history, prior tool results) → reason (decide what should happen next) → act (execute an action, typically a tool call) → observe (the tool's result becomes new context) → repeat or stop (the agent itself decides whether the goal is met). Related terms: **ReAct** ("Reason + Act") is the specific named technique for this loop, covered in full in P1-LA5; the **OODA loop** (Observe-Orient-Decide-Act, originally fighter-pilot decision doctrine) is a structurally similar framework from a different field, mentioned as an analogy only.
+- **Loop length doesn't determine "how agentic" something is** — a single perceive-reason-act-observe cycle that terminates immediately is still technically agentic behavior, since the defining feature is *who* decides the sequence (the LLM vs. a human script), not how many iterations occur.
+- Worked three-way example: "test 12-month momentum on the NASDAQ-100" implemented as (1) a fixed workflow (6 hardcoded steps, any unexpected data issue either crashes or falls through a pre-written branch), (2) a chatbot (LLM reasons from training knowledge about what to expect, but nothing is actually pulled or tested), and (3) a full agent (7-iteration loop trace: pulls price data, notices 3 tickers have gaps, investigates and discovers they're recent IPOs without 12 months of history, excludes them without any hardcoded rule telling it to, then proceeds through winsorization → sector-neutral z-scoring → rank IC calculation → stops once the result (IC=0.04) matches the realistic range from P1-L6, with no bug indicators).
+- **Autonomy is a spectrum, not binary** — locked ordering for the rest of the track: fixed workflow (no autonomy) → single tool-use loop (weakly agentic) → ReAct-style loop (P1-LA5) → planning loop (P1-LA6, plan formed and revisable up front) → multi-agent orchestration (P1-LA7, most autonomous covered in Project 1 — this is Project 1's actual target architecture: orchestrator + validation subagent + memo subagent). Higher autonomy requires more deliberate human-oversight design, which is the direct subject of P1-LA11 (governance) later in the track.
+- **No design decisions locked this lesson** — conceptual-foundations lesson (definitions, mental models), not a pipeline design choice.
+- **Follow-up clarification (2026-07-14):** distinguished two sources of "knowledge" within the loop trace — **Reason**-step content (e.g., "I need price data first," "gaps could break this calculation") is the LLM's generated inference from trained pattern-knowledge and/or provided tool schemas, plausible but never ground truth; **Perceive**-step content (e.g., "these tickers IPO'd 8 months ago") is a real fact reported by an actual tool execution, which the LLM did not and could not generate itself. This is the conceptual seed for P1-LA9's hallucination-as-failure-mode treatment and P1-LA12's tracing practice. Full depth in notes file Section 7.
+
+See curriculum.md Phase 1 (AI/Agentic Track) for the full remaining scope (16 lessons left, expanded 2026-07-14): tool use/function calling (LA2, next), MCP, structured outputs, ReAct-style loops, planning loops, subagent orchestration, context engineering, agent failure modes — reliability (LA9), agent security & adversarial failure modes (LA10, new), AI governance and human-in-the-loop design (LA11, new), observability/tracing, latency/cost tradeoffs, deployment basics, RAG fundamentals, fine-tuning vs. prompting vs. RAG (LA16, new), prompt engineering fundamentals.
 
 ### Concepts Learned — Backtesting Rigor Track
 - Not yet started. Added 2026-07-11 to close the gap left by deprioritizing Backtesting Copilot as project #1's dependency. Covers: walk-forward validation done properly, out-of-sample vs. in-sample discipline, multiple-testing/p-hacking problem.
@@ -335,6 +348,7 @@ Format: `(source lesson) → target phase: action`.
 - **(P1-L10, follow-up) → P1-Build-6/P1-Build-8:** Beta-to-market is a "deviation from zero" metric, not a "high vs. low" metric like the other five in the glossary — a strongly negative beta is just as much a red flag as a strongly positive one for a long-short book whose goal is market-exposure cancellation (P1-L5/P1-L8). The validator's beta-to-market check must flag |beta| exceeding a threshold in either direction, not just flag beta being "too high."
 - **(P1-L10) → P1-Polish deliverable:** P1-L10 notes file Section 8 (full metrics glossary table) is the direct source material for the "metrics glossary for your repo" deliverable specified in the curriculum for this lesson.
 - **(P1-L9, follow-up 2) → P1-Polish-4 (methodology risk memo) / P1-Polish-5 (case study):** Include the "cost materiality" framing table (cost drag as % of AUM vs. as % of gross targeted alpha, management fee, equity risk premium, and passive-fund expense ratio) as the correct way to argue transaction costs are significant despite looking small (~0.75%) relative to total AUM. Pair with the 10-year compounding illustration (~$260M cumulative gap on $2B at a 0.75%/year drag) to show the cost isn't a one-time haircut. Also usable as a direct interview talking point on cost-model scope: modeling precision should scale with strategy turnover, not be maximally elaborate by default.
+- **(P1-LA1, follow-up) → P1-LA2 (tool use fundamentals) / P1-LA9 (agent failure modes) / P1-LA12 (observability & tracing):** Locked mental model for distinguishing an agent's "Reason" steps from its "Perceive" steps: Reason-step content (e.g., "I need price data first," "gaps could break this calculation") is the LLM's generated inference from trained pattern-knowledge and/or provided tool schemas/instructions — plausible, usually correct, but never ground truth and never to be treated as verified. Perceive-step content (e.g., "these tickers IPO'd 8 months ago") is a real fact reported by an actual tool execution — the LLM did not and could not generate it; if a tool hadn't returned it, the LLM would have no way to know it. This distinction is the conceptual seed for P1-LA9's treatment of hallucination as a failure mode (an LLM stating a specific, checkable fact — like an exact IPO date — without a backing tool call is reasoning from fuzzy training memory, which is exactly where hallucination risk concentrates) and for P1-LA12's tracing/observability practice (a good trace should make it visually obvious, per iteration, which category — reasoning vs. perceiving — each piece of content belongs to).
 
 ---
 

@@ -2,8 +2,9 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-L10 complete — Finance track 10/10, complete;
-> AI/Agentic and Evals tracks expanded same day — see "AI/Agentic and Evals
+> Last updated: 2026-07-14 (P1-LA1 complete — first lesson of the AI/Agentic
+> track, now 1/17; same day, Finance track hit 10/10 complete and the
+> AI/Agentic and Evals tracks were expanded — see "AI/Agentic and Evals
 > track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
@@ -47,7 +48,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is fully complete (10/10) while the AI/Agentic track remains at 0/17, the Backtesting Rigor track at 0/3, and the Evals track at 0/2 — the interleaving window has closed. Strongly recommend starting P1-LA1 next session, and working through the remaining three tracks before Phase 2 (Architecture) starts, since there's no more finance-lesson pacing to interleave against.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 1/17 (P1-LA1 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA2 next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -76,7 +77,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic, Backtesting Rigor, and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 1/17 (P1-LA1 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -138,10 +139,12 @@
 - **Decision logged:** No new locked design decisions (this lesson is metric definitions, not a pipeline design choice) — open item logged for P1-Build-6: choice of market benchmark series for beta-to-market calculation not yet resolved, revisit at build time.
 - **Estimated time:** 1-2 hours
 
-## Phase 1: Concept Lessons — AI/Agentic Track (~26-32 hours)
+## Phase 1: Concept Lessons — AI/Agentic Track (~25-31 hours)
 
-### [ ] P1-LA1: What is an LLM agent
-- **Concepts:** Agent vs. chatbot vs. fixed workflow; the perceive-reason-act loop
+### [x] P1-LA1: What is an LLM agent — **completed 2026-07-14**
+- **Concepts:** Agent vs. chatbot vs. fixed workflow (full comparison table); the perceive-reason-act loop (perceive/reason/act/observe/repeat-or-stop), also called the agent loop, and its relation to ReAct (P1-LA5 preview) and the OODA loop (analogy only); autonomy as a spectrum (fixed workflow → single tool-use loop → ReAct loop → planning loop → multi-agent orchestration), not a binary
+- **Deliverable:** Notes (P1_LA1_What_Is_An_LLM_Agent.md); worked three-way comparison of the same task ("test 12-month momentum on the NASDAQ-100") implemented as a fixed workflow, a chatbot, and a full agent, including a 7-iteration loop trace showing the agent adaptively handling an unexpected data-quality issue (3 tickers with insufficient history) without any hardcoded branch for it
+- **No design decisions locked this lesson** — this is a conceptual-foundations lesson (definitions and mental models), not a pipeline design choice. First lesson of the AI/Agentic track.
 - **Estimated time:** 1 hour
 
 ### [ ] P1-LA2: Tool use / function calling fundamentals
@@ -585,7 +588,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 0/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 1/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
@@ -609,7 +612,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 8 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10) | 0 | 0 |
+| 2026-07 | 9 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1) | 0 | 0 |
 
 ---
 
