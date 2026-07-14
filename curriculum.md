@@ -2,7 +2,7 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-13 (P1-L7 complete)
+> Last updated: 2026-07-13 (P1-L8 complete)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -27,7 +27,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 7 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L8 to bring them closer together.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 are designed to interleave — do the AI/agentic lesson that unlocks a given finance concept's implementation around the same time. They're tracked separately so existing progress isn't disrupted; as of this update the Finance track is 8 lessons ahead of the AI/Agentic track, so consider doing P1-LA1 next alongside P1-L9 to bring them closer together.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -56,7 +56,7 @@
 
 **Estimated effort:** ~100-140 hours
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track 7/10 complete
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track 8/10 complete
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours)
 
@@ -100,10 +100,11 @@
 - **Decision logged:** Rebalancing frequency locked to monthly (matches illustrative half-life ~21 trading days, matches academic convention). Forward-return window for all IC/IR metrics locked to 1-month (21 trading days), matching the rebalancing cadence. Overlapping forward-return window / autocorrelation concern (raised in P1-L6) resolved by construction — monthly rebalance matching monthly forward window means no autocorrelation-adjusted standard error is needed.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-L8: The biases that kill backtests
-- **Concepts:** Look-ahead bias (deep), survivorship bias (deep), selection bias, data snooping
-- **Deliverable:** Notes; a "methodology gotchas" cheat sheet for your repo
-- **Estimated time:** 2-3 hours - **this lesson matters more than most**
+### [x] P1-L8: The biases that kill backtests — **completed 2026-07-13**
+- **Concepts:** Look-ahead bias (deep — restatement/reporting lag, point-in-time index membership, sector reclassification), survivorship bias (deep — magnitude quantification and construction mechanics), selection bias (universe, time-period, and factor/publication selection), data snooping (distinguished from multiple testing)
+- **Deliverable:** Notes (P1_L8_The_Biases_That_Kill_Backtests.md); worked 5-stock survivorship-bias magnitude example (22-point illustrative bias); worked fundamentals-restatement look-ahead example (P/E 20.0x vs. look-ahead-contaminated 22.2x); worked time-period-selection IR comparison across four historical windows; worked dollar-neutral vs. beta-neutral numerical example (+0.20 net beta from a 1.30/0.90 average-beta split); a 9-row "methodology gotchas" cheat sheet mapping each bias to mitigation and residual disclosed risk
+- **Decision logged:** Beta-neutral construction is explicitly out of scope for Project 1 (dollar-neutral equal-weighting from P1-L5 remains the default; residual market beta disclosed, not hedged). Survivorship bias and the yfinance delisting-return gap are documented, disclosed limitations, not solved. Project 1's factor/universe choices are framed as replication of established literature, not novel discovery, directly addressing publication bias and data snooping.
+- **Estimated time:** 2-3 hours — this lesson matters more than most
 
 ### [ ] P1-L9: Transaction costs and real-world frictions
 - **Concepts:** Bid-ask spread, market impact, commissions, the gap between backtest and live performance
@@ -245,12 +246,14 @@
 ### [ ] P1-Build-3: Factor calculation - Other factors
 - **What you build:** Volatility factor (rolling std of returns), liquidity factor (dollar volume), simple value factor if data available
 - **Carried-forward requirement (from P1-L4):** Same winsorization + sector-neutral z-scoring pipeline as P1-Build-2. Requires a sector classification data source (GICS sector via yfinance `.info`, or a static mapping) — confirm reliability at build time.
+- **Carried-forward requirement (from P1-L8):** If a value factor uses fundamentals data, align it to the actual announcement/reporting date, not the quarter-end date, to avoid restatement-driven look-ahead bias.
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-4: Portfolio construction
 - **What you build:** Take a factor signal at a date, build long-only quintile portfolios and long-short top-vs-bottom quintile portfolio
 - **Carried-forward requirement (from P1-L5):** Default to quintile bucketing (5 buckets), configurable to deciles. Implement both long-short equal-weighted (research/IC default) and long-only equal-weighted top-quintile (practitioner-facing alternative), plus a signal-weighted option. Deterministic tie-breaking rule for stocks straddling bucket boundaries (e.g., secondary sort by ticker or market cap).
 - **Carried-forward requirement (from P1-L7):** Implement monthly rebalancing as the default cadence, as a configurable parameter (not hardcoded) so alternate frequencies can be tested as a diagnostic.
+- **Note (from P1-L8):** Long-short construction here is dollar-neutral equal-weighted only; beta-neutral construction is explicitly out of scope for Project 1.
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-5: Backtest mechanics (+ in-sample/out-of-sample)
@@ -273,6 +276,8 @@
 - **What you build:** A validation subagent, delegated to by the orchestrator, that flags suspicious factor specs (look-ahead suspects, unrealistic assumptions, statistical/multiple-testing concerns)
 - **This is your AI PM/FDE differentiator** — shows you understand model risk and multi-agent delegation
 - **Carried-forward requirement (from P1-L4):** Flag signals where the universe-wide z-score and sector-neutral z-score diverge sharply for many stocks in the same direction — a diagnostic for a signal that's really a disguised sector bet.
+- **Carried-forward requirement (from P1-L6):** Flag reporting of a single best-period IC without an accompanying IR/time-series t-statistic as a p-hacking-adjacent red flag.
+- **Carried-forward requirement (from P1-L8):** Flag a single-window backtest report (no comparison across historical sub-periods) as a time-period-selection-bias red flag.
 - **Estimated time:** 5-6 hours
 
 ### [ ] P1-Build-9: Research memo generator (subagent)
@@ -311,6 +316,7 @@
 ### [ ] P1-Polish-1: Product brief
 - **What you write:** 2-page PRD covering problem, user, workflow before/after, solution, success metrics
 - **Deliverable:** `docs/product_briefs/project_01_factor_research.md`
+- **Note (from P1-L8):** Frame the project explicitly as replication of established, heavily-retested factor literature (momentum, and value if built), not as novel factor discovery.
 - **Estimated time:** 2-3 hours
 
 ### [ ] P1-Polish-2: README
@@ -325,10 +331,12 @@
 ### [ ] P1-Polish-4: Methodology risk memo
 - **What you write:** Honest accounting of what your project does NOT do (point-in-time data, survivorship bias, no slippage modeling)
 - **Carried-forward requirement (from P1-L2, P1-L3, P1-L5):** Include explicit "Universe choice and survivorship-bias acknowledgment" section, expected magnitude, production fix path. Note yfinance's unreliable delisting-return capture. Note the long-only vs long-short distinction and why long-short is used for research validity.
+- **Carried-forward requirement (from P1-L8):** Add explicit sections for look-ahead bias (restatement/reporting lag, index membership, sector reclassification), selection bias (universe and time-period choices), data snooping framing, and the dollar-neutral vs. beta-neutral disclosure with the worked-example numbers from P1-L8 (the +0.20 net beta example). Use the P1-L8 "methodology gotchas" cheat sheet table as direct source material for this memo.
 - **Estimated time:** 1 hour
 
 ### [ ] P1-Polish-5: Case-study one-pager
-- **What you write:** One page: problem → user → key tradeoff decisions (universe choice, subagent orchestration vs. single loop, model selection for cost/latency) → what you'd build next. This is the artifact you actually walk an interviewer through.
+- **What you write:** One page: problem → user → key tradeoff decisions (universe choice, subagent orchestration vs. single loop, model selection for cost/latency) → what you'd build next
+- **Carried-forward requirement (from P1-L8):** Beta-neutral construction (not implemented in P1) is a legitimate "what I'd build next" talking point.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-Polish-6: Systems-design writeup
@@ -528,7 +536,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research (Finance) | ☐ 7/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
+| P1: Factor Research (Finance) | ☐ 8/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☐ 0/14 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/1 | — | — | — | — |
@@ -552,7 +560,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 5 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7) | 0 | 0 |
+| 2026-07 | 6 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8) | 0 | 0 |
 
 ---
 
