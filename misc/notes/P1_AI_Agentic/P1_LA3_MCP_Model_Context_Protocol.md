@@ -144,6 +144,22 @@ The clean way to see this: `tool_use` and `stop_reason` are **Model ↔ Client**
 
 *Figure: the full MCP flow for `get_price_history`, split into Phase A (Discovery — happens once per session) and Phase B (the Tool-Use Loop — happens per user question). Note that `tool_use`/`stop_reason` only ever appear on the Model↔Client lifeline, while `tools/list`/`tools/call` only ever appear on the Client↔Server lifeline.*
 
+### Follow-up synthesis: where is "the agent" in this diagram? (bringing together P1-LA1, P1-LA2, P1-LA3)
+
+A natural question once all three lessons are on the table: which box in the diagram *is* the agent?
+
+**Answer: the agent is the Model↔Client loop — not any single box, and not the MCP Server.**
+
+- **From P1-LA1:** an agent is defined by *who decides what happens next* — the perceive → reason → act → observe → repeat-or-stop loop, driven by the LLM's own judgment rather than a human-scripted sequence. That loop needs two parts to actually run: something that *reasons* (the Model) and something that *executes and feeds results back* (the Client). Neither one alone is "the agent" — the Model can't act on the world by itself (it only ever outputs text, per P1-LA2), and the Client can't decide anything (it only mechanically follows whatever the Model requests). The agent is the loop *between* them.
+- **From P1-LA2:** the mechanism that actually drives that loop is `stop_reason`. As long as the Model keeps returning `stop_reason: "tool_use"`, the Client keeps looping — perceiving the new tool result, handing it back to the Model, letting it reason again. The moment `stop_reason: "end_turn"` appears, the loop stops. That repeat-or-stop decision is made by the Model, which is exactly P1-LA1's defining test for "agentic" vs. "fixed workflow."
+- **From P1-LA3:** the MCP Server sits deliberately *outside* the agent boundary. It's a capability the agent's *act* step reaches out to — analogous to a tool sitting on a shelf, not part of the person deciding whether to pick it up. This is precisely why it's swappable (yfinance today, Polygon in Project 2) without touching the agent's reasoning at all: the agent doesn't contain the server, it just knows how to call it.
+
+Concretely, in the diagram: **Model + Client together = the agent**, specifically the recurring steps 1→2 and 5→6 (the perceive-reason-act-observe cycle), sitting at the "single tool-use loop" rung of P1-LA1's autonomy spectrum (fixed workflow → single tool-use loop → ReAct loop → planning loop → multi-agent orchestration). **The MCP Server is external environment/tooling**, called by the agent but not part of it.
+
+![Same MCP flow diagram, now with a dashed green boundary around the Model and Client lanes labeled THE AGENT, and a callout noting the MCP Server sits outside that boundary as an external capability](mcp_tool_use_flow_agent_boundary.png)
+
+*Figure: the agent boundary overlaid on the same flow. The Model↔Client loop (green dashed box) is the agent; the MCP Server is an external capability the agent's act step calls out to, not part of the agent itself.*
+
 
 
 ## 5. Transport: how the client and server actually talk
