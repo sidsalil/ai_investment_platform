@@ -2,9 +2,10 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-15 (P1-LA8 complete — Context engineering —
-> AI/Agentic track now 8/17. P1-LA7, Subagents & multi-agent orchestration,
-> also completed 2026-07-15. On 2026-07-14, P1-LA5 completed,
+> Last updated: 2026-07-15 (P1-LA9 complete — Agent failure modes,
+> reliability — AI/Agentic track now 9/17. P1-LA8, Context engineering,
+> and P1-LA7, Subagents & multi-agent orchestration, also completed
+> 2026-07-15. On 2026-07-14, P1-LA5 completed,
 > Finance track hit 10/10
 > complete, and the AI/Agentic and Evals tracks were expanded — see
 > "AI/Agentic and Evals track expansion" note below)
@@ -50,7 +51,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 8/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA9, Agent failure modes — reliability, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 9/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA10, Agent security & adversarial failure modes, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -79,7 +80,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 8/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 9/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -191,7 +192,7 @@
 - **No new locked pipeline design decisions this lesson** — architectural/discipline output (what belongs in context at each stage), directly usable at P1-Build-7/P1-Build-8 implementation time. Carried-forward requirement: each stage's tool/function returns a small structured object, not a raw computation dump.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA9: Agent failure modes (reliability)
+### [x] P1-LA9: Agent failure modes (reliability)
 - **Concepts:** Infinite loops, hallucinated tool calls, malformed outputs, retry/backoff strategy, timeout handling
 - **Scope note (added 2026-07-14):** This lesson is now scoped to *reliability* failure modes only — things that go wrong because the agent is unreliable, not because someone is attacking it. Adversarial/security failure modes split out to P1-LA10.
 - **Estimated time:** 1-2 hours
@@ -628,7 +629,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 8/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 9/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
