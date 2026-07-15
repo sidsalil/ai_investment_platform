@@ -2,10 +2,11 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-15 (P1-LA9 complete — Agent failure modes,
-> reliability — AI/Agentic track now 9/17. P1-LA8, Context engineering,
-> and P1-LA7, Subagents & multi-agent orchestration, also completed
-> 2026-07-15. On 2026-07-14, P1-LA5 completed,
+> Last updated: 2026-07-15 (P1-LA10 complete — Agent security &
+> adversarial failure modes — AI/Agentic track now 10/17. P1-LA9, Agent
+> failure modes (reliability), P1-LA8, Context engineering, and P1-LA7,
+> Subagents & multi-agent orchestration, also completed 2026-07-15. On
+> 2026-07-14, P1-LA5 completed,
 > Finance track hit 10/10
 > complete, and the AI/Agentic and Evals tracks were expanded — see
 > "AI/Agentic and Evals track expansion" note below)
@@ -51,7 +52,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 9/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA10, Agent security & adversarial failure modes, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 10/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA11, AI governance and human-in-the-loop design, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -80,7 +81,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 9/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 10/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -197,9 +198,11 @@
 - **Scope note (added 2026-07-14):** This lesson is now scoped to *reliability* failure modes only — things that go wrong because the agent is unreliable, not because someone is attacking it. Adversarial/security failure modes split out to P1-LA10.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA10: Agent security & adversarial failure modes — **new, added 2026-07-14**
-- **Concepts:** Prompt injection (direct and indirect, e.g. malicious instructions embedded in a fetched web page or document), "excessive agency" (an agent doing more than it should because nothing technically stopped it, per OWASP LLM Top 10 framing), tool-access scoping and least-privilege design ("prefer deterministic access controls over prompted instructions not to call a tool" — directly relevant to the MCP server's tool permissions in P1-Build-1), data exfiltration risk when an agent can both read sensitive data and make outbound calls
+### [x] P1-LA10: Agent security & adversarial failure modes — **completed 2026-07-15**
+- **Concepts:** Prompt injection (direct and indirect, e.g. malicious instructions embedded in a fetched web page or document), "excessive agency" (an agent doing more than it should because nothing technically stopped it, per OWASP's 2025 LLM Top 10 framing — LLM01 Prompt Injection, LLM06 Excessive Agency), tool-access scoping and least-privilege design ("prefer deterministic access controls over prompted instructions not to call a tool" — directly relevant to the MCP server's tool permissions in P1-Build-1), data exfiltration risk (the "confused deputy" pattern) when an agent can both read sensitive data and make outbound calls, including the documented 2024 Slack AI indirect-injection exfiltration case
 - **Why this is its own lesson, not folded into LA9:** reliability failure modes are bugs; security failure modes assume an adversary. Different mental model, and increasingly a distinct interview topic as agentic systems get more autonomous.
+- **Deliverable:** Notes (P1_LA10_Agent_Security_Adversarial_Failure_Modes.md); master security failure-mode cheat sheet (6 rows: direct injection, indirect injection, excessive functionality, excessive permissions, excessive autonomy, data exfiltration)
+- **Decision logged:** No new locked architecture decisions — this lesson's conclusions manifest as build-sprint tool-scoping requirements for P1-Build-1/P1-Build-7/P1-Build-8 (see CONTEXT.md carried-forward action items), not new pipeline design decisions.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA11: AI governance and human-in-the-loop design — **new, added 2026-07-14**
@@ -629,7 +632,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 9/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 10/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
@@ -654,7 +657,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 13 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5) | 0 | 0 |
+| 2026-07 | 18 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10) | 0 | 0 |
 
 ---
 
