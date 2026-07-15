@@ -2,10 +2,10 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-14 (P1-LA5 complete — ReAct-style tool-use loops —
-> AI/Agentic track now 5/17; same day, Finance track hit 10/10 complete and
-> the AI/Agentic and Evals tracks were expanded — see "AI/Agentic and Evals
-> track expansion" note below)
+> Last updated: 2026-07-15 (P1-LA6 complete — Planning loops — AI/Agentic
+> track now 6/17. On 2026-07-14, P1-LA5 completed, Finance track hit 10/10
+> complete, and the AI/Agentic and Evals tracks were expanded — see
+> "AI/Agentic and Evals track expansion" note below)
 >
 > **Superseded a 4-project plan.** Old versions preserved as
 > `curriculum_OLD_2026-05-25.md` (pre-restructure) and
@@ -48,7 +48,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 5/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA6, Planning loops, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 6/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA7, Subagents & multi-agent orchestration, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -77,7 +77,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 5/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 6/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -171,8 +171,10 @@
 - **No new locked design decisions this lesson** — mechanics/vocabulary lesson. Open item: mechanism for visible orchestrator reasoning in P1-Build-7 (system-prompt instruction vs. `thinking` parameter) deferred to build time.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA6: Planning loops
-- **Concepts:** Multi-step planning vs. reactive tool use, when an agent needs to plan ahead vs. react turn-by-turn
+### [x] P1-LA6: Planning loops — **completed 2026-07-15**
+- **Concepts:** Multi-step planning vs. reactive tool use; precise definition of a planning loop (persistent plan artifact formed before execution, executed step by step, revised on downstream-assumption-invalidating observations) vs. ReAct's one-step-ahead reasoning; the reactive-trader-vs-portfolio-manager-with-a-thesis analogy; the concrete decision criterion for when an agent needs to plan ahead vs. react turn-by-turn; plan representation as a structured object parallel to P1-LA4's `FactorSpec`; the specific plan-revision trigger condition; preview of planning-specific failure modes (deferred to P1-LA9)
+- **Deliverable:** Notes (P1_LA6_Planning_Loops.md); two-way worked trace of the P1-LA1/LA5 momentum task run first as pure ReAct and then as a planning loop, with an explicit plan-revision step triggered by the same 3-tickers-insufficient-history surprise; minimal JSON plan-object representation; decision-criterion table (ReAct-sufficient vs. planning-needed)
+- **No new locked pipeline design decisions this lesson** — conceptual-foundations lesson (planning vs. reactive execution mental models), not a pipeline design choice. Concrete plan representation and replan-check trigger for P1-Build-7 deferred to that build sprint.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA7: Subagents & multi-agent orchestration
@@ -596,7 +598,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 5/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 6/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
