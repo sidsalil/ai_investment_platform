@@ -2,8 +2,9 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-15 (P1-LA6 complete — Planning loops — AI/Agentic
-> track now 6/17. On 2026-07-14, P1-LA5 completed, Finance track hit 10/10
+> Last updated: 2026-07-15 (P1-LA7 complete — Subagents & multi-agent
+> orchestration — AI/Agentic track now 7/17. On 2026-07-14, P1-LA5 completed,
+> Finance track hit 10/10
 > complete, and the AI/Agentic and Evals tracks were expanded — see
 > "AI/Agentic and Evals track expansion" note below)
 >
@@ -48,7 +49,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 6/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA7, Subagents & multi-agent orchestration, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 7/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA8, Context engineering, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -77,7 +78,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 6/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 7/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -177,8 +178,10 @@
 - **No new locked pipeline design decisions this lesson** — conceptual-foundations lesson (planning vs. reactive execution mental models), not a pipeline design choice. Concrete plan representation and replan-check trigger for P1-Build-7 deferred to that build sprint.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA7: Subagents & multi-agent orchestration
-- **Concepts:** Orchestrator-worker pattern, when to decompose a task across agents, how results get merged back
+### [x] P1-LA7: Subagents & multi-agent orchestration — **completed 2026-07-15**
+- **Concepts:** A subagent defined mechanically as a separate Claude conversation invoked/returned via P1-LA2's 5-step tool-use cycle; orchestrator-worker pattern as the multi-agent point on the P1-LA1 autonomy spectrum; the plan object's new `owner` field; a five-signal decision table for when to decompose across agents (persona mismatch, independence/conflict-of-interest, context isolation, task substantiality, parallelizability) vs. keep work in one agent's loop; how results merge back as structured objects read by orchestrator code
+- **Deliverable:** Notes (P1_LA7_Subagents_and_Multi-Agent_Orchestration.md); worked numerical token-accounting example (single-agent ≈56,000 total input tokens across 7 stages vs. subagent-isolated ≈31,200 tokens); the "grading your own homework" independence argument for the validator subagent specifically; full stage-by-stage ownership mapping of Project 1's architecture (orchestrator: stages 1-5; validator subagent: stage 6; memo subagent: stage 7)
+- **No new locked pipeline design decisions beyond the ownership mapping** — architectural output (who owns each plan step and why), directly usable at P1-Build-7/P1-Build-8 implementation time.
 - **Estimated time:** 2 hours
 
 ### [ ] P1-LA8: Context engineering
@@ -598,7 +601,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 6/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 7/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
