@@ -424,11 +424,26 @@
 
 **Goal:** AI-assisted strategy backtesting where users describe strategies in natural language and get rigorous, event-driven backtests with realistic frictions, automated quality review, and benchmark comparison — the systems-engineering complement to Project 1.
 
-**Estimated effort:** ~50-70 hours
+**Estimated effort:** ~57-84 hours *(updated 2026-07-15 — added a model-routing lesson/architecture/build addition, see below)*
 
 **Status:** Not started
 
 **Prerequisites:** Project 1 complete (or Phase 3 substantially complete); understanding of factor research, returns, transaction costs, walk-forward validation
+
+> **Model-routing addition (2026-07-15):** Evaluated curriculum fit against a
+> Perplexity Product Manager posting (general PM role, not Forward Deployed
+> Engineer — corrected framing from an earlier assumption). Gap identified:
+> the entire curriculum calls a single model provider (Claude via Agent SDK),
+> while the target company's product thesis is model-agnostic, multi-model
+> orchestration. Added P2-L11, P2-Arch-4, and P2-Build-11 (~7-14 hours) to
+> close that gap with a real, evidence-backed routing build rather than just
+> conceptual fluency. A second gap — product-led growth / retention
+> instrumentation — was also identified and **explicitly declined** as a
+> net-new project: it would have required either fabricated usage data or a
+> real user-acquisition effort disproportionate to a self-initiated portfolio
+> project. Decision: speak to PLG/flywheel thinking conceptually in
+> interviews if it comes up, without a dedicated build. See CONTEXT.md
+> decision log for full reasoning.
 
 ## Phase 1: Concept Lessons (~10-15 hours)
 
@@ -448,12 +463,18 @@
 - Builds directly on P1-LB3
 ### [ ] P2-L10: Realistic backtest gotchas
 - Timezone bugs, data quality, corporate actions, exchange holidays
+### [ ] P2-L11: Model routing and multi-model orchestration
+- **Added 2026-07-15** — motivated by a target-role gap analysis against a Perplexity PM posting (see CONTEXT.md decision log). Concepts: task classification before dispatch, cost/quality/latency as three competing axes, why single-vendor model lock-in is a product risk and not just a cost line item, routing-by-task-type (in scope) vs. dynamic/learned routing (explicitly out of scope for this build). Deliverable: a decision table in CONTEXT.md mapping Project 2's model-calling subtasks (strategy parsing, backtest-quality review, tear-sheet summarization) to a proposed model tier, with reasoning per row.
+- **Estimated time:** 1-2 hours
 
-## Phase 2: Architecture & Design (~5-8 hours)
+## Phase 2: Architecture & Design (~6-10 hours)
 
 ### [ ] P2-Arch-1: Event-driven engine design
 ### [ ] P2-Arch-2: Strategy specification schema design
 ### [ ] P2-Arch-3: Module structure
+### [ ] P2-Arch-4: Router design
+- **Added 2026-07-15.** Where the router sits in the call flow (before dispatch, after subtask classification), what gets logged per decision (subtask type, model chosen, cost, latency, and later quality outcome), how it interacts with the P2-Build-6 planning loop without becoming its own agent. Deliverable: extend the P2-Arch-1 architecture diagram to show the router as a layer.
+- **Estimated time:** 1-2 hours
 
 ## Phase 3: Build Sprints (~25-35 hours)
 
@@ -469,6 +490,9 @@
 ### [ ] P2-Build-8: Tear sheet / metrics dashboard
 ### [ ] P2-Build-9: Benchmark comparison
 ### [ ] P2-Build-10: Streamlit UI
+### [ ] P2-Build-11: Model router + before/after eval comparison
+- **Added 2026-07-15.** Depends on P2-Build-6 and P2-Build-7 (needs the strategy parser and quality-reviewer subagent to exist as real model-calling subtasks before routing can be applied to them). Implement the router as a function/lookup in front of the existing model calls — no new agent framework. Run the P2-Eval strategy-prompt eval set twice: once fixed on a single model (baseline), once with routing enabled. Report the delta in cost, latency, and quality (did the reviewer subagent's judgment hold up on a cheaper model or not). Decision to log: which subtasks stay on the stronger model and why, backed by the eval delta rather than assumption.
+- **Estimated time:** 5-10 hours
 
 ## Phase 4: Polish & Ship (~8-12 hours)
 
@@ -604,7 +628,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | P1: Factor Research (AI/Agentic) | ☐ 7/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
-| P2: Backtesting Copilot | ☐ 0/10 | ☐ 0/3 | ☐ 0/10 | ☐ 0/5 | ☐ |
+| P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
 | ~~P3: Portfolio Construction~~ | deprioritized | — | — | — | — |
 | ~~P4: ML Signal Lab~~ | deprioritized | — | — | — | — |
 
@@ -613,12 +637,13 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 - Total P1 lessons planned: 10 (finance) + 17 (AI/agentic) + 3 (backtesting rigor) + 2 (evals) = 32
 - Total P1 build sprints planned: 13
 - Total P1 polish items planned: 6
-- Total P2 lessons planned: 10
-- Total P2 build sprints planned: 10
+- Total P2 lessons planned: 11
+- Total P2 build sprints planned: 11
 - Total P2 polish items planned: 5
-- **Total trackable items (active scope):** 76
-- **Total estimated hours (active scope):** ~156-219 hours (~106-149 for P1, ~50-70 for P2)
+- **Total trackable items (active scope):** 78
+- **Total estimated hours (active scope):** ~163-233 hours (~106-149 for P1, ~57-84 for P2)
 - *(Updated 2026-07-14: AI/Agentic track grew from 14→17 lessons and Evals track from 1→2 lessons — see "AI/Agentic and Evals track expansion" note at the top of this document. Adds roughly 6-9 hours to the P1 estimate.)*
+- *(Updated 2026-07-15: Added P2-L11, P2-Arch-4, P2-Build-11 — model routing addition, ~7-14 hours — see decision note under Project 2's goal section and CONTEXT.md decision log.)*
 
 Update monthly:
 
