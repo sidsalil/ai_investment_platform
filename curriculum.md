@@ -2,8 +2,9 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-15 (P1-LA10 complete — Agent security &
-> adversarial failure modes — AI/Agentic track now 10/17. P1-LA9, Agent
+> Last updated: 2026-07-15 (P1-LA11 complete — AI governance and
+> human-in-the-loop design — AI/Agentic track now 11/17. P1-LA10, Agent
+> security & adversarial failure modes, P1-LA9, Agent
 > failure modes (reliability), P1-LA8, Context engineering, and P1-LA7,
 > Subagents & multi-agent orchestration, also completed 2026-07-15. On
 > 2026-07-14, P1-LA5 completed,
@@ -52,7 +53,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 10/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA11, AI governance and human-in-the-loop design, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 11/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA12, Observability & tracing for agentic systems, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -81,7 +82,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 10/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 11/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -205,10 +206,12 @@
 - **Decision logged:** No new locked architecture decisions — this lesson's conclusions manifest as build-sprint tool-scoping requirements for P1-Build-1/P1-Build-7/P1-Build-8 (see CONTEXT.md carried-forward action items), not new pipeline design decisions.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA11: AI governance and human-in-the-loop design — **new, added 2026-07-14**
+### [x] P1-LA11: AI governance and human-in-the-loop design — **completed 2026-07-15**
 - **Concepts:** Levels of agent autonomy (fixed workflow → single tool-use loop → planning loop → fully autonomous multi-agent system) and how required human oversight changes at each level; permission/access scoping as a governance mechanism, not just a security one; escalation and human-approval checkpoints (when should the system stop and ask a human before proceeding); accountability — who owns a decision an agent made; automation bias (the tendency to over-trust a system that's been reliable so far)
 - **Why this matters for your target roles specifically:** 2026 hiring signal consistently frames governance/accountability design — not tool-use mechanics — as the top AI PM differentiator in an agentic-AI market. This is also a direct extension of the model-risk-awareness pattern already established in the Finance track (P1-L2 survivorship bias disclosure, P1-L8 bias cheat sheet, P1-L9 implementation-shortfall framing) — same instinct, applied to agent behavior instead of backtest methodology.
 - **Direct project tie-in:** frame the P1-Build-8 methodology validator subagent explicitly as a governance/human-in-the-loop control (an automated check that flags issues for human review before a memo ships) — this lesson gives you the vocabulary to describe that build as "governance," not just "a subagent."
+- **Deliverable:** Notes (P1_LA11_AI_Governance_Human_In_The_Loop_Design.md); master governance cheat sheet (5 rows: autonomy levels, governance-scoped permissions, escalation checkpoints, accountability roles, automation bias); escalation-checkpoint scoring framework (Consequence × Reversibility × Confidence-gap) worked against 4 P1 actions; accountability framework borrowed from financial model risk management (SR 11-7-style Owner/Developer-Operator/Independent Validator roles); automation bias illustrated via the verified 2012 Knight Capital trading-algorithm incident
+- **Decision logged:** No new locked architecture decisions — this lesson's conclusions manifest as build-sprint/documentation requirements reframing existing mechanisms (validator subagent, `ValidationResult.severity` field) with governance vocabulary, not new pipeline design (see CONTEXT.md carried-forward action items)
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA12: Observability & tracing for agentic systems
@@ -632,7 +635,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 10/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 11/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
