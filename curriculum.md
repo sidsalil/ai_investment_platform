@@ -2,12 +2,13 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-15 (P1-LA12 complete — Observability & tracing for
-> agentic systems — AI/Agentic track now 12/17. P1-LA11, AI governance and
-> human-in-the-loop design, P1-LA10, Agent security & adversarial failure
-> modes, P1-LA9, Agent failure modes (reliability), P1-LA8, Context
-> engineering, and P1-LA7, Subagents & multi-agent orchestration, also
-> completed 2026-07-15. On 2026-07-14, P1-LA5 completed,
+> Last updated: 2026-07-16 (P1-LA14 complete — Deployment basics —
+> AI/Agentic track now 14/17. P1-LA13, Latency & cost tradeoffs, also
+> completed 2026-07-16. On 2026-07-15, P1-LA12, Observability & tracing,
+> P1-LA11, AI governance and human-in-the-loop design, P1-LA10, Agent
+> security & adversarial failure modes, P1-LA9, Agent failure modes
+> (reliability), P1-LA8, Context engineering, and P1-LA7, Subagents &
+> multi-agent orchestration, also completed. On 2026-07-14, P1-LA5 completed,
 > Finance track hit 10/10
 > complete, and the AI/Agentic and Evals tracks were expanded — see
 > "AI/Agentic and Evals track expansion" note below)
@@ -53,7 +54,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 13/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA14, Deployment basics, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 14/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA15, RAG fundamentals, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -82,7 +83,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 12/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 14/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -226,8 +227,10 @@
 - **Decision logged:** Validator subagent stays on the larger/stronger model (high-stakes escalation checkpoint per P1-LA11); factor-spec extractor and memo-writer subagent flagged as candidates for a smaller/cheaper model, pending the actual model-evals comparison (curriculum's existing "What you build" deliverable: run all three subagents on two models, compare cost/latency/quality) before the assignment is finalized.
 - **Estimated time:** 1 hour
 
-### [ ] P1-LA14: Deployment basics
-- **Concepts:** Containerization intuition, environment config, basic AWS Bedrock deployment
+### [x] P1-LA14: Deployment basics — **completed 2026-07-16**
+- **Concepts:** Containerization intuition (image vs. container vs. Dockerfile, shipping-container analogy), environment config (secrets/config injected at runtime, never hardcoded), basic AWS Bedrock deployment (managed model hosting behind AWS IAM/VPC/billing, enterprise compliance/procurement fit)
+- **Decision logged:** AWS Bedrock scoped OUT of P1's build — P1's hosted demo calls the Anthropic API directly. Bedrock understood conceptually for Fidelity-context interview conversations; reinforces existing stack decision that Bedrock applies from Project 3 onward. P1 application hosting recommended as Streamlit Community Cloud or Render/Railway/Fly.io over AWS App Runner/ECS.
+- **Deliverable:** Notes (P1_LA14_Deployment_Basics.md)
 - **Estimated time:** 2 hours
 
 ### [ ] P1-LA15: RAG fundamentals
@@ -639,7 +642,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 12/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 14/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
@@ -664,7 +667,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 20 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12) | 0 | 0 |
+| 2026-07 | 22 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14) | 0 | 0 |
 
 ---
 
