@@ -53,7 +53,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 12/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA13, Latency & cost tradeoffs, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 13/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA14, Deployment basics, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -220,8 +220,10 @@
 - **Decision logged:** `TraceEvent` schema and seven-type taxonomy locked as-is for P1-Build-7/P1-Build-8. No sampling at P1's scale (log everything, every run). No tracing UI/viewer being built — trace files inspected directly as JSON-lines.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA13: Latency & cost tradeoffs
-- **Concepts:** Token economics, model selection tradeoffs, when a smaller/cheaper model is the right call
+### [x] P1-LA13: Latency & cost tradeoffs — **completed 2026-07-16**
+- **Concepts:** Token economics (input vs. output pricing asymmetry, parallel input processing vs. sequential/autoregressive output generation); the tool-use loop's context re-sending problem and superlinear cost growth with iteration count; latency components (time to first token, generation speed, serial-dependency compounding across a multi-stage pipeline); the three-way cost/latency/quality tradeoff in model selection; a two-question decision framework (task well-definedness + stakes, reusing the P1-LA11 Consequence × Reversibility × Confidence-gap framework) for when a smaller/cheaper model is appropriate
+- **Deliverable:** Notes (P1_LA13_Latency_Cost_Tradeoffs.md); worked 7-iteration cost table (P1-LA1 trace) showing superlinear cost growth; worked end-to-end latency budget table (~26.5 sec, serial dependency chain); worked model-selection table applying the framework to P1's three subagents (extractor, validator, memo-writer)
+- **Decision logged:** Validator subagent stays on the larger/stronger model (high-stakes escalation checkpoint per P1-LA11); factor-spec extractor and memo-writer subagent flagged as candidates for a smaller/cheaper model, pending the actual model-evals comparison (curriculum's existing "What you build" deliverable: run all three subagents on two models, compare cost/latency/quality) before the assignment is finalized.
 - **Estimated time:** 1 hour
 
 ### [ ] P1-LA14: Deployment basics
