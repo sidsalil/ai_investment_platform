@@ -2,10 +2,11 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-18 (P1-LB2 complete — Out-of-sample vs. in-sample
-> discipline — second lesson of the Backtesting Rigor track, now 2/3. Earlier
-> the same day, P1-LB1, Walk-forward validation done properly, was completed
-> — the first lesson of the Backtesting Rigor track. Also earlier the same
+> Last updated: 2026-07-18 (P1-LB3 complete — The multiple-testing problem
+> (p-hacking) — third and final lesson of the Backtesting Rigor track, now
+> COMPLETE at 3/3. Earlier the same day, P1-LB2, Out-of-sample vs. in-sample
+> discipline, and P1-LB1, Walk-forward validation done properly, were also
+> completed — the first two lessons of the Backtesting Rigor track. Also earlier the same
 > day, P1-LA17, Prompt engineering fundamentals, completed the
 > AI/Agentic track at 17/17, COMPLETE. Also earlier the same day, P1-LA16,
 > Fine-tuning vs. prompting vs. RAG, was completed. On
@@ -61,7 +62,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **2/3** (P1-LB1, P1-LB2 done), Evals track 0/2. Recommend continuing the Backtesting Rigor track (P1-LB3, The multiple-testing problem) or starting the Evals track next, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track 0/2. Recommend starting the Evals track (P1-LE1, Model evals vs. system evals) next — it is the only remaining track before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -90,7 +91,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **2/3** (P1-LB1, P1-LB2 done); Evals track remains before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track (0/2) remains before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -258,7 +259,7 @@
 - **Decision logged:** No new build-scope decisions — this lesson formalizes technique for prompts already planned across P1's components (factor-spec extractor, methodology validator, memo generator, subagent orchestrator instructions). One action item carried forward: check extended-thinking availability before hand-building CoT scaffolding in Phase 3 build sprints.
 - **Estimated time:** 1 hour
 
-## Phase 1: Concept Lessons — Backtesting Rigor Track (~4-6 hours) — IN PROGRESS (2/3)
+## Phase 1: Concept Lessons — Backtesting Rigor Track (~4-6 hours) — COMPLETE (3/3)
 
 ### [x] P1-LB1: Walk-forward validation done properly — **completed 2026-07-18**
 - **Concepts:** Rolling vs. expanding windows, train/test discipline over time, why naive monthly rebalancing isn't the same as proper walk-forward validation
@@ -271,9 +272,11 @@
 - **Deliverable:** In-sample vs. out-of-sample comparison built into P1-Build-5
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LB3: The multiple-testing problem (p-hacking)
+### [x] P1-LB3: The multiple-testing problem (p-hacking) — completed 2026-07-18
 - **Concepts:** Why testing many factor variants and reporting only the best one is dishonest, correction approaches (intuition level)
-- **Explain back:** "I tested momentum, volatility, and value — why can't I just report whichever had the best backtest?"
+- **Explain back:** "I tested momentum, volatility, and value — why can't I just report whichever had the best backtest?" — answered in notes: "best backtest" is the output of a selection process that mechanically inflates the reported number in proportion to how many things were tested (family-wise error rate, worked table 5%→92.3% for n=1→50); fix is disclosing/correcting for the search (Bonferroni, FDR/Benjamini-Hochberg) or validating on data with zero influence on selection (P1-LB2's untouched holdout)
+- **Deliverable:** Notes (P1_LB3_Multiple_Testing_Problem.md); worked FWER table, Bonferroni worked example, Benjamini-Hochberg FDR 10-variant worked example, Deflated Sharpe Ratio and Harvey-Liu-Zhu (2016) t-stat>3.0 framework, direct tie to P1-LB2's winner's curse as the n=3 instance of the general formula
+- **Carried forward to P1-Build-8 (methodology validator):** flag undisclosed variant counts, missing multiple-testing correction, and "novel" factor claims not framed against Harvey-Liu-Zhu
 - **Estimated time:** 1-2 hours
 
 ## Phase 1: Concept Lessons — Evals & Model Evals Track (~2-4 hours)
@@ -657,7 +660,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☑ 17/17 | — | — | — | — |
-| P1: Factor Research (Backtesting Rigor) | ☑ 2/3 | — | — | — | — |
+| P1: Factor Research (Backtesting Rigor) | ☑ 3/3 — COMPLETE | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
 | ~~P3: Portfolio Construction~~ | deprioritized | — | — | — | — |
@@ -681,7 +684,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 26 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1) | 0 | 0 |
+| 2026-07 | 28 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1, P1-LB2, P1-LB3) | 0 | 0 |
 
 ---
 
