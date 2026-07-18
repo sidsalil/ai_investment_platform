@@ -2,9 +2,11 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-18 (P1-LA17 complete — Prompt engineering
-> fundamentals — AI/Agentic track now 17/17, COMPLETE. Earlier the same
-> day, P1-LA16, Fine-tuning vs. prompting vs. RAG, was completed. On
+> Last updated: 2026-07-18 (P1-LB1 complete — Walk-forward validation done
+> properly — first lesson of the Backtesting Rigor track, now 1/3. Earlier
+> the same day, P1-LA17, Prompt engineering fundamentals, completed the
+> AI/Agentic track at 17/17, COMPLETE. Also earlier the same day, P1-LA16,
+> Fine-tuning vs. prompting vs. RAG, was completed. On
 > 2026-07-16, P1-LA15, RAG fundamentals, was completed. P1-LA14, Deployment
 > basics, and P1-LA13, Latency & cost tradeoffs, also completed 2026-07-16.
 > On 2026-07-15, P1-LA12, Observability & tracing,
@@ -57,7 +59,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend starting the Backtesting Rigor track (P1-LB1, Walk-forward validation done properly) or the Evals track next, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **1/3** (P1-LB1 done), Evals track 0/2. Recommend continuing the Backtesting Rigor track (P1-LB2, Out-of-sample vs. in-sample discipline) or starting the Evals track next, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -86,7 +88,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **1/3** (P1-LB1 done); Evals track remains before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -254,10 +256,12 @@
 - **Decision logged:** No new build-scope decisions — this lesson formalizes technique for prompts already planned across P1's components (factor-spec extractor, methodology validator, memo generator, subagent orchestrator instructions). One action item carried forward: check extended-thinking availability before hand-building CoT scaffolding in Phase 3 build sprints.
 - **Estimated time:** 1 hour
 
-## Phase 1: Concept Lessons — Backtesting Rigor Track (~4-6 hours) — NEXT UP (0/3)
+## Phase 1: Concept Lessons — Backtesting Rigor Track (~4-6 hours) — IN PROGRESS (1/3)
 
-### [ ] P1-LB1: Walk-forward validation done properly
+### [x] P1-LB1: Walk-forward validation done properly — **completed 2026-07-18**
 - **Concepts:** Rolling vs. expanding windows, train/test discipline over time, why naive monthly rebalancing isn't the same as proper walk-forward validation
+- **Deliverable:** Notes (P1_LB1_Walk_Forward_Validation.md); worked numerical example walking forward an IC-weighted Value/Momentum composite factor over 4 rolling folds, contrasted against a naive full-sample fit (~26% relative IC inflation)
+- **Open item carried forward:** rolling vs. expanding window choice (and window length) deferred to P1-Arch
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LB2: Out-of-sample vs. in-sample discipline
@@ -651,7 +655,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☑ 17/17 | — | — | — | — |
-| P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
+| P1: Factor Research (Backtesting Rigor) | ☑ 1/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
 | ~~P3: Portfolio Construction~~ | deprioritized | — | — | — | — |
@@ -675,7 +679,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 25 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17) | 0 | 0 |
+| 2026-07 | 26 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1) | 0 | 0 |
 
 ---
 
