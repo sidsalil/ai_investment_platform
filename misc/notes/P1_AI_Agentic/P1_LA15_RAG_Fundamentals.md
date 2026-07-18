@@ -201,6 +201,11 @@ Roughly 9-11 tokens for this sentence. This step is deterministic and mechanical
 
 **Step 3 — Transformer layers: generic vectors → contextualized vectors.** This is where the real work happens. The sequence of token vectors is passed through many stacked transformer layers, each containing a **self-attention** mechanism. Self-attention lets every token's vector get updated based on *every other token in the sentence* — so after a few layers, the vector sitting at position "boils" is no longer just "boils in general," it has absorbed context from "water" (what's boiling) and "100 degrees C" (at what temperature) and become something closer to "boils, specifically in the context of water's boiling point." This contextualization is exactly why embeddings capture meaning rather than just word identity — the same word ("boils") would end up with a different vector in "the market boils over with volatility."
 
+**Pictorial illustration (see `P1_LA15_boils_embedding_diagram.png`, saved alongside this file):**
+
+![Diagram showing the embedding for "boils" moving from a context-free starting position toward either a water/heat cluster or a market/finance cluster depending on sentence context](P1_LA15_boils_embedding_diagram.png)
+ the diagram plots two toy axes — water/heat-relatedness and market/finance-relatedness, the same style of simplified dimensions used in Section 5's worked example — and shows "boils" starting from one context-free position (gray dot), then two arrows showing where it moves depending on which sentence it appears in: toward a water/heat cluster (teal, near "water" and "evaporates") when the sentence is about boiling water, or toward a market/finance cluster (coral, near "volatility" and "surges") when the sentence is about markets. Same starting vector, two different destinations — that is Step 3's contextualization shown spatially. Caveat, consistent with the correction in Follow-up Q1/Q4: this is a 2-axis simplification of what is actually a 1,536-dimension move, and real dimensions are not literally labeled "water-relatedness" or "market-relatedness" the way these toy axes are — treat the diagram as the same kind of training-wheels illustration as Section 5's worked example, not a literal picture of what happens inside the model.
+
 **Step 4 — Pooling: many token vectors → one fixed-size vector.** After the transformer layers, you don't have one vector — you have one contextualized vector *per token* (9-11 of them here, each already 1,536-dimensional internally). But an embedding needs to be a single fixed-length vector regardless of how long the input sentence was, so a **pooling** step compresses the whole set of per-token vectors down to one. The two common approaches: **mean pooling** (average all the token vectors together, element by element) or **last/end-token pooling** (in decoder-style models, take the final hidden vector at the sequence's end position, since it has attended to every earlier token and functions as a running summary of the whole sentence). The result is the single 1,536-number vector the API returns — regardless of whether the input was this one sentence or a full paragraph, the output is always the same length, because pooling always collapses down to the model's fixed hidden size.
 
 **Where does "knowing what things mean" come from?** None of steps 1-4 happen at training time when the API is called — they're a single fast forward pass through an already-trained network. The actual "learning" happened once, beforehand, when OpenAI trained the model on a massive amount of text using an objective that roughly rewards it for producing similar vectors for texts that mean similar things (e.g., contrastive training: pull matching text pairs' vectors together, push unrelated pairs' vectors apart, across millions of examples). By the time the API is called, all of that is frozen — the sentence just runs through the already-learned network once, which is why a single call is fast (milliseconds) rather than requiring any training. Consistent with Follow-up Q1's correction: at no point in this pipeline does any single one of the 1,536 output numbers get assigned a human-readable meaning like "boiling-point-relatedness score." The whole vector, as a joint pattern across all 1,536 numbers, is what encodes the sentence's meaning.
@@ -262,9 +267,68 @@ This is a vendor-specific terminology tangent, not a new universal RAG concept �
 
 ---
 
+## Follow-up Q6: Full numeric walkthrough — token ID lookup vs. attention weights vs. fresh computation (2026-07-18, during P1-LA16)
+
+A follow-up question during the next lesson (P1-LA16) asked for a fully concrete walkthrough distinguishing three specific terms that had started to blur together: token ID lookup, attention weights, and "on-the-fly computation." Captured here as well since it's a direct, deeper worked example of this file's Step 2 (Follow-up Q3) and Step 3 (Follow-up Q4) distinction, using real numbers instead of a diagram.
+
+Worked using the sentence **"The bank raised interest rates,"** with toy 3-dimensional vectors — same simplification style as Section 5's cosine-similarity example. Real models use thousands of dimensions, but the mechanics are identical at any size.
+
+**Step 1 — Tokenization:** "The" / "bank" / "raised" / "interest" / "rates" / "." (simplified to whole-word tokens for clarity — real byte-level BPE tokenization, per Follow-up Q3, might split some of these into sub-word pieces, but that detail doesn't change anything below).
+
+**Step 2 — Token ID lookup: the static spreadsheet.**
+
+| Token | Token ID (illustrative) | Initial embedding vector (fixed, looked up by ID) |
+|---|---|---|
+| "The" | 464 | [0.02, 0.01, 0.03] |
+| **"bank"** | **2762** | **[0.10, 0.85, -0.30]** |
+| "raised" | 8921 | [0.40, -0.10, 0.55] |
+| "interest" | 3305 | [0.70, 0.05, 0.60] |
+| "rates" | 6120 | [0.65, 0.02, 0.58] |
+| "." | 13 | [0.00, 0.00, 0.00] |
+
+This is the actual spreadsheet lookup described in Follow-up Q3. Token ID 2762 always returns [0.10, 0.85, -0.30] — every time "bank" appears anywhere, in any sentence, this exact row is retrieved. At this point, the vector for "bank" has no idea whether the sentence is about finance or a river — same blind, generic starting point either way.
+
+**Step 3 — Attention weight matrices: the fixed formula, not a lookup.** The model also has weight matrices (Query, Key, Value — $W_Q$, $W_K$, $W_V$) learned once during training and now frozen. These are **not indexed by token ID** the way Step 2 is — there's no "give me the attention matrix for 'bank'" the way you ask "give me the embedding for 'bank.'" The exact same matrices get applied to every token, in every sentence, regardless of what the token is. What they do: for "bank" at position 2, the model uses these fixed matrices to compute how much attention to pay to every other token in the sentence, then blends their vectors together, weighted by that attention, into a new vector for "bank."
+
+| Other token | Attention weight to "bank" (illustrative — computed fresh for this specific sentence) |
+|---|---|
+| "The" | 0.05 |
+| "raised" | 0.20 |
+| "interest" | 0.40 |
+| "rates" | 0.30 |
+| "." | 0.05 |
+
+"Interest" and "rates" get the heaviest weight — the fixed formula, applied to this specific sentence, decides those are the most relevant neighbors for disambiguating "bank."
+
+**Step 4 — the new, contextualized vector, computed fresh, right now.** Blending "bank"'s original vector with its weighted neighbors produces something like [0.10, 0.85, -0.30] → [0.72, 0.18, 0.20] — shifted noticeably toward the region of vector-space representing "financial institution," because "interest" and "rates" pulled it there.
+
+**Contrast with a different sentence — "I sat by the river bank":**
+
+| Step | Same as the finance sentence? |
+|---|---|
+| Step 2: initial embedding for "bank" | **Identical** — [0.10, 0.85, -0.30], same lookup, same row |
+| Step 3: attention weight matrices themselves | **Identical** — the exact same frozen $W_Q, W_K, W_V$ |
+| Attention weights *computed* for this sentence | **Different** — this time "river" and "sat" get the heavy weight, not "interest"/"rates" |
+| Step 4: resulting contextualized vector | **Different** — ends up shifted toward "geographic feature," something like [0.04, 0.91, -0.55] |
+
+**Full summary table — the answer to "what's fixed vs. computed fresh":**
+
+| Term | What it is | Fixed, or computed fresh? | Changes across the two example sentences? |
+|---|---|---|---|
+| Token ID | An index number for a word/subword | Fixed (assigned once, part of the vocabulary) | No — "bank" is always ID 2762 |
+| Initial embedding vector (Step 2) | The row returned by looking up that ID | Fixed — same answer every time, literal lookup | No — identical in both sentences |
+| Attention weight matrices ($W_Q, W_K, W_V$) | The formula/matrices themselves, learned during training | Fixed — frozen after training, never touched at inference | No — identical matrices used in both sentences |
+| Attention weights (how much focus on each neighboring token) | The *output* of applying those fixed matrices to this specific input | Computed fresh, every single time, because it depends on which tokens are actually present | Yes — completely different in "interest rates" vs. "river bank" |
+| Final contextualized vector for "bank" | The blended result after attention | Computed fresh, every single time | Yes — ends up in a different region of vector-space each time |
+
+**The one-sentence version:** the *tools* (token ID table, attention matrices) never change. What changes, every single time a sentence is sent to the model, is the *output* of running those fixed tools against that sentence's specific set of tokens. This also directly answers a related mix-up worth stating explicitly: the attention weight matrices are **not** "the token ID lookup from the static spreadsheet" — that's Step 2 only. Step 3's matrices are a fixed *formula* applied by multiplication to whatever vectors are currently present, not a fixed *answer* retrieved by index. Same property (frozen after training), completely different mechanism (lookup vs. computation-over-context).
+
+---
+
 ## Summary of open items / things to keep in mind
 
 - Section 5's toy 3-D worked example uses labeled, human-readable dimensions purely as a teaching device — real embeddings have unlabeled, uninterpretable dimensions (Follow-up Q1, Q4).
 - The exact token breakdown shown in Follow-up Q2 is illustrative only, not verified against the real tokenizer (network sandbox couldn't reach OpenAI's tokenizer data files).
+- Follow-up Q6 (added 2026-07-18, during P1-LA16) gives a full numeric walkthrough distinguishing token ID lookup, attention weight matrices, and the freshly-computed contextualized output — the token ID and its Step 2 embedding are fixed regardless of sentence; the attention matrices themselves are also fixed after training, but the attention weights and resulting contextualized vector are computed fresh for every input.
 - No RAG component is in P1's active build scope (Section 7 / Decision logged) — revisit only if a genuine document-lookup need arises.
-- P1-LA16 (Fine-tuning vs. prompting vs. RAG) is the next lesson and will build directly on Section 7's "is this a knowledge-access problem" framing.
+- P1-LA16 (Fine-tuning vs. prompting vs. RAG) is complete (2026-07-18) and built directly on Section 7's "is this a knowledge-access problem" framing.

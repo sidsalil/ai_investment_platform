@@ -2,9 +2,11 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-16 (P1-LA15 complete — RAG fundamentals —
-> AI/Agentic track now 15/17. P1-LA14, Deployment basics, and P1-LA13,
-> Latency & cost tradeoffs, also completed 2026-07-16. On 2026-07-15, P1-LA12, Observability & tracing,
+> Last updated: 2026-07-18 (P1-LA16 complete — Fine-tuning vs. prompting
+> vs. RAG — AI/Agentic track now 16/17, one lesson remaining (LA17). On
+> 2026-07-16, P1-LA15, RAG fundamentals, was completed. P1-LA14, Deployment
+> basics, and P1-LA13, Latency & cost tradeoffs, also completed 2026-07-16.
+> On 2026-07-15, P1-LA12, Observability & tracing,
 > P1-LA11, AI governance and human-in-the-loop design, P1-LA10, Agent
 > security & adversarial failure modes, P1-LA9, Agent failure modes
 > (reliability), P1-LA8, Context engineering, and P1-LA7, Subagents &
@@ -54,7 +56,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 15/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend continuing straight through the AI/Agentic track (P1-LA16, Fine-tuning vs. prompting vs. RAG, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track 16/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16 done), Backtesting Rigor track 0/3, Evals track 0/2. Recommend completing the final AI/Agentic lesson (P1-LA17, Prompt engineering fundamentals, next), then the Backtesting Rigor and Evals tracks, before Phase 2 (Architecture) starts.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -83,7 +85,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 15/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15 done); Backtesting Rigor and Evals tracks remain before Phase 2
+**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track 16/17 (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16 done); Backtesting Rigor and Evals tracks remain before Phase 2
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -239,9 +241,10 @@
 - **Decision logged:** No RAG component added to Project 1's build scope — all 13 current build sprints need either structured MCP/yfinance data or generation over already-computed data, not unstructured-document search. RAG understood as a mechanism, available if a genuine future need arises (e.g., citing academic literature in the memo generator); revisit only if a concrete need surfaces.
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LA16: Fine-tuning vs. prompting vs. RAG — **new, added 2026-07-14**
+### [x] P1-LA16: Fine-tuning vs. prompting vs. RAG — **completed 2026-07-18**
 - **Concepts:** What fine-tuning actually is at an intuition level (adjusting model weights on a custom dataset vs. everything covered so far, which leaves the model's weights untouched); the decision framework for choosing between prompting, RAG, and fine-tuning for a given problem — cost, data requirements, latency, maintainability, and "is the problem really a knowledge-access problem (→ RAG) or a behavior/style/format problem (→ prompting or fine-tuning)"; why fine-tuning is rarely the first move in practice, and what would have to be true about Project 1 for it to become the right call
-- **Deliverable:** A one-page decision-framework note applying the three options to 2-3 concrete Project 1 scenarios (e.g., "the factor-spec extractor keeps missing a specific phrasing pattern" or "the memo generator's tone doesn't match a target house style")
+- **Deliverable:** Notes (P1_LA16_Finetuning_vs_Prompting_vs_RAG.md), including a one-page decision-framework note applying the three options to three concrete Project 1 scenarios (factor-spec extractor phrasing gap, memo generator tone mismatch, and a hypothetical academic-citation RAG scenario) plus a worked numerical cost/break-even comparison using current Sonnet-tier API pricing
+- **Decision logged:** No fine-tuning added to Project 1's build scope — same "mechanism understood, not built into current scope, revisit only if a concrete need surfaces" posture already established for RAG in P1-LA15. Explicit bar set for reconsideration: recurring documented behavior gap + demonstrated prompting failure + sufficient labeled training data (minable from P1-LA12 trace logs) + call volume sufficient to repay setup cost.
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-LA17: Prompt engineering fundamentals
@@ -644,7 +647,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
-| P1: Factor Research (AI/Agentic) | ☐ 15/17 | — | — | — | — |
+| P1: Factor Research (AI/Agentic) | ☐ 16/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☐ 0/3 | — | — | — | — |
 | P1: Factor Research (Evals) | ☐ 0/2 | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
@@ -669,7 +672,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 23 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15) | 0 | 0 |
+| 2026-07 | 24 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16) | 0 | 0 |
 
 ---
 
