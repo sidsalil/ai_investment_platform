@@ -2,8 +2,13 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-18 (P1-LE1 complete — Model evals vs. system evals,
-> first lesson of the Evals & Model Evals track, now 1/2. Earlier the same
+> Last updated: 2026-07-19 (P1-LE2 complete — AI product metrics & KPIs,
+> second and final lesson of the Evals & Model Evals track, now 2/2 COMPLETE.
+> This was the final lesson of Phase 1 overall — Finance (10/10),
+> AI/Agentic (17/17), Backtesting Rigor (3/3), and Evals (2/2) are all
+> complete: 32/32 concept lessons. Next: Phase 2, Architecture & Design.
+> On 2026-07-18, P1-LE1, Model evals vs. system evals, was completed —
+> first lesson of the Evals & Model Evals track. Earlier the same
 > day, P1-LB3, The multiple-testing problem
 > (p-hacking) — third and final lesson of the Backtesting Rigor track, now
 > COMPLETE at 3/3. Earlier the same day, P1-LB2, Out-of-sample vs. in-sample
@@ -64,7 +69,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** The Finance track and AI/Agentic track within Phase 1 were designed to interleave, but the Finance track finished (10/10) before the AI/Agentic track started, so that interleaving window closed on 2026-07-14. As of this update: Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **1/2** (P1-LE1 done). Recommend P1-LE2 (AI product metrics & KPIs) next — it is the last lesson before Phase 2 (Architecture) starts.
+- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). Recommend starting Phase 2 (Architecture & Design) next.
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -93,7 +98,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** In progress — Phase 1 (Concept Lessons), Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **1/2** (P1-LE1 done; P1-LE2 remains before Phase 2)
+**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). Next: Phase 2 (Architecture & Design).
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -289,10 +294,13 @@
 - **Deliverable:** Notes (P1_LE1_Model_Evals_vs_System_Evals.md)
 - **Estimated time:** 1-2 hours
 
-### [ ] P1-LE2: AI product metrics & KPIs — **new, added 2026-07-14**
-- **Concepts:** How a PM defines product-level success for an AI feature, distinct from LE1's pipeline-level evals — adoption and usage metrics, override/escalation rate (how often a human rejects or edits the agent's output — a real signal of trust and quality, not a vanity metric), trust calibration (does user trust in the system track its actual reliability, or drift ahead of/behind it), and ROI/cost-of-quality framing (cost per successful task, not just cost per API call)
-- **Why this is separate from LE1:** LE1 answers "does my pipeline work" (an engineering/system question); LE2 answers "how would I know, as a PM, whether this product is succeeding in the hands of a real portfolio manager or analyst" — a distinct interview question you should be able to answer without conflating it with eval scores.
-- **Deliverable:** A short metrics framework (one table) for Project 1, specifying what you'd track post-launch beyond IC/rank-IC/eval-pass-rate — e.g., how often a user overrides the validator's flag, how often the generated memo needs manual editing before use
+### [x] P1-LE2: AI product metrics & KPIs — **completed 2026-07-19 — Evals track now 2/2, COMPLETE. Final lesson of Phase 1 (32/32 concept lessons).**
+- **Concepts:** How a PM defines product-level success for an AI feature, distinct from LE1's pipeline-level evals — four metric families: (1) adoption & usage (access/trial/repeat-use/depth-of-use funnel); (2) override/escalation rate (how often a human rejects or edits the agent's output — a real signal of trust and quality, not a vanity metric, explicitly distinguished from P1-LA11's system-initiated escalation checkpoints); (3) trust calibration (does user trust in the system track its actual reliability, or drift ahead of/behind it — over-trust ties to P1-LA11's automation-bias risk, under-trust is wasted adoption); (4) ROI/cost-of-quality framing (cost per successful task and full cost-of-quality — compute + human correction time — not just cost per API call, only meaningful against a real counterfactual baseline)
+- **Why this is separate from LE1:** LE1 answers "does my pipeline work" (an engineering/system question); LE2 answers "how would I know, as a PM, whether this product is succeeding in the hands of a real portfolio manager or analyst" — a distinct interview question, answered without conflating it with eval scores.
+- **Worked examples:** 200-analyst adoption funnel (70% trial, 43% retention among trialers); 500-memo override-rate example (22% total, healthy-engagement zone); 3-group trust-calibration example (over-trust, under-trust, well-calibrated); cost-of-quality example ($0.048/successful-task compute-only vs. $0.304/memo all-in with human correction time, 7.6x higher)
+- **Honest scope decision:** Project 1 is single-user, so no real adoption/trust/ROI data exists or is fabricated — the deliverable is the framework plus instrumentation design (a `user_id`/`session_id` gap noted for Phase 2, a `human_action` field carried to P1-Build-8), consistent with the standing no-fabricated-metrics principle.
+- **Follow-up (2026-07-19, same day):** production instrumentation architecture worked out in full — capture/calculation/presentation three-layer design, OLTP/OLAP-style storage separation, and 2-3 separate dev-sprint breakdown. Resolved this lesson's open question: build a synthetic multi-user event dataset plus a real aggregation+dashboard pipeline against it, rather than leaving metrics as described-but-unbuilt. Full detail in the notes file.
+- **Deliverable:** Notes (P1_LE2_AI_Product_Metrics_and_KPIs.md), including the four-family metrics framework applied to Project 1 with worked numerical examples for each family, plus the same-day follow-up on production instrumentation architecture
 - **Estimated time:** 1-2 hours
 
 **Phase 1 completion criteria:**
@@ -664,7 +672,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 | P1: Factor Research (Finance) | ☑ 10/10 | ☐ 0/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☑ 17/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☑ 3/3 — COMPLETE | — | — | — | — |
-| P1: Factor Research (Evals) | ☑ 1/2 | — | — | — | — |
+| P1: Factor Research (Evals) | ☑ 2/2 — COMPLETE | — | — | — | — |
 | P2: Backtesting Copilot | ☐ 0/11 | ☐ 0/4 | ☐ 0/11 | ☐ 0/5 | ☐ |
 | ~~P3: Portfolio Construction~~ | deprioritized | — | — | — | — |
 | ~~P4: ML Signal Lab~~ | deprioritized | — | — | — | — |
@@ -687,7 +695,7 @@ Update monthly:
 | Month | Lessons completed | Builds completed | Polish completed |
 |-------|------------------|------------------|------------------|
 | 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 29 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1, P1-LB2, P1-LB3, P1-LE1) | 0 | 0 |
+| 2026-07 | 30 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1, P1-LB2, P1-LB3, P1-LE1, P1-LE2) | 0 | 0 |
 
 ---
 
