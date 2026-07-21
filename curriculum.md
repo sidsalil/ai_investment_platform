@@ -2,11 +2,14 @@
 
 > Living curriculum for the (now 2-project) journey to AI Product Manager /
 > Financial Services PM / Forward Deployed Engineer conversations.
-> Last updated: 2026-07-20 (P1-Arch-1 complete — System design, full
-> architecture diagram for Project 1 locked, including the MCP-vs-native-tool
-> scope decision and the tracing-vs-product-metrics subsystem distinction.
-> Phase 2 (Architecture & Design) now 2/5 — P1-Arch-0 and P1-Arch-1 done;
-> P1-Arch-2 through P1-Arch-4 remaining. Previously, 2026-07-19 (P1-LE2 complete — AI product metrics & KPIs,
+> Last updated: 2026-07-21 (P1-Arch-2 complete — Data flow design, full
+> boundary-by-boundary data-shape walkthrough for Project 1 locked, including
+> the data-plane/context-plane distinction and the MCP-invocation-locus
+> decision. Phase 2 (Architecture & Design) now 3/5 — P1-Arch-0, P1-Arch-1,
+> P1-Arch-2 done; P1-Arch-3 and P1-Arch-4 remaining. Previously, 2026-07-20
+> (P1-Arch-1 complete — System design, full architecture diagram for
+> Project 1 locked, including the MCP-vs-native-tool scope decision and the
+> tracing-vs-product-metrics subsystem distinction). Before that, 2026-07-19 (P1-LE2 complete — AI product metrics & KPIs,
 > second and final lesson of the Evals & Model Evals track, now 2/2 COMPLETE.
 > This was the final lesson of Phase 1 overall — Finance (10/10),
 > AI/Agentic (17/17), Backtesting Rigor (3/3), and Evals (2/2) are all
@@ -73,7 +76,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) is IN PROGRESS — 2/5 (P1-Arch-0, P1-Arch-1 done). Next: P1-Arch-2 (Data flow design).**
+- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) is IN PROGRESS — 3/5 (P1-Arch-0, P1-Arch-1, P1-Arch-2 done). Next: P1-Arch-3 (Orchestrator + subagent design).**
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -102,7 +105,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) — IN PROGRESS (2/5): P1-Arch-0, P1-Arch-1 done. Next: P1-Arch-2 (Data flow design).**
+**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) — IN PROGRESS (3/5): P1-Arch-0, P1-Arch-1, P1-Arch-2 done. Next: P1-Arch-3 (Orchestrator + subagent design).**
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -312,7 +315,7 @@
 - You can explain factor research AND the agent architecture end-to-end to a non-technical friend in 10 minutes
 - CONTEXT.md "Concepts Learned" sections are populated with your own-words summaries across all four tracks
 
-## Phase 2: Architecture & Design (~7.5-12 hours) — IN PROGRESS (2/5)
+## Phase 2: Architecture & Design (~7.5-12 hours) — IN PROGRESS (3/5)
 
 ### [x] P1-Arch-0: Tooling setup — Claude Code configuration and initial test — **completed 2026-07-20 — Phase 2 begun**
 - **Why this lesson exists:** Per the 2026-07-20 code-ownership policy revision (see CONTEXT.md → Career Pivot Decisions), the default remains hand-coding — Claude Code's default role is to diff my code, flag issues, and suggest refactors. Full generation is available as an opt-in exception when I explicitly ask for it, gated on comprehension rather than authorship either way. This lesson configures the tool with those defaults and guardrails in place, before any real use happens in Phase 2/3.
@@ -334,8 +337,10 @@
 - **Deliverable:** Notes (P1_Arch1_System_Design.md) + architecture diagram (`project_01_factor_research.md`)
 - **Estimated time:** 2-3 hours
 
-### [ ] P1-Arch-2: Data flow design
+### [x] P1-Arch-2: Data flow design — **completed 2026-07-21**
 - **Deliverable:** Sequence diagram or written walkthrough: "User asks 'test momentum on S&P 500' → orchestrator plans → calls MCP tools → delegates to validation subagent → delegates to memo subagent → produces output"
+- **Key decisions locked:** (1) two parallel flows distinguished — the data plane (real Python DataFrames/objects in RAM) vs. the context plane (only compact structured summaries entering the LLM's prompt), pinning the P1-LA7 "context window ≠ application memory" principle down concretely at every boundary; (2) MCP invocation locus — the LLM orchestrator makes exactly one native tool call (`run_research_pipeline`), and native Python code (not the model) is the actual MCP client looping over every ticker; (3) `FactorSpec` carried forward as a live Python object between stages, re-serialized only for fresh-subagent handoffs; (4) a provisional `FactorMetricsResult` field sketch, flagged for finalization at P1-Arch-4.
+- **Deliverable:** Notes (`P1_Arch2_Data_Flow_Design.md`) + inline six-stage sequence diagram rendered in chat
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-Arch-3: Orchestrator + subagent design
