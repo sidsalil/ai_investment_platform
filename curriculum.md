@@ -310,13 +310,9 @@
 
 ## Phase 2: Architecture & Design (~7.5-12 hours)
 
-### [ ] P1-Arch-0: Tooling setup — Claude Code installation, configuration, initial test
-- **Why this lesson exists:** Per the 2026-07-20 code-ownership policy revision (see CONTEXT.md → Career Pivot Decisions), the default remains hand-coding — Claude Code's default role is to diff my code, flag issues, and suggest refactors. Full generation is available as an opt-in exception when I explicitly ask for it, gated on comprehension rather than authorship either way. This lesson gets the tool installed and configured correctly, with those defaults and guardrails in place, before any real use happens in Phase 2/3.
-- **Install (WSL2/Ubuntu, native installer — recommended over npm for auto-update behavior):**
-  - `curl -fsSL https://claude.ai/install.sh | bash`
-  - Alternative if native installer has issues: `npm install -g @anthropic-ai/claude-code` (Node.js already available via nvm)
-  - Verify: `claude --version` and `claude doctor` (diagnostic report — installation type, version, PATH issues)
-- **Authenticate:** run `claude` in a project directory, complete browser-based login against your Claude subscription/Console account
+### [x] P1-Arch-0: Tooling setup — Claude Code configuration and initial test — **completed 2026-07-20 — Phase 2 begun**
+- **Why this lesson exists:** Per the 2026-07-20 code-ownership policy revision (see CONTEXT.md → Career Pivot Decisions), the default remains hand-coding — Claude Code's default role is to diff my code, flag issues, and suggest refactors. Full generation is available as an opt-in exception when I explicitly ask for it, gated on comprehension rather than authorship either way. This lesson configures the tool with those defaults and guardrails in place, before any real use happens in Phase 2/3.
+- **Note:** Install and authentication were already complete as of 2026-05-25 (see Environment Setup Checklist — `claude-code: 2.1.150` via npm, authenticated on Claude Pro). Not re-covered here.
 - **Configuration decisions to make and record:**
   - Confirm CLI only — do **not** install the VS Code extension (per earlier discussion, its one-click diff-accept UX works against the comprehension-gate policy; the CLI in an integrated terminal pane is deliberately higher-friction)
   - Set permission mode to require approval on every file write (default behavior — do not enable "accept all" mode for this project)
@@ -324,8 +320,8 @@
 - **Initial test (no real project code yet):**
   - In a scratch/throwaway directory, ask Claude Code to explain what it sees in a small existing file or generate one trivial, low-stakes file (e.g., a `.gitignore`) to confirm the permission-prompt → diff → approve/reject loop actually works end to end
   - Confirm `claude mcp list` runs (empty list expected at this stage — MCP server config comes later in Phase 3 build sprints)
-- **Deliverable:** `CLAUDE.md` at repo root; confirmation notes in CONTEXT.md that install, auth, and the approval-loop test succeeded
-- **Estimated time:** 0.5-1 hour
+- **Deliverable:** `CLAUDE.md` at repo root; confirmation notes in CONTEXT.md that the config decisions and approval-loop test succeeded
+- **Estimated time:** 0.25-0.5 hour (reduced from original 0.5-1 hour estimate now that install/auth is out of scope)
 
 ### [ ] P1-Arch-1: System design
 - **Deliverable:** Architecture diagram showing the major components (data layer via MCP, factor calc, portfolio construction, metrics, LLM orchestrator, validation subagent, memo subagent, tracing, UI)
