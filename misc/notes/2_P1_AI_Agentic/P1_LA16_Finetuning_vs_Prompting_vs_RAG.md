@@ -246,6 +246,16 @@ None of P1's 13 build sprints currently meet this bar. This is consistent with P
 - **Right tool:** RAG — index the papers, retrieve relevant chunks at generation time.
 - **Why not fine-tuning:** Fine-tuning doesn't give a model new facts reliably or update-ably; it's the wrong tool for "look up something specific and current." RAG is designed exactly for this.
 
+### Scenario 4 (real-world, not hypothetical — validation of the diagnostic outside P1): An Azure AI Search-based investment research chat app, with proprietary content vectorized ahead of time and stored in an Azure AI Index, queried via hybrid search (vector + semantic)
+- **Diagnosis:** Textbook RAG — every step (vectorize → index → hybrid search at query time → inject into context → generate) maps directly onto the Phase A/Phase B pipeline in P1-LA15 Section 3.
+- **Terminology check:** "Grounding" is not a competing label for a different pattern — it's the goal RAG serves, and in Microsoft's own Azure documentation, "grounding data" specifically means the retrieved content itself, once pulled from the index. See P1-LA15's Follow-up Q7 for the full applied write-up, including the Microsoft-documentation citation.
+- **Why not fine-tuning:** No step in this setup touches the LLM's weights — vectorizing, indexing, and retrieving all operate on the *input* side, not the model itself.
+
+### Scenario 5 (real-world, not hypothetical — validation of the diagnostic in the opposite direction): Uploading a single one-or-two-page resume directly into a Claude chat window and asking questions against that one file only
+- **Diagnosis:** Not RAG. The file is small enough to fit entirely inside the context window, so there's no need for a search/retrieval step to select "relevant" pieces — the whole document is simply read in full every time. This is the other branch of the same diagnostic: RAG solves the problem of a corpus too large to hand the model in full; a one-page resume isn't that problem.
+- **Confirmed against Claude's own official documentation** (not assumed): direct chat uploads, and even Claude Projects below a certain knowledge-volume threshold, load full documents into context rather than retrieving from them. RAG mode in Projects activates automatically only once total project knowledge approaches or exceeds the context window limit. Full applied write-up in P1-LA15's Follow-up Q8.
+- **Why this matters:** it's a useful reminder that RAG is a solution to a *scale* problem, not a general-purpose "the model is reading a document" pattern — plenty of document-reading tasks never need retrieval at all.
+
 ---
 
 ## Summary — the one-sentence diagnostic to carry into interviews

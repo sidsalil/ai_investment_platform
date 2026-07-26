@@ -325,10 +325,60 @@ This is the actual spreadsheet lookup described in Follow-up Q3. Token ID 2762 a
 
 ---
 
+## Follow-up Q7: Applied scenario — is "hybrid search over an Azure AI Index" RAG, "grounding," or fine-tuning? (2026-07-18, during P1-LA16)
+
+A real-world scenario was raised for confirmation: an AI chat application built on top of proprietary Investment Research data, where content was vectorized ahead of time and stored in an Azure AI Index, and the LLM used hybrid search (vector search + semantic search) against that index at query time. The question: is this RAG, "grounding the model in private proprietary data," or fine-tuning?
+
+**Direct answer: this is RAG — a textbook implementation, in fact.** Every step described maps exactly onto the two-phase pipeline in Section 3 above:
+
+| Described setup | RAG pipeline phase |
+|---|---|
+| Vectorized proprietary research content ahead of time | Phase A, Step 3: Embedding |
+| Stored those vectors in an Azure AI Index | Phase A, Step 4: Vector database / index storage |
+| Hybrid search (vector + semantic) at query time | Phase B, Steps 2-4: Embed the query → similarity search → top-k retrieval (with Azure's semantic reranking layered on top — see Follow-up Q5 above) |
+| Feed retrieved content into the LLM's context window | Phase B, Step 5: Inject into context |
+| LLM generates an answer | Phase B, Step 6: Generate |
+
+**Is "grounding" a different, competing term?** No — checked against Microsoft's own Azure AI Search documentation rather than assumed, since vendor terminology is exactly where this kind of confusion tends to originate (consistent with the Follow-up Q5 caution about "semantic search" meaning different things to different vendors). Microsoft's documentation states that RAG is a pattern that extends LLM capabilities by grounding responses in proprietary content, and separately names the retrieved content itself "grounding data" once it's been pulled from the index and is about to be handed to the LLM. So:
+
+| Term | What it actually is |
+|---|---|
+| RAG | The *mechanism* — the specific pipeline (index → retrieve → inject → generate) |
+| Grounding | The *goal/effect* — anchoring the model's answer in real source material instead of its own memorized training data |
+| "Grounding data" (Microsoft's specific term) | The retrieved chunks themselves, once pulled from the index, about to be handed to the LLM |
+
+"Grounding" is not an alternative name for a different pattern — it's the purpose RAG serves, and in Azure's specific vocabulary, "grounding data" is simply the name for the output of the retrieval step.
+
+**Why it's definitely not fine-tuning:** nothing in the described setup touches the LLM's weights. Vectorizing content, storing it in an index, and retrieving relevant chunks at query time all happen *around* the model — they change what goes into its context window, not the model itself. This is the exact P1-LA16 distinction: fine-tuning is the only lever that runs additional training on the model's weight matrices; everything else here, however sophisticated the hybrid search configuration, stays on the "leaves the weights untouched" side of that line.
+
+**Nuance worth flagging on "hybrid search" specifically:** per Follow-up Q5, Azure's "semantic search" specifically means a secondary reranking pass over already-retrieved results using Microsoft's language-understanding models — it does not itself use embeddings. So a Azure "hybrid search" setup is likely doing three things, not two: (1) vector search, (2) keyword/BM25 search, merged via Reciprocal Rank Fusion, and then (3) optionally, semantic ranking layered on top of that merged set. Worth knowing precisely which of those are enabled in any specific Azure AI Search configuration, since "semantic search" in casual usage and "semantic ranking" in Azure's product are the same feature but easy to describe imprecisely (e.g., in an interview).
+
+## Follow-up Q8: Applied scenario — is uploading a single resume into a Claude chat window and asking questions about it RAG? (2026-07-18, during P1-LA16)
+
+A second real-world scenario, testing the same diagnostic in the opposite direction: uploading a single resume (a one-or-two-page file) directly into a Claude chat window and asking questions against that one file only.
+
+**Direct answer: no, this is not RAG.** This is the other branch of the Section 7 diagnostic ("is this really a knowledge-access problem requiring search over a corpus too large to hand the model in full?") — for a document that small, the answer is no. The whole file fits comfortably inside the context window, so there's no need for a search/retrieval step to select "relevant" pieces; the entire document is simply read in full, every time.
+
+**Confirmed against Claude's own official documentation** (support.claude.com), since this is a real, documented product distinction rather than an assumption:
+- Files uploaded directly into an individual chat (not added to a Project's knowledge base) become part of the conversation's context directly — tokenized and included in full, the same way typed messages are. No intermediate search step chooses which parts are "relevant."
+- Claude Projects specifically do use RAG — but even there, RAG mode isn't always active. It automatically activates only once a project's total knowledge approaches or exceeds the context window limit, expanding capacity roughly 10x by retrieving only relevant chunks per question. Below that threshold, a Project behaves the same as a direct upload: full documents loaded straight into context, no search step. If a project's knowledge later drops back below that threshold, Claude can automatically revert to full-context loading.
+
+| Scenario | Is it RAG? | Why |
+|---|---|---|
+| Resume uploaded directly into a single chat, questions asked about it | No | One small file, fits entirely in context, no search step — the whole thing is read directly |
+| Resume added to a Claude Project's knowledge base, project stays small | No | Same reasoning — project knowledge hasn't crossed the context-window threshold, so it's loaded in full rather than retrieved |
+| Resume + dozens of other documents added to a Claude Project, total exceeds context window | Yes | Now there's genuinely too much to fit in context at once — Claude automatically switches to RAG, searching the knowledge base and retrieving only relevant chunks per question |
+
+**A live illustration from this project itself:** this very project has a `project_knowledge_search` tool available in-conversation — a genuine RAG mechanism doing exactly what Section 3's Phase B describes (search project files, retrieve relevant chunks, hand them over). But the standing instruction for this specific project explicitly says not to use that tool for `CONTEXT.md` and `curriculum.md`, and to `view` those two files directly and read them in full instead. That's a deliberate choice of the "full-context-load" path over the "RAG" path for those two files specifically — the same underlying choice as the resume scenario, just made explicit as a standing rule rather than happening automatically based on file size.
+
+---
+
 ## Summary of open items / things to keep in mind
 
 - Section 5's toy 3-D worked example uses labeled, human-readable dimensions purely as a teaching device — real embeddings have unlabeled, uninterpretable dimensions (Follow-up Q1, Q4).
 - The exact token breakdown shown in Follow-up Q2 is illustrative only, not verified against the real tokenizer (network sandbox couldn't reach OpenAI's tokenizer data files).
 - Follow-up Q6 (added 2026-07-18, during P1-LA16) gives a full numeric walkthrough distinguishing token ID lookup, attention weight matrices, and the freshly-computed contextualized output — the token ID and its Step 2 embedding are fixed regardless of sentence; the attention matrices themselves are also fixed after training, but the attention weights and resulting contextualized vector are computed fresh for every input.
+- Follow-up Q7 (added 2026-07-18, during P1-LA16) applies the RAG/grounding/fine-tuning diagnostic to a real Azure AI Search scenario (proprietary Investment Research data, vectorized ahead of time, hybrid search at query time) — confirmed as textbook RAG, with "grounding" clarified as the goal RAG serves (and Microsoft's specific term for the retrieved content) rather than a competing alternative label, and confirmed as definitely not fine-tuning since no model weights are touched.
+- Follow-up Q8 (added 2026-07-18, during P1-LA16) applies the same diagnostic to the opposite case — uploading one small file (a resume) directly into a Claude chat and asking questions against it — confirmed as NOT RAG, since the file fits entirely in context with no need for a retrieval step; confirmed against Claude's own official documentation that direct chat uploads and small Claude Projects both use full-context loading, and RAG mode in Projects only activates automatically once total project knowledge exceeds the context window limit.
 - No RAG component is in P1's active build scope (Section 7 / Decision logged) — revisit only if a genuine document-lookup need arises.
 - P1-LA16 (Fine-tuning vs. prompting vs. RAG) is complete (2026-07-18) and built directly on Section 7's "is this a knowledge-access problem" framing.
