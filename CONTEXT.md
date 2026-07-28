@@ -594,6 +594,7 @@ See curriculum.md Phase 1 (AI/Agentic Track) for the full remaining scope (6 les
 
 ### Code Written
 - (none yet)
+- 2026-07-28 — **Manual-first teaching approach for finance/stats code in build sprints:** for every computation (winsorization, z-scoring, IC calculation, quintile bucketing, rolling returns, etc.), teach the manual implementation first so the mechanics are understood, then show the library built-in (numpy/scipy/pandas), and confirm both produce identical output. Same principle as hand-building the tool-use loop before Agent SDK — understand what the abstraction does before relying on it.
 
 ### Decisions Made (P1-specific)
 - 2026-05-25 — **Universe for Project 1: NASDAQ-100 during build sprints (fast iteration loops while learning the pipeline); switch to S&P 500 for the final eval and demo (the standard learner deliverable, deeper liquidity universe).** Survivorship bias acknowledged explicitly in P1-Polish-4 (methodology risk memo). The data ingestion module (P1-Build-1) must parameterize the universe so the NASDAQ-100 ↔ S&P 500 switch is a config change, not a refactor.
