@@ -9,8 +9,9 @@
 > checkpoint, not an automatic plan revision); plan-revision check cadence
 > open question resolved (hybrid deterministic-trigger design); per-agent
 > data-access/network-egress scope table designed, closing the P1-Arch-1
-> diagram-annotation carry-forward. Phase 2 (Architecture & Design) now 4/5 —
-> P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3 done; P1-Arch-4 remaining.
+> diagram-annotation carry-forward. Phase 2 (Architecture & Design) now
+> COMPLETE (5/5) — P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all
+> done. Next: Phase 3 (Build Sprints), starting with P1-Build-1.
 > Previously, 2026-07-21 (P1-Arch-2 complete — Data flow design, full
 > boundary-by-boundary data-shape walkthrough for Project 1 locked, including
 > the data-plane/context-plane distinction and the MCP-invocation-locus
@@ -84,7 +85,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) is IN PROGRESS — 4/5 (P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3 done). Next: P1-Arch-4 (Module structure and interfaces).**
+- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) is COMPLETE — 5/5 (P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all done). Next: Phase 3 (Build Sprints), starting with P1-Build-1.**
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -113,7 +114,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) — IN PROGRESS (4/5): P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3 done. Next: P1-Arch-4 (Module structure and interfaces).**
+**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) — COMPLETE (5/5): P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all done. Next: Phase 3 (Build Sprints), starting with P1-Build-1.**
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -323,7 +324,7 @@
 - You can explain factor research AND the agent architecture end-to-end to a non-technical friend in 10 minutes
 - CONTEXT.md "Concepts Learned" sections are populated with your own-words summaries across all four tracks
 
-## Phase 2: Architecture & Design (~7.5-12 hours) — IN PROGRESS (4/5)
+## Phase 2: Architecture & Design (~7.5-12 hours) — COMPLETE (5/5)
 
 ### [x] P1-Arch-0: Tooling setup — Claude Code configuration and initial test — **completed 2026-07-20 — Phase 2 begun**
 - **Why this lesson exists:** Per the 2026-07-20 code-ownership policy revision (see CONTEXT.md → Career Pivot Decisions), the default remains hand-coding — Claude Code's default role is to diff my code, flag issues, and suggest refactors. Full generation is available as an opt-in exception when I explicitly ask for it, gated on comprehension rather than authorship either way. This lesson configures the tool with those defaults and guardrails in place, before any real use happens in Phase 2/3.
@@ -357,10 +358,11 @@
 - **Deliverable:** Notes (`P1_Arch3_Orchestrator_And_Subagent_Design.md`)
 - **Estimated time:** 2-3 hours (matched actual scope)
 
-### [ ] P1-Arch-4: Module structure and interfaces
+### [x] P1-Arch-4: Module structure and interfaces — **completed 2026-07-22**
 - **Deliverable:** A skeleton of Python file/function signatures (no implementation)
-- **Carries forward from P1-Arch-3:** finalize `FactorMetricsResult`, `Plan`/`PlanStep` (with `plan_assumptions` and the `"escalated"` status value), and `ValidationResult` as actual Pydantic models; confirm `run_research_pipeline(factor_spec: FactorSpec) -> FactorMetricsResult` signature.
-- **Estimated time:** 2-3 hours
+- **Key decisions locked:** (1) full repo directory structure (`shared/data/` for the reusable yfinance MCP server, `modules/01_factor_research/` for everything project-specific including a single shared `schemas.py`, `ui/`, `tests/`); (2) all six Pydantic models finalized with real types — `FactorSpec` (gained new `exclusion_criteria: list[str] | None` field, captured but not operationalized by the P1 pipeline, enforced via a new sixth validator check-table row), `FactorMetricsResult` (13 fields), `RunMetadata` (4 fields), `ValidationResult` (6-row check table), `MemoResult` (3 fields), `SubagentCallResult` (rebuilt as a genuine Pydantic discriminated union — `ValidatorCallResult | MemoCallResult` on an `agent` discriminator, not a loose `Union`); (3) `run_research_pipeline`'s signature corrected from the stale P1-Arch-2 sketch to `(factor_spec: FactorSpec) -> tuple[FactorMetricsResult, RunMetadata]`, since `RunMetadata` didn't exist when the original signature was sketched; (4) full function-signature skeleton written for every module, plus a worked end-to-end type trace.
+- **Deliverable:** Notes (`P1_Arch4_Module_Structure_And_Interfaces.md`), full repo tree, full function-signature skeleton for every module.
+- **Estimated time:** 2-3 hours (matched actual scope)
 
 **Phase 2 completion criteria:**
 - You can draw the full architecture (including orchestrator/subagent/MCP layers) on a whiteboard from memory
