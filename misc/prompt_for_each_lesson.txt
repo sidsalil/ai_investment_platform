@@ -1,4 +1,4 @@
-P1-LA9: Agent failure modes (reliability)
+P1-Build-1: Data ingestion module (MCP server)
 See CONTEXT.md and curriculum.md in project knowledge for context.
 
 Standing rules for every lesson, in case they have not propagated from memory yet:
@@ -25,3 +25,5 @@ For every lesson (coding, quantitative/finance concepts, AI development, AI conc
 8) At the end of the lesson, update CONTEXT.md and curriculum.md to reflect the lesson's completion — mark the lesson checked off, add a "Concepts Learned" summary matching the depth of the notes file, log any new decisions made, add any carried-forward action items surfaced during the lesson to the relevant future phase, and update status/progress tracking (phase completion counts, monthly progress table, last-updated date). Provide both updated files for download alongside the lesson notes file, without waiting for me to ask.
 
 9) Whenever a follow-up question or clarification surfaces something worth remembering later (a design decision, a gotcha, an open question) — even outside the main teaching flow — capture it in the notes file and/or CONTEXT.md's carried-forward action items, not just in the chat.
+
+10) When code is written in build sprints follow manual-first teaching approach for finance/stats code in build sprints. For every computation (winsorization, z-scoring, IC calculation, quintile bucketing, rolling returns, etc.), teach the manual implementation first so the mechanics are understood, then show the library built-in (numpy/scipy/pandas), and confirm both produce identical output. Same principle as hand-building the tool-use loop before Agent SDK — understand what the abstraction does before relying on it.
