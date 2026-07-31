@@ -360,7 +360,7 @@
 
 ### [x] P1-Arch-4: Module structure and interfaces — **completed 2026-07-22**
 - **Deliverable:** A skeleton of Python file/function signatures (no implementation)
-- **Key decisions locked:** (1) full repo directory structure (`shared/data/` for the reusable yfinance MCP server, `modules/01_factor_research/` for everything project-specific including a single shared `schemas.py`, `ui/`, `tests/`); (2) all six Pydantic models finalized with real types — `FactorSpec` (gained new `exclusion_criteria: list[str] | None` field, captured but not operationalized by the P1 pipeline, enforced via a new sixth validator check-table row), `FactorMetricsResult` (13 fields), `RunMetadata` (4 fields), `ValidationResult` (6-row check table), `MemoResult` (3 fields), `SubagentCallResult` (rebuilt as a genuine Pydantic discriminated union — `ValidatorCallResult | MemoCallResult` on an `agent` discriminator, not a loose `Union`); (3) `run_research_pipeline`'s signature corrected from the stale P1-Arch-2 sketch to `(factor_spec: FactorSpec) -> tuple[FactorMetricsResult, RunMetadata]`, since `RunMetadata` didn't exist when the original signature was sketched; (4) full function-signature skeleton written for every module, plus a worked end-to-end type trace.
+- **Key decisions locked:** (1) full repo directory structure (`shared/data/` for the reusable yfinance MCP server, `modules/p1_factor_research/` for everything project-specific including a single shared `schemas.py`, `ui/`, `tests/`); (2) all six Pydantic models finalized with real types — `FactorSpec` (gained new `exclusion_criteria: list[str] | None` field, captured but not operationalized by the P1 pipeline, enforced via a new sixth validator check-table row), `FactorMetricsResult` (13 fields), `RunMetadata` (4 fields), `ValidationResult` (6-row check table), `MemoResult` (3 fields), `SubagentCallResult` (rebuilt as a genuine Pydantic discriminated union — `ValidatorCallResult | MemoCallResult` on an `agent` discriminator, not a loose `Union`); (3) `run_research_pipeline`'s signature corrected from the stale P1-Arch-2 sketch to `(factor_spec: FactorSpec) -> tuple[FactorMetricsResult, RunMetadata]`, since `RunMetadata` didn't exist when the original signature was sketched; (4) full function-signature skeleton written for every module, plus a worked end-to-end type trace.
 - **Deliverable:** Notes (`P1_Arch4_Module_Structure_And_Interfaces.md`), full repo tree, full function-signature skeleton for every module.
 - **Estimated time:** 2-3 hours (matched actual scope)
 
@@ -383,7 +383,7 @@
 - **What you build:** A function that computes 12-month-minus-1-month momentum for a universe of stocks at a date
 - **Key concerns:** Point-in-time correctness, NaN handling, vectorization
 - **Carried-forward requirement (from P1-L4):** Winsorization (1st/99th percentile default, configurable) applied before z-scoring; sector-neutral z-scoring as the default signal path, universe-wide as diagnostic flag.
-- **Located in:** `modules/01_factor_research/`
+- **Located in:** `modules/p1_factor_research/`
 - **Estimated time:** 3-4 hours
 
 ### [ ] P1-Build-3: Factor calculation - Other factors
@@ -465,7 +465,7 @@
 
 ### [ ] P1-Polish-2: README
 - **What you write:** Professional README with problem statement, demo, architecture, how to run, limitations, what you learned
-- **Deliverable:** `modules/01_factor_research/README.md`
+- **Deliverable:** `modules/p1_factor_research/README.md`
 - **Estimated time:** 1-2 hours
 
 ### [ ] P1-Polish-3: Demo video
@@ -706,7 +706,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 | Project | Concepts | Architecture | Build | Polish | Shipped |
 |---------|---------|--------------|-------|--------|---------|
-| P1: Factor Research (Finance) | ☑ 10/10 | ☐ 3/4 | ☐ 0/13 | ☐ 0/6 | ☐ |
+| P1: Factor Research (Finance) | ☑ 10/10 | ☑ 5/5 | ☐ 0/13 | ☐ 0/6 | ☐ |
 | P1: Factor Research (AI/Agentic) | ☑ 17/17 | — | — | — | — |
 | P1: Factor Research (Backtesting Rigor) | ☑ 3/3 — COMPLETE | — | — | — | — |
 | P1: Factor Research (Evals) | ☑ 2/2 — COMPLETE | — | — | — | — |
@@ -717,22 +717,25 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 ## Aggregate metrics (2-project scope)
 
 - Total P1 lessons planned: 10 (finance) + 17 (AI/agentic) + 3 (backtesting rigor) + 2 (evals) = 32
+- Total P1 architecture items planned: 5 (P1-Arch-0 through P1-Arch-4) — **COMPLETE, 5/5**
 - Total P1 build sprints planned: 13
 - Total P1 polish items planned: 6
 - Total P2 lessons planned: 11
+- Total P2 architecture items planned: 4 (P2-Arch-1 through P2-Arch-4)
 - Total P2 build sprints planned: 11
 - Total P2 polish items planned: 5
-- **Total trackable items (active scope):** 78
+- **Total trackable items (active scope):** 87 (32 + 5 + 13 + 6 + 11 + 4 + 11 + 5)
 - **Total estimated hours (active scope):** ~163-233 hours (~106-149 for P1, ~57-84 for P2)
 - *(Updated 2026-07-14: AI/Agentic track grew from 14→17 lessons and Evals track from 1→2 lessons — see "AI/Agentic and Evals track expansion" note at the top of this document. Adds roughly 6-9 hours to the P1 estimate.)*
 - *(Updated 2026-07-15: Added P2-L11, P2-Arch-4, P2-Build-11 — model routing addition, ~7-14 hours — see decision note under Project 2's goal section and CONTEXT.md decision log.)*
+- *(Updated 2026-07-22: "Total trackable items" corrected from 78 to 87 — P1's 5 architecture items and P2's 4 architecture items were being tracked in the phase-by-phase curriculum and in the project status summary table above, but had been left out of this aggregate count. No new scope added; this is a counting fix, not a plan change.)*
 
 Update monthly:
 
-| Month | Lessons completed | Builds completed | Polish completed |
-|-------|------------------|------------------|------------------|
-| 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 |
-| 2026-07 | 30 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1, P1-LB2, P1-LB3, P1-LE1, P1-LE2) | 0 | 0 |
+| Month | Lessons completed | Architecture completed | Builds completed | Polish completed |
+|-------|------------------|------------------------|------------------|-------------------|
+| 2026-05 | 2 (P1-L1, P1-L2) | 0 | 0 | 0 |
+| 2026-07 | 30 (P1-L3, P1-L4, P1-L5, P1-L6, P1-L7, P1-L8, P1-L9, P1-L10, P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17, P1-LB1, P1-LB2, P1-LB3, P1-LE1, P1-LE2) | 5 (P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 — Phase 2 now COMPLETE) | 0 | 0 |
 
 ---
 

@@ -55,7 +55,9 @@ Today's "skeleton of file/function signatures, no implementation" deliverable li
 
 ## 3. Repo directory structure
 
-Turning the P1-Arch-1 component inventory (UI → orchestrator → yfinance MCP data layer → factor calc/portfolio construction/factor metrics native tools → validation subagent → memo subagent → tracing layer → product metrics subsystem) into files, consistent with the two folder names already anchored in `curriculum.md` (`shared/data/` for P1-Build-1, `modules/01_factor_research/` for P1-Build-2):
+**Correction, added as a same-day follow-up:** the module folder is named `p1_factor_research`, not `01_factor_research` as originally written. `01_factor_research` is not a valid Python identifier — package names used in `import`/`from ... import` statements cannot start with a digit, and `from modules.01_factor_research.schemas import FactorSpec` fails to even parse (`SyntaxError`), let alone run. This went uncaught while the name only appeared in prose and file-tree diagrams; it surfaced only once real import lines were written out for the build sprints. `p1_factor_research` is a valid identifier and keeps the "P1" naming convention used everywhere else in this curriculum. Apply the same fix to Project 2's module folder when it's named (e.g. `p2_backtesting`, not `02_backtesting`).
+
+Turning the P1-Arch-1 component inventory (UI → orchestrator → yfinance MCP data layer → factor calc/portfolio construction/factor metrics native tools → validation subagent → memo subagent → tracing layer → product metrics subsystem) into files, consistent with the two folder names already anchored in `curriculum.md` (`shared/data/` for P1-Build-1, `modules/p1_factor_research/` for P1-Build-2):
 
 ```
 ai_investment_platform/
@@ -65,7 +67,7 @@ ai_investment_platform/
 │       └── mcp_server.py          # P1-Build-1 — the ONLY MCP server in the system (P1-Arch-1 MCP-scope decision)
 │
 ├── modules/
-│   └── 01_factor_research/
+│   └── p1_factor_research/
 │       ├── __init__.py
 │       ├── schemas.py             # ALL six Pydantic models — flat at top level, shared by all three subpackages below
 │       │
@@ -92,14 +94,14 @@ ai_investment_platform/
 │   └── streamlit_app.py           # P1-Build-13
 │
 └── tests/
-    └── 01_factor_research/
+    └── p1_factor_research/
         ├── test_factor_calc.py
         ├── test_portfolio_construction.py
         ├── test_factor_metrics.py
         └── test_schemas.py
 ```
 
-**Why `shared/data/` sits outside `modules/`:** direct structural payoff of the P1-Arch-1 MCP-scope decision. The yfinance MCP server is the one component explicitly designed for reuse — Project 2 swaps it for Polygon.io. Placing it outside `01_factor_research` means that swap touches one folder that was never module-specific to begin with. Burying it inside `modules/01_factor_research/` would misleadingly imply the data layer belongs to Project 1 alone.
+**Why `shared/data/` sits outside `modules/`:** direct structural payoff of the P1-Arch-1 MCP-scope decision. The yfinance MCP server is the one component explicitly designed for reuse — Project 2 swaps it for Polygon.io. Placing it outside `p1_factor_research` means that swap touches one folder that was never module-specific to begin with. Burying it inside `modules/p1_factor_research/` would misleadingly imply the data layer belongs to Project 1 alone.
 
 **Why `schemas.py` is one file, not six:** resolves a carried-forward item from P1-LA4 — "`FactorSpec` (and later any other structured objects) should be defined in a single shared schemas/models module, not duplicated per file." Every pipeline stage imports from `schemas.py`; nobody redefines `ValidationResult` locally inside `validator_subagent.py`. Same discipline as a firm-wide data dictionary: one canonical definition, not five slightly-different local copies.
 
@@ -114,6 +116,16 @@ ai_investment_platform/
 ---
 
 ## 4. Finalizing the six schemas
+
+**A note on imports, added as a same-day follow-up:** every code block in this document (here and in Section 5) is a design specification, not a complete runnable file — import statements were deliberately omitted so the focus stays on field names/types rather than boilerplate. When actually typing these into `schemas.py`, the file needs, at minimum:
+
+```python
+from pydantic import BaseModel, Field
+from typing import Literal, Annotated
+```
+
+`BaseModel` and `Field` are defined inside the `pydantic` package, not in core Python — `Literal` and `Annotated` come from Python's own `typing` module. Nothing in Python is available by name unless it's either a built-in or explicitly imported from the module that defines it; a `NameError: name 'BaseModel' is not defined` is Python saying "I don't know where to find that name." The same applies to every other module skeleton in Section 5 — `pipeline/factor_calc.py` will need `import pandas as pd`, `backtest.py` will need `from datetime import date`, `agents/orchestrator.py` and the subagent files will need `from .schemas import FactorSpec, FactorMetricsResult, ...` (or the full `modules.p1_factor_research.schemas` path per Section 3), and so on — each file needs an import line for every name it uses that it doesn't itself define.
+
 
 ### 4a. `FactorSpec` — finalized, plus new `exclusion_criteria` field
 
@@ -290,7 +302,47 @@ SubagentCallResult = Annotated[
 ]
 ```
 
-**Why this is worth the extra ceremony:** with a plain union, `result.recommendations` (a made-up field on neither type) can't be caught by your editor or mypy — they don't know which branch you're in. With the discriminated union, the moment code checks `if call_result.agent == "validator_subagent":`, both your editor and mypy *narrow* the type automatically and know `call_result.result` is a `ValidationResult`, catching a typo'd field access before the code ever runs. This is the direct code-level payoff of "proper discriminated union" — a real reliability improvement, not decoration.
+**Correction, added as a same-day follow-up — what this actually buys you.** My first pass overstated where the benefit comes from. It's *not* that mypy or your editor can only narrow `call_result.result`'s type if you check the `agent` field specifically — a plain `isinstance(call_result, ValidatorCallResult)` check narrows the type exactly as well, with no discriminator involved at all. If you're writing the `if`/`isinstance` check yourself in code you control, a discriminator field adds nothing over `isinstance()`.
+
+**Where the discriminator actually earns its keep:** at the moment **Pydantic itself** has to decide which class to build from raw, untyped data — a dict coming off a stored trace-log line, deserialized JSON, or an LLM tool-call payload — where nothing has told Python "this is a `ValidatorCallResult`" yet. Given a plain `Union[ValidatorCallResult, MemoCallResult]` with no discriminator, Pydantic falls back to "smart mode": it tries each union member in turn and keeps whichever one validates. That's slower (multiple full validation attempts per parse), and if none of them validate, the resulting error message reports failures for every candidate at once — verbose and hard to read. With `Field(discriminator="agent")`, Pydantic reads the `agent` field first, does an O(1) lookup to know it's a `ValidatorCallResult`, validates only that one shape, and — if it fails — gives one clean error message about exactly that shape. The discriminator is a **parsing-layer** optimization for constructing objects from untrusted/raw data, not a type-narrowing tool for hand-written code, where `isinstance()` (or the `agent`-check pattern) already does the narrowing job just as well.
+
+**Worked comparison — `isinstance()` vs. `agent == "..."`, in your own hand-written code:**
+
+```python
+# Version A — isinstance
+def handle_A(call_result: ValidatorCallResult | MemoCallResult) -> None:
+    if isinstance(call_result, ValidatorCallResult):
+        print(call_result.result.severity)     # mypy knows .result is ValidationResult | None here
+    elif isinstance(call_result, MemoCallResult):
+        print(call_result.result.word_count)    # mypy knows .result is MemoResult | None here
+
+# Version B — string literal comparison
+def handle_B(call_result: ValidatorCallResult | MemoCallResult) -> None:
+    if call_result.agent == "validator_subagent":
+        print(call_result.result.severity)      # mypy narrows on this too — a recognized
+    elif call_result.agent == "memo_subagent":   # "tagged union" pattern
+        print(call_result.result.word_count)
+```
+
+Both run identically on a real `ValidatorCallResult` instance. **The decisive difference is refactor-safety, not runtime behavior or speed.** If `ValidatorCallResult` is later renamed via the IDE's "rename symbol," Version A updates every call site automatically, and any site the rename tool misses raises a loud `NameError` at import. Version B has no such safety net — a string is just a string; if the Literal value `"validator_subagent"` is ever renamed and one comparison site is missed (or simply typo'd, e.g. `"validater_subagent"`), the condition silently evaluates `False` forever. No error, no crash — the branch just quietly stops matching, which is the kind of bug that survives code review and surfaces weeks later with no stack trace pointing at the cause.
+
+**The one case where `isinstance()` genuinely can't help:** raw, not-yet-parsed data — e.g. reading a trace-log JSONL file directly:
+
+```python
+import json
+
+with open("trace_log.jsonl") as f:
+    for line in f:
+        raw = json.loads(line)          # raw is a plain dict — NOT a ValidatorCallResult instance
+        # isinstance(raw, ValidatorCallResult) is False here even for real validator-subagent
+        # data — 'raw' is just a dict; isinstance can't see what it "would become" once parsed
+        if raw["agent"] == "validator_subagent":
+            print(raw["result"]["severity"])
+```
+
+Before something is parsed into a real Pydantic object there's no class to `isinstance()` against — only a plain dict with string keys, and the `agent` string is the only thing available to branch on. This is exactly why Pydantic's own discriminator mechanism keys off `agent` and not off Python types: at that moment, Pydantic doesn't have a class either — deciding which one to construct is precisely its job.
+
+**Recommendation:** use `isinstance()` in hand-written control flow that already has a constructed `SubagentCallResult` in hand (e.g. `orchestrator.py`, right after `invoke_validator_subagent()` returns) — it's refactor-safe and fails loudly on typos. Reserve the `agent` Literal field for Pydantic's own parsing (the `Field(discriminator="agent")` declaration already in the schema) and for any code that inspects raw/logged data before it's been parsed into a model at all.
 
 **Worked example, mapping onto the three-way A/B/C outcome distinction locked in P1-Arch-3:**
 
@@ -316,7 +368,7 @@ async def get_sector_classification(tickers: list[str]) -> dict[str, str]: ...
 
 `async def` because MCP tool calls are I/O-bound network requests — a preview of a concept not yet formally covered (async I/O), flagged as a carried-forward item for P1-Build-1, not taught in full today since it's an implementation concern, not an interface-design one.
 
-### `modules/01_factor_research/pipeline/factor_calc.py`
+### `modules/p1_factor_research/pipeline/factor_calc.py`
 
 ```python
 def compute_raw_factor(price_panel: pd.DataFrame, factor_type: Literal["momentum", "volatility", "liquidity", "value"], lookback_months: int, exclusion_months: int = 0) -> pd.Series: ...
@@ -327,7 +379,7 @@ def universe_wide_zscore(winsorized_factor: pd.Series) -> pd.Series: ...   # dia
 
 The locked signal pipeline order — raw → winsorize → sector-neutral z-score — is now visible directly in the function names, in the order they'd naturally be called. A good interface makes the intended call order legible without a separate doc.
 
-### `modules/01_factor_research/pipeline/portfolio_construction.py`
+### `modules/p1_factor_research/pipeline/portfolio_construction.py`
 
 ```python
 def bucket_into_quintiles(zscored_factor: pd.Series, n_buckets: int = 5) -> pd.Series: ...
@@ -335,7 +387,7 @@ def build_long_short_weights(bucketed: pd.Series) -> pd.Series: ...
 def build_long_only_weights(bucketed: pd.Series) -> pd.Series: ...
 ```
 
-### `modules/01_factor_research/pipeline/backtest.py`
+### `modules/p1_factor_research/pipeline/backtest.py`
 
 ```python
 def chronological_three_way_split(data: pd.DataFrame, touch_holdout: bool = False) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]: ...
@@ -345,14 +397,14 @@ def apply_transaction_costs(returns: pd.DataFrame, turnover: pd.Series, cost_bps
 
 `chronological_three_way_split`'s `touch_holdout: bool = False` default makes the "structurally awkward to touch casually" holdout-protection decision concrete at the interface level. Calling this function without explicitly passing `touch_holdout=True` returns only the train/validation split; the holdout slice cannot be reached by accident.
 
-### `modules/01_factor_research/pipeline/factor_metrics.py`
+### `modules/p1_factor_research/pipeline/factor_metrics.py`
 
 ```python
 def compute_ic(factor_scores: pd.Series, forward_returns: pd.Series, method: Literal["pearson", "spearman"] = "pearson") -> float: ...
 def compute_factor_metrics(backtest_results: pd.DataFrame, split: Literal["in_sample", "out_of_sample", "holdout"]) -> FactorMetricsResult: ...
 ```
 
-### `modules/01_factor_research/pipeline/research_pipeline.py` — the corrected signature
+### `modules/p1_factor_research/pipeline/research_pipeline.py` — the corrected signature
 
 **A real gap caught here, not just a restated sketch.** P1-Arch-2 sketched `run_research_pipeline(factor_spec: FactorSpec) -> FactorMetricsResult`. But `RunMetadata` (introduced later, at P1-Arch-3) has to be produced by this same native pipeline code — it's the only place that actually knows `variants_tested` and `holdout_touched` as the run happens. A signature returning only `FactorMetricsResult` has nowhere to put that data. The provisional signature was correct when written, before `RunMetadata` existed — this lesson catches that it's now stale and fixes it:
 
@@ -362,7 +414,7 @@ def run_research_pipeline(factor_spec: FactorSpec) -> tuple[FactorMetricsResult,
 
 This is exactly the kind of gap interface-first design is supposed to catch cheaply, on paper, rather than discovering mid-P1-Build-7 that a function needs a second return value bolted on after it's already written and tested.
 
-### `modules/01_factor_research/agents/orchestrator.py`
+### `modules/p1_factor_research/agents/orchestrator.py`
 
 ```python
 def extract_factor_spec(user_query: str) -> FactorSpec: ...
@@ -373,19 +425,66 @@ def run_orchestrator(user_query: str) -> MemoResult | ValidationResult: ...
 
 `run_orchestrator`'s return type, `MemoResult | ValidationResult`, is a small but honest design choice: it states at the type level that the run either finishes with a memo, or finishes by handing back the blocking verdict itself — matching P1-Arch-3's Branch 1 (`severity="blocking"` → run returns `ValidationResult` directly to the UI, no memo produced). A caller reading this signature knows to handle both cases without reading the function body.
 
-### `modules/01_factor_research/agents/validator_subagent.py`
+**Follow-up, same day — why isn't the return type `SubagentCallResult` instead?** `SubagentCallResult` and `run_orchestrator`'s return type serve different layers on purpose. `SubagentCallResult` is internal bookkeeping — it's how the orchestrator itself reasons about a single call (`status`, `retries_used`, which `agent`), useful only to the code immediately downstream of that call. `run_orchestrator`'s return type is the external boundary contract handed to the UI, which doesn't need or want retry counts and internal call metadata — same discipline as an order router's internal retry/venue telemetry never appearing on the fill confirmation sent to the PM.
+
+More precisely: returning `SubagentCallResult` would let the boundary type represent `status="failed", result=None` — a state that should never legitimately reach the caller of `run_orchestrator` as a normal return value. Walking outcome B (terminal subagent failure) against the return type: it isn't a third *business* outcome alongside "memo produced" and "blocked" — it's an operational failure, and the correct way to signal it is **raising an exception**, not returning a value:
+
+```python
+class SubagentFailureError(Exception):
+    def __init__(self, agent: str, retries_used: int, error_summary: str):
+        self.agent = agent
+        self.retries_used = retries_used
+        self.error_summary = error_summary
+```
+
+`run_orchestrator` should raise `SubagentFailureError` when either subagent call comes back `status="failed"`, rather than trying to represent that state inside `-> MemoResult | ValidationResult`. **This is a real gap surfaced by the follow-up question, not previously formalized** — P1-Arch-3 said outcome B "halts unconditionally" but never specified the actual mechanism. Retry counts and which-agent-failed information aren't lost by raising rather than returning — they already have a home in the `TraceEvent` `subagent_invocation`/`subagent_result` events from the tracing layer (P1-LA12), which is where operational telemetry belongs rather than being smuggled into the business-return-value channel.
+
+### `modules/p1_factor_research/agents/validator_subagent.py`
 
 ```python
 def validate_methodology(factor_spec: FactorSpec, factor_metrics_result: FactorMetricsResult, run_metadata: RunMetadata) -> ValidationResult: ...
 ```
 
-### `modules/01_factor_research/agents/memo_subagent.py`
+**Follow-up, same day — why doesn't this function (or `generate_memo`) return `SubagentCallResult` directly, instead of `invoke_validator_subagent`/`invoke_memo_subagent` wrapping it one layer up?** Because they answer different questions. `validate_methodology` answers "given these inputs, what's the validation verdict?" — one Claude API call, one parse attempt, one business fact. `invoke_validator_subagent` answers "manage a call to that function that might fail transiently, and report the outcome including how it went." `SubagentCallResult`'s fields — `status`, `retries_used`, `error_summary` — are only meaningful once multiple attempts across a *managed* call are being tracked; a single attempt has no "retries used" of its own.
+
+Concretely, the two layers:
+
+```python
+# validator_subagent.py — single attempt, pure business logic.
+# On malformed LLM output, this RAISES (e.g. a pydantic ValidationError)
+# rather than returning a "status=failed" sentinel — there's no retry
+# concept in scope at this layer, so there's nothing to wrap.
+def validate_methodology(factor_spec, factor_metrics_result, run_metadata) -> ValidationResult:
+    ...
+
+# orchestrator.py — retry/wrap logic, an orchestration-layer concern
+def invoke_validator_subagent(factor_spec, factor_metrics_result, run_metadata, max_retries: int = 3) -> SubagentCallResult:
+    for attempt in range(max_retries + 1):
+        try:
+            result = validate_methodology(factor_spec, factor_metrics_result, run_metadata)
+            return ValidatorCallResult(agent="validator_subagent", status="ok",
+                                        retries_used=attempt, result=result, error_summary=None)
+        except Exception as e:
+            last_error = e
+    return ValidatorCallResult(agent="validator_subagent", status="failed",
+                                retries_used=max_retries, result=None, error_summary=str(last_error))
+```
+
+Reasons to keep them separate, not folded into one function:
+1. **Testability** — `validate_methodology` can be unit-tested against the six-row check table with a mocked Claude response, with no retry simulation needed at all.
+2. **No duplicated retry machinery** — the retry-and-wrap pattern is structurally identical for both subagents; keeping it in the `invoke_*` functions means one reusable pattern instead of two near-copies embedded separately inside `validate_methodology` and `generate_memo`.
+3. **Independent change surfaces** — a retry-policy change (3 attempts → 5, add backoff) touches only `invoke_validator_subagent`; a new seventh check-table row touches only `validate_methodology`'s system prompt. Neither risks the other.
+4. **Reconciles with the `SubagentFailureError` design above** — `invoke_validator_subagent` legitimately *returns* `status="failed"` as a value, since `run_orchestrator`'s own logic needs to branch on it. Only one layer further out, at `run_orchestrator`'s external boundary, does a `"failed"` status convert from "a value to branch on" into "an exception to propagate" — because by then the branching is already done.
+
+### `modules/p1_factor_research/agents/memo_subagent.py`
 
 ```python
 def generate_memo(factor_spec: FactorSpec, factor_metrics_result: FactorMetricsResult, validation_result: ValidationResult) -> MemoResult: ...
 ```
 
-### `modules/01_factor_research/observability/tracing.py`
+Same single-attempt-vs-managed-call split applies here as for `validate_methodology` above: `generate_memo` is one attempt, returns `MemoResult` or raises; `invoke_memo_subagent` (in `orchestrator.py`) owns the retry loop and wraps the outcome into `MemoCallResult`, following the identical pattern shown in the `validator_subagent.py` section.
+
+### `modules/p1_factor_research/observability/tracing.py`
 
 ```python
 class TraceEvent(BaseModel):
@@ -405,7 +504,21 @@ def log_event(event: TraceEvent) -> None: ...
 
 `TraceEvent` was already fully locked at P1-LA12 — placed in its own module because it's the concrete implementation of a cross-cutting concern (per P1-Arch-1, tracing instruments every other component), earning its own file rather than living inside `orchestrator.py`.
 
-### `modules/01_factor_research/observability/product_metrics.py`
+**Follow-up, same day — why isn't `TraceEvent` in `schemas.py` alongside the other six models?** The P1-LA4 rule that centralized `FactorSpec`, `FactorMetricsResult`, `RunMetadata`, `ValidationResult`, `MemoResult`, and `SubagentCallResult` was about not duplicating the same struct definition across files — it was never "every `BaseModel` in the repo lives in one file regardless of what it represents." Those six are all the same kind of thing: research-domain data flowing *between* `pipeline/` and `agents/` — a genuine many-to-many usage pattern that justifies centralizing them. `TraceEvent` is a different kind of thing: not data the pipeline computes with, but a log record *describing* what happened while it ran. Every module produces one to log; nothing downstream consumes one as an input to compute something else, unlike `FactorMetricsResult`, which `validate_methodology` actually reads and reasons about.
+
+The stronger reason is dependency direction. `TraceEvent.content: dict` is deliberately untyped rather than a union of `FactorSpec | ValidationResult | MemoResult` — if it were strongly typed that way, `tracing.py` would have to `import` from `schemas.py` just to define its own log-record shape, which inverts the intended dependency arrow. `observability/` is meant to be the thing *other* modules depend on (they import `TraceEvent`/`log_event` to log with), not a module that depends on everyone else's domain types. Keeping `TraceEvent` self-contained, with a generic `content: dict`, is what makes that one-way dependency possible: `pipeline/` and `agents/` import `observability.tracing`, but `observability.tracing` never needs to import `pipeline/`, `agents/`, or `schemas.py` at all. This is a judgment call, not the only defensible answer — moving `TraceEvent` into `schemas.py` wouldn't break anything mechanically — but the dependency-direction argument is why it stays in `tracing.py`.
+
+**Follow-up, same day — should `log_event` be `async def`?** Yes, for two reasons: it keeps consistency with the orchestrator code that will call it (already running inside an `asyncio` event loop, since it awaits the MCP tool calls), and it's what makes genuine fire-and-forget possible via `asyncio.create_task(...)`. Updated signature:
+
+```python
+async def log_event(event: TraceEvent) -> None: ...
+```
+
+**Important nuance — `async def` alone doesn't achieve "off the critical path."** If the orchestrator calls it as `await log_event(event)`, the calling code still blocks until the write finishes — no different in practice from a synchronous call, just phrased differently. The only calling pattern that actually delivers the already-locked "fire-and-forget, never synchronous" principle is `asyncio.create_task(log_event(event))` — schedule it, don't await it. Whether a trace write genuinely runs off the critical path depends on how it's *called*, not just how it's *declared*. This is exactly the distinction the not-yet-taught async I/O lesson (flagged for before P1-Build-1) needs to cover.
+
+**A related gotcha to know before implementing this:** `asyncio.create_task()`'s return value needs to be held onto somewhere (e.g. a module-level `set` of in-flight tasks) — if the `Task` object is garbage-collected before the write completes, `asyncio` can silently cancel it mid-execution, dropping a trace event with no error raised anywhere. This is a documented `asyncio` pitfall, not a hypothetical edge case.
+
+### `modules/p1_factor_research/observability/product_metrics.py`
 
 ```python
 def aggregate_trace_events(trace_log_path: Path) -> pd.DataFrame: ...
@@ -420,37 +533,37 @@ Deliberately one function today. This module's design (capture → aggregate →
 **Request:** "Test 12-month momentum on the NASDAQ-100." No exclusions, one variant tested, no prior holdout use.
 
 **Step 1**
-- Module path: `modules/01_factor_research/agents/orchestrator.py`
+- Module path: `modules/p1_factor_research/agents/orchestrator.py`
 - Function called: `extract_factor_spec("Test 12-month momentum on the NASDAQ-100")`
 - Input: `str`
 - Output: `FactorSpec(factor_type="momentum", universe="NASDAQ100", lookback_months=12, exclusion_criteria=None, ...)`
 
 **Step 2**
-- Module path: `modules/01_factor_research/pipeline/research_pipeline.py`
+- Module path: `modules/p1_factor_research/pipeline/research_pipeline.py`
 - Function called: `run_research_pipeline(factor_spec)`
 - Input: `FactorSpec`
 - Output: `(FactorMetricsResult(ic_mean=0.041, ...), RunMetadata(variants_tested=1, holdout_touched=False, ...))`
 
 **Step 2 (internal calls)** — everything `run_research_pipeline` calls under the hood, before returning
-- Module path: `shared/data/mcp_server.py` → `modules/01_factor_research/pipeline/factor_calc.py` → `.../pipeline/portfolio_construction.py` → `.../pipeline/backtest.py` → `.../pipeline/factor_metrics.py`
+- Module path: `shared/data/mcp_server.py` → `modules/p1_factor_research/pipeline/factor_calc.py` → `.../pipeline/portfolio_construction.py` → `.../pipeline/backtest.py` → `.../pipeline/factor_metrics.py`
 - Function called: `get_price_history(...)` → `compute_raw_factor(...)` → `winsorize(...)` → `sector_neutral_zscore(...)` → `bucket_into_quintiles(...)` → `build_long_short_weights(...)` → `walk_forward_backtest(...)` → `apply_transaction_costs(...)` → `compute_factor_metrics(...)`
 - Input: chained pandas objects, never entering Step 3's context
 - Output: `FactorMetricsResult`
 
 **Step 3**
-- Module path: `modules/01_factor_research/agents/orchestrator.py` (caller) → `.../agents/validator_subagent.py` (callee)
+- Module path: `modules/p1_factor_research/agents/orchestrator.py` (caller) → `.../agents/validator_subagent.py` (callee)
 - Function called: `invoke_validator_subagent(...)` → `validate_methodology(...)`
 - Input: `FactorSpec, FactorMetricsResult, RunMetadata`
 - Output: `ValidatorCallResult(agent="validator_subagent", status="ok", result=ValidationResult(passed=True, flags=[], severity="none"))`
 
 **Step 4**
-- Module path: `modules/01_factor_research/agents/orchestrator.py` (caller) → `.../agents/memo_subagent.py` (callee)
+- Module path: `modules/p1_factor_research/agents/orchestrator.py` (caller) → `.../agents/memo_subagent.py` (callee)
 - Function called: `invoke_memo_subagent(...)` → `generate_memo(...)`
 - Input: `FactorSpec, FactorMetricsResult, ValidationResult`
 - Output: `MemoCallResult(agent="memo_subagent", status="ok", result=MemoResult(memo_markdown="...", disclosed_flags=[], word_count=580))`
 
 **Step 5**
-- Module path: `modules/01_factor_research/agents/orchestrator.py`
+- Module path: `modules/p1_factor_research/agents/orchestrator.py`
 - Function called: `run_orchestrator(...)` returns
 - Input: —
 - Output: `MemoResult` (final object reaching the UI)
@@ -476,8 +589,8 @@ This imports cleanly, and running `mypy modules/` checks every *call site* again
 
 ## Summary of decisions locked this lesson
 
-1. **Repo directory structure locked** — full file tree in Section 3, consistent with the `shared/data/` and `modules/01_factor_research/` conventions already anchored in `curriculum.md`.
-2. **Same-day follow-up: `modules/01_factor_research/` split into three subpackages** — `pipeline/` (deterministic), `agents/` (agentic), `observability/` (cross-cutting) — directly mirroring the P1-Arch-1 deterministic-vs-agentic classification rather than an arbitrary grouping. `schemas.py` stays flat at the top level since all three subpackages depend on it. Deliberately no `metrics/` subpackage — `factor_metrics.py` (pipeline stage) and `product_metrics.py` (cross-cutting subsystem) stay separated per P1-Arch-1's explicit "two unrelated concepts sharing a word" distinction.
+1. **Repo directory structure locked** — full file tree in Section 3, consistent with the `shared/data/` and `modules/p1_factor_research/` conventions already anchored in `curriculum.md`.
+2. **Same-day follow-up: `modules/p1_factor_research/` split into three subpackages** — `pipeline/` (deterministic), `agents/` (agentic), `observability/` (cross-cutting) — directly mirroring the P1-Arch-1 deterministic-vs-agentic classification rather than an arbitrary grouping. `schemas.py` stays flat at the top level since all three subpackages depend on it. Deliberately no `metrics/` subpackage — `factor_metrics.py` (pipeline stage) and `product_metrics.py` (cross-cutting subsystem) stay separated per P1-Arch-1's explicit "two unrelated concepts sharing a word" distinction.
 2. **`FactorSpec` gains `exclusion_criteria: list[str] | None = None`** — captured, never silently dropped, but explicitly not operationalized by the P1 pipeline. Closes the P1-Arch-2 Stage 1 schema-coverage-gap item.
 3. **`FactorMetricsResult` finalized** as a 13-field Pydantic model with types (Section 4b).
 4. **`RunMetadata` finalized** as a 4-field Pydantic model with types (Section 4c).
@@ -493,12 +606,17 @@ This imports cleanly, and running `mypy modules/` checks every *call site* again
 
 ## Carried-forward action items surfaced this lesson
 
-- **(P1-Arch-4) → P1-Build-1 through P1-Build-10:** all module import paths in Section 5 now include the subpackage (e.g. `from modules.01_factor_research.pipeline.factor_calc import ...`, `from modules.01_factor_research.agents.orchestrator import ...`, `from modules.01_factor_research.observability.tracing import ...`). `schemas.py` imports stay flat: `from modules.01_factor_research.schemas import FactorSpec`.
-
-- **(P1-Arch-4) → P1-Build-1:** `get_price_history`, `get_universe_constituents`, `get_sector_classification` are specified as `async def` in the skeleton. Async I/O itself has not yet been taught as a concept — cover the basics (why I/O-bound network calls benefit from `async`/`await`, how it differs from the sequential model used everywhere else in the pipeline) at the start of P1-Build-1, before implementing the MCP server.
+- **(P1-Arch-4) → P1-Build-1 through P1-Build-10:** all module import paths in Section 5 now include the subpackage (e.g. `from modules.p1_factor_research.pipeline.factor_calc import ...`, `from modules.p1_factor_research.agents.orchestrator import ...`, `from modules.p1_factor_research.observability.tracing import ...`). `schemas.py` imports stay flat: `from modules.p1_factor_research.schemas import FactorSpec`. Each `pipeline/`, `agents/`, `observability/` folder needs its own `__init__.py`.
+- **(P1-Arch-4) → P1-Build-1:** `get_price_history`, `get_universe_constituents`, `get_sector_classification`, and (as of a same-day follow-up) `log_event` are all specified as `async def` in the skeleton. Async I/O has not yet been taught as a concept — cover the basics before implementing the MCP server, including the distinction between declaring something `async def` (awaitable) and it actually running off the critical path (only true if scheduled via `asyncio.create_task(...)` rather than `await`ed inline).
+- **(P1-Arch-4, same-day follow-up) → P1-Build-10:** implement `log_event` calls in the orchestrator as `asyncio.create_task(log_event(event))`, not `await log_event(event)` — the latter blocks just like a synchronous call would. Hold onto created `Task` objects (e.g. a module-level `set`) to avoid `asyncio` silently garbage-collecting and cancelling an in-flight trace write.
 - **(P1-Arch-4) → P1-Build-7:** implement `run_orchestrator`'s `MemoResult | ValidationResult` return-type branching exactly as specified — callers must handle both cases explicitly, not assume a memo is always produced.
 - **(P1-Arch-4) → P1-Build-7/8:** native pipeline code (`run_research_pipeline`) must produce and return `RunMetadata` alongside `FactorMetricsResult`, per the corrected signature — `variants_tested` incremented on every distinct factor/lookback configuration run in a session, `holdout_touched` set once `chronological_three_way_split(..., touch_holdout=True)` is called.
 - **(P1-Arch-4) → P1-Build-8:** validator system prompt must encode all six check-table rows from Section 4d, including the new row 6 (non-`None` `exclusion_criteria` → advisory disclosure).
 - **(P1-Arch-4) → P1-Build-7/8:** implement `SubagentCallResult` as the discriminated union specified in Section 4f (`ValidatorCallResult` / `MemoCallResult` on an `agent` discriminator), not a loose `Union`. Confirm the pattern works as expected with a quick `mypy` check once both variant classes exist.
 - **(P1-Arch-4) → P1-Build-1/5/6:** `chronological_three_way_split`'s `touch_holdout: bool = False` default must be preserved exactly as designed — no call site should default to `True`.
 - **(P1-Arch-4), open item, not resolved → future revisit only if needed:** `exclusion_criteria` is currently permanently unoperationalized for P1. If a target role's interview conversation specifically probes "how would you extend this," the honest answer is: define a small closed vocabulary of exclusion rule types (e.g., `"negative_earnings_growth"`, `"high_leverage"`) as a new Literal, and add a genuine filtering step to `factor_calc.py` — not in scope for the current build sprints, flagged here only so the gap is never rediscovered as a surprise.
+- **(P1-Arch-4, same-day follow-up) → P1-Build-1 onward:** repo folder must be created as `modules/p1_factor_research/`, not `modules/01_factor_research/` — see the naming-bug correction in Section 3. If any local scaffolding was already created under the old name, rename it before P1-Build-1.
+- **(P1-Arch-4, same-day follow-up) → all P1-Build sprints:** full per-module Python skeletons (real code, with correct imports, `pipeline/`/`agents/`/`observability/` paths, and the `p1_factor_research` naming fix applied) were written out in full in a follow-up chat exchange, one code block per file, covering `shared/data/mcp_server.py` and all eleven files under `modules/p1_factor_research/`. Not yet copied into this notes file verbatim — Section 5 still shows signatures inline per subsection rather than one complete copy-pasteable block per file. If useful, this can be consolidated into the notes file on request; not done automatically since Salil writes the files himself from the signatures already documented.
+- **(P1-Arch-4, same-day follow-up) → P1-Build-7:** implement `SubagentFailureError(Exception)` (fields: `agent`, `retries_used`, `error_summary`) and raise it in `run_orchestrator` whenever `invoke_validator_subagent` or `invoke_memo_subagent` returns `status="failed"` — outcome B is raised, never returned as part of `-> MemoResult | ValidationResult`. Confirm the UI/Streamlit layer (P1-Build-13) has a top-level catch for this exception, since it's a genuinely different case from the "blocked, but the run completed" `ValidationResult` return path.
+- **(P1-Arch-4, same-day follow-up) → P1-Build-7/8/9:** `validate_methodology` and `generate_memo` are single-attempt functions — raise on a malformed attempt (e.g. a pydantic validation error parsing the LLM's output), don't return a `status="failed"` sentinel; there's no retry concept at that layer. `invoke_validator_subagent`/`invoke_memo_subagent` own the retry loop (`max_retries: int = 3` per the outcome-B example), catch exceptions from the single-attempt call, and wrap the outcome into `ValidatorCallResult`/`MemoCallResult`. Illustrative pattern (not the real prompt/parsing logic) is in this file's `validator_subagent.py` section.
+- **(P1-Arch-4, same-day follow-up) → all P1-Build sprints:** every function-signature skeleton in this document omits import statements by design (they're specifications, not runnable files). When typing each module into the repo, add its own imports at the top — `schemas.py` needs `from pydantic import BaseModel, Field` and `from typing import Literal, Annotated`; `pipeline/` files will additionally need `import pandas as pd` and `from datetime import date`; `agents/` files will need `from ..schemas import ...` (or the full path) for whichever models they use. Surfaced when a literal copy of the `schemas.py` skeleton raised `NameError: name 'BaseModel' is not defined`.
