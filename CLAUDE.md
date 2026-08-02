@@ -103,8 +103,8 @@ Not started. Event-driven backtest engine + AI strategy parser. Builds on P1's p
 
 ```
 modules/
-  01_factor_research/    # Project 1 code (build sprints P1-Build-1 through P1-Build-13)
-  02_backtester/         # Project 2 code (not started)
+  p1_factor_research/    # Project 1 code (build sprints P1-Build-1 through P1-Build-13)
+  p2_backtester/         # Project 2 code (not started)
 shared/
   data/                  # MCP server for yfinance data ingestion (P1-Build-1)
   llm/                   # Shared LLM utilities

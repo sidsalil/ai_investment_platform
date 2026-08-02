@@ -387,6 +387,7 @@
 - **What you build:** An MCP server wrapping yfinance that downloads, caches, and serves clean OHLCV data for a list of tickers — replaces a bespoke wrapper with a proper MCP tool interface
 - **Key concerns:** Caching, handling failures, date alignment
 - **Carried-forward requirement (from P1-Build-0):** Resolve the `async def` question before implementing — measure yfinance's native multi-ticker batch `download()` first; only add `asyncio.to_thread` concurrency if a stopwatch shows it is needed. Package choice resolved 2026-07-31: `pip install fastmcp` (standalone), import as `from fastmcp import FastMCP`. Add `pytest-asyncio` as a dependency (all three tools are async). Docstrings on the three MCP tools are **model-facing tool descriptions**, not developer comments — write them to the P1-LA2 standard.
+- **Environment status (2026-08-02):** `fastmcp` 3.4.5 installed and `pip check` clean. The install upgraded Starlette 0.41.3 → 1.3.1, which broke FastAPI 0.115.5's pin; resolved by upgrading FastAPI. Established in the same pass that **FastAPI has no role in P1 or P2** — Streamlit runs in-process, the MCP server uses stdio transport, and FastMCP's HTTP path would use Starlette/uvicorn directly regardless. Before writing Build-1 code: pin `fastmcp`, `mcp`, `starlette`, `fastapi`, and `yfinance` in `pyproject.toml`, and `pip install pytest-asyncio` (confirmed absent from `pip freeze` on 2026-08-02). Stack Versions in CONTEXT.md verified in full against `pip freeze` the same day; fastapi resolved to 0.141.1.
 - **Carried-forward requirement (from P1-L2, P1-L3):** Parameterize the universe so NASDAQ-100 ↔ S&P 500 switch is a config change. Source constituents from a stable public source (Wikipedia standard); freeze snapshot date for reproducibility. Confirm exact yfinance adjusted-close column name/behavior at implementation time. Cache invalidation must treat a new dividend/split as invalidating the entire cached adjusted-close series for that ticker.
 - **Located in:** `shared/data/`
 - **Tests:** Pytest tests that verify caching works and bad inputs fail cleanly
@@ -450,7 +451,8 @@
 - **Estimated time:** 2-3 hours
 
 ### [ ] P1-Build-12: Deployment
-- **What you build:** Containerize the system and deploy to a hosted endpoint (AWS Bedrock), not just local
+- **What you build:** Containerize the system and deploy to a live hosted endpoint (Streamlit Community Cloud, or Render/Railway/Fly.io), not just local. Secrets injected as platform environment variables, never committed.
+- **Corrected 2026-08-02:** this line previously read "deploy to a hosted endpoint (AWS Bedrock)." Wrong twice over. (1) It contradicts the decision logged at P1-LA14 (2026-07-16) scoping Bedrock **out** of P1 — P1's demo calls the Anthropic API directly, and Bedrock is scoped in from Project 3 onward. (2) It commits the exact conflation P1-LA14 was written to prevent: Bedrock is a **model-inference** option, not an application host. Where the application runs and where model inference comes from are two independent questions. The line predated LA14 and was never swept.
 - **Estimated time:** 3-5 hours
 
 ### [ ] P1-Build-13: Streamlit UI
