@@ -221,3 +221,40 @@ The general principle (full treatment in P1-LA10, Agent security & adversarial f
 - P1-LA10 (later lesson): revisit least-privilege/permission-scoping for MCP servers in full depth, including the "prefer deterministic access controls over prompted instructions not to call a tool" principle already previewed in curriculum.md's LA10 description.
 
 **Follow-up clarification (2026-07-14, same session): does MCP remove `stop_reason`?** No — this was a legitimate ambiguity in the original worked example, since it didn't show `stop_reason` explicitly. Resolved: `stop_reason` and `tool_use` remain Model↔Client vocabulary, entirely unchanged from P1-LA2; MCP only adds the Client↔Server hop (`tools/list`/`tools/call`) *after* the model has already signaled `stop_reason: "tool_use"`. The Client is the single component that speaks both protocols and translates between them. See Section 4's flow diagram for the visual reference — this distinction (which vocabulary belongs to which leg of the flow) is worth holding onto heading into P1-LA4 (structured outputs), since schema validation will apply on both legs but for different purposes.
+
+---
+
+## 9. Follow-up (2026-07-31): five things named "MCP" or "Claude SDK" — none of them the same thing
+
+*Added during P1-Build-0 while resolving the `mcp` vs. `fastmcp` package choice for P1-Build-1. Not part of the original 2026-07-14 lesson.*
+
+The question that prompted this: seeing `from mcp.server.fastmcp import FastMCP` in a code example and asking whether that's the Claude SDK, the Claude Code SDK, or something else. Reasonable question — the names genuinely collide.
+
+**Short answer: it's none of those.** It's the official MCP Python SDK — a general-purpose implementation of the *protocol* taught in this entire lesson, not anything Claude-specific.
+
+### The five things, disambiguated
+
+| Name | What it actually is | Import (if code) | Where it sits in this project |
+|---|---|---|---|
+| **Model Context Protocol (MCP)** | The open *protocol spec* itself — the subject of this whole lesson. A standard, not code. | n/a | The wire format the P1-Build-1 server speaks |
+| **Official MCP Python SDK** | Anthropic's reference implementation of the MCP spec | `mcp` | One of two ways to build an MCP server in Python — **not the one chosen for P1** |
+| **Standalone `fastmcp`** | A third-party framework (PrefectHQ, decorator-based) built on top of the MCP spec | `fastmcp` | **Chosen for P1-Build-1** — see the package-decision entry in CONTEXT.md dated 2026-07-31 |
+| **Claude Agent SDK** | Anthropic's separate SDK for building autonomous agents — a model planning and looping over tool calls, which can use MCP servers as one source of tools | a different package entirely | Confirmed for **Project 2** (Backtesting Copilot); **not used in Project 1** |
+| **Claude Code / Claude Code CLI** | The development tool being used to write this codebase, chat included | n/a — not imported into application code at all | Development environment, not application architecture |
+
+### Why the confusion is legitimate, not a gap in understanding
+
+Two separate causes:
+
+1. **Anthropic reused the name "FastMCP" inside its own official SDK** — the bundled high-level tool-building class in `mcp.server.fastmcp` was literally called `FastMCP`, the exact same name as the unrelated third-party `fastmcp` package. As of a June 2026 SDK update, Anthropic renamed that internal class to `MCPServer` specifically to reduce this collision — but plenty of tutorials and search results still show the old `FastMCP` name from before the rename.
+2. **"MCP" and "SDK" are both used as generic-sounding words that happen to also be specific product names** — much like how "the cloud" can mean the general concept or one specific vendor's product depending on context. MCP the protocol, MCP the SDK, and MCP servers built with a third-party framework are three different granularities of the same three letters.
+
+### The mental model to hold onto
+
+**MCP is the plumbing standard. `fastmcp` is the pipe-fitting tool chosen to build this project's plumbing. The Anthropic API — model `claude-sonnet-5` — is what eventually turns the tap.**
+
+None of Project 1's Build-1 imports touch the Claude Agent SDK at all. That SDK is a separate tool for a separate job (building the planning/looping agent behavior), arriving at Project 2, not Project 1's data-ingestion layer.
+
+### Where this fits relative to the rest of this lesson
+
+Sections 1-8 above taught the *protocol* — client/server/host roles, the three primitives, transports, the N×M problem, security preview. This section is purely about *ecosystem naming*, i.e. which Python package happens to implement which piece. It doesn't change or extend anything about how MCP itself works; it only removes the ambiguity about which of five similarly-named things a given `import` statement is pulling in.

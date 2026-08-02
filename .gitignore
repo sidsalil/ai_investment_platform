@@ -33,6 +33,7 @@ data/raw/
 data/cache/
 *.log
 logs/
+misc/P1_Interview_Bible_Fidelity_GenAI.pdf
 
 # Test artifacts
 .pytest_cache/

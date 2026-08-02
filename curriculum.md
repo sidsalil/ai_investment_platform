@@ -11,7 +11,7 @@
 > data-access/network-egress scope table designed, closing the P1-Arch-1
 > diagram-annotation carry-forward. Phase 2 (Architecture & Design) now
 > COMPLETE (5/5) — P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all
-> done. Next: Phase 3 (Build Sprints), starting with P1-Build-1.
+> done. Phase 3 (Build Sprints) begun with P1-Build-0 (Python foundations prerequisite, complete 2026-07-30). Next: P1-Build-1.
 > Previously, 2026-07-21 (P1-Arch-2 complete — Data flow design, full
 > boundary-by-boundary data-shape walkthrough for Project 1 locked, including
 > the data-plane/context-plane distinction and the MCP-invocation-locus
@@ -85,7 +85,7 @@
 ## How to use this document
 
 - **Check off lessons as you complete them.** "Complete" means: concepts understood AND deliverables produced AND completion criteria met. Not "I read about it."
-- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) is COMPLETE — 5/5 (P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all done). Next: Phase 3 (Build Sprints), starting with P1-Build-1.**
+- **Lessons within a phase should generally be done in order.** As of this update: **Phase 1 (Concept Lessons) is fully complete — 32/32.** Finance track complete (10/10), AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done), Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done), Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) is COMPLETE — 5/5 (P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all done). Phase 3 (Build Sprints) begun: P1-Build-0 (Python foundations prerequisite) complete 2026-07-30. Next: P1-Build-1.**
 - **Time estimates assume focused work, not calendar time.**
 - **Update CONTEXT.md after every lesson.** This curriculum tracks what's done; CONTEXT.md tracks where you are now.
 - **One lesson ≈ one Claude conversation, typically.**
@@ -114,7 +114,7 @@
 
 **Estimated effort:** ~106-149 hours *(updated 2026-07-14 for AI/Agentic and Evals track expansion)*
 
-**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) — COMPLETE (5/5): P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all done. Next: Phase 3 (Build Sprints), starting with P1-Build-1.**
+**Status:** **Phase 1 (Concept Lessons) — COMPLETE (32/32).** Finance track complete (10/10); AI/Agentic track **17/17 — COMPLETE** (P1-LA1, P1-LA2, P1-LA3, P1-LA4, P1-LA5, P1-LA6, P1-LA7, P1-LA8, P1-LA9, P1-LA10, P1-LA11, P1-LA12, P1-LA13, P1-LA14, P1-LA15, P1-LA16, P1-LA17 done); Backtesting Rigor track **3/3 — COMPLETE** (P1-LB1, P1-LB2, P1-LB3 done); Evals track **2/2 — COMPLETE** (P1-LE1, P1-LE2 done). **Phase 2 (Architecture & Design) — COMPLETE (5/5): P1-Arch-0, P1-Arch-1, P1-Arch-2, P1-Arch-3, P1-Arch-4 all done. Phase 3 (Build Sprints) — begun; P1-Build-0 (Python foundations prerequisite) complete 2026-07-30. Next: P1-Build-1.**
 
 ## Phase 1: Concept Lessons — Finance Track (~15-25 hours) — COMPLETE
 
@@ -369,11 +369,24 @@
 - A junior developer could read your architecture doc and understand the system without asking you questions
 - Your skeleton compiles (even if functions just `pass`)
 
-## Phase 3: Build Sprints (~44-61 hours)
+## Phase 3: Build Sprints (~49-68 hours)
+
+### [x] P1-Build-0: Python Foundations for the Build Phase — **completed 2026-07-30 — prerequisite, gates P1-Build-1**
+- **Why this lesson exists:** Phase 1's 32 concept lessons covered finance, agentic AI, backtesting rigor, and evals — but **no Python language engineering**. Phase 2 then locked a full function-signature skeleton using seven Python constructs never taught. Originally scoped as "Async I/O fundamentals"; broadened after an audit of the P1-Arch-4 skeleton against all thirteen build sprints surfaced six further untaught prerequisites.
+- **Naming note:** briefly mis-proposed as `P1-L33`. Wrong twice over — `P1-L` denotes the **Finance track specifically** (P1-L1…P1-L10, closed), and "32" is a sum across four separately-prefixed tracks (10+17+3+2), not a flat sequence. Renumbered to `P1-Build-0`, following the `P1-Arch-0` precedent for a 0-numbered in-phase prerequisite.
+- **Organizing idea:** every construct taught is **syntactic sugar**. Longhand version shown first, then the sugar, then the demonstration they are identical — the same manual-first discipline used for finance/stats code.
+- **Concepts:** (1) modules/packages/imports — `sys.path` as the thing Python actually searches, `__init__.py`, absolute vs. relative imports, the `python file.py` vs. `python -m package.file` launch difference, `ModuleNotFoundError`/`ImportError`/`NameError` distinguished, `pip install -e .` as the structural fix; (2) decorators — functions as objects, `@x` as sugar for one reassignment, decorators-with-arguments, `functools.wraps`; (3) exceptions — sentinel-return vs. raise, `try`/`except`/`else`/`finally`, custom exception classes carrying structured fields, chaining via `raise ... from e`; (4) context managers — `with` as sugar for `try`/`finally`, the `__enter__`/`__exit__` protocol, `pathlib`, `json` dump/dumps, why JSON Lines beats a JSON array (append cost + crash safety); (5) async I/O — concurrency vs. parallelism, event loop, coroutines, `gather`, `asyncio.to_thread`, `create_task` fire-and-forget, task garbage-collection, async propagating upward; (6) pytest — discovery, `pytest.raises`, `tmp_path`, `monkeypatch`, `pytest-asyncio`; (7) venv/`pyproject.toml`/`.env`/`.gitignore`.
+- **Deliverable:** Notes (`P1_Build0_Python_Foundations_For_Build_Phase.md`) + embedded decorator execution-flow diagram (`P1_Build0_Decorator_Execution_Flow.png`)
+- **Follow-up clarification (2026-07-31):** closures taught explicitly - omitted from the original lesson body and surfaced by a follow-up question. The decorator never invokes `wrapper`; it returns it, and the caller invokes it because the name was rebound. Diagram embedded with a caption marking the decoration-time / call-time phase boundary.
+- **Key finding:** the three MCP tool signatures locked as `async def` at P1-Arch-4 may be cargo-culting — **yfinance is a synchronous blocking library**, so a naive `async def` wrapping it blocks the entire event loop, which is strictly worse than a plain synchronous server. Three amendments proposed (see CONTEXT.md).
+- **Package decision (resolved 2026-07-31):** standalone `fastmcp` (PrefectHQ, `pip install fastmcp`) over the official SDK's bundled `mcp.server.fastmcp` / newer `MCPServer`. Driver: `fastmcp` pins the legacy pre-2026-07-28 MCP protocol line, which is what current clients actually speak; the official SDK's newer line is ahead of client-side support. See CONTEXT.md decision log for full rationale.
+- **Estimated time:** 5-7 hours
 
 ### [ ] P1-Build-1: Data ingestion module (MCP server)
+- **PREREQUISITE:** P1-Build-0 must be complete. Build-1 requires async I/O, decorators (`@mcp.tool`), exceptions, context managers/`pathlib`/`json`, package imports, and pytest — none of which Phase 1 covered.
 - **What you build:** An MCP server wrapping yfinance that downloads, caches, and serves clean OHLCV data for a list of tickers — replaces a bespoke wrapper with a proper MCP tool interface
 - **Key concerns:** Caching, handling failures, date alignment
+- **Carried-forward requirement (from P1-Build-0):** Resolve the `async def` question before implementing — measure yfinance's native multi-ticker batch `download()` first; only add `asyncio.to_thread` concurrency if a stopwatch shows it is needed. Package choice resolved 2026-07-31: `pip install fastmcp` (standalone), import as `from fastmcp import FastMCP`. Add `pytest-asyncio` as a dependency (all three tools are async). Docstrings on the three MCP tools are **model-facing tool descriptions**, not developer comments — write them to the P1-LA2 standard.
 - **Carried-forward requirement (from P1-L2, P1-L3):** Parameterize the universe so NASDAQ-100 ↔ S&P 500 switch is a config change. Source constituents from a stable public source (Wikipedia standard); freeze snapshot date for reproducibility. Confirm exact yfinance adjusted-close column name/behavior at implementation time. Cache invalidation must treat a new dividend/split as invalidating the entire cached adjusted-close series for that ticker.
 - **Located in:** `shared/data/`
 - **Tests:** Pytest tests that verify caching works and bad inputs fail cleanly
@@ -718,7 +731,7 @@ Applies once Project 1 (and ideally Project 2) are substantially built. Do not w
 
 - Total P1 lessons planned: 10 (finance) + 17 (AI/agentic) + 3 (backtesting rigor) + 2 (evals) = 32
 - Total P1 architecture items planned: 5 (P1-Arch-0 through P1-Arch-4) — **COMPLETE, 5/5**
-- Total P1 build sprints planned: 13
+- Total P1 build sprints planned: 13, plus P1-Build-0 (Python foundations prerequisite)
 - Total P1 polish items planned: 6
 - Total P2 lessons planned: 11
 - Total P2 architecture items planned: 4 (P2-Arch-1 through P2-Arch-4)
